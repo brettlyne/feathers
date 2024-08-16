@@ -25,7 +25,6 @@ interface ControlsProps {
   setScaleX: (scale: number) => void;
   scaleY: number;
   setScaleY: (scale: number) => void;
-  onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -53,7 +52,6 @@ const Controls: React.FC<ControlsProps> = ({
   setScaleX,
   scaleY,
   setScaleY,
-  onImageUpload,
 }) => {
   return (
     <div className="controls">
@@ -194,10 +192,6 @@ const Controls: React.FC<ControlsProps> = ({
           value={scaleY}
           onChange={(e) => setScaleY(parseFloat(e.target.value))}
         />
-      </div>
-      <div className="control-group">
-        <label>Upload Particle Image:</label>
-        <input type="file" accept="image/png" onChange={onImageUpload} />
       </div>
     </div>
   );

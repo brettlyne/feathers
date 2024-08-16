@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
@@ -31,24 +31,12 @@ const App: React.FC = () => {
     null
   );
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const texture = new THREE.Texture(img);
-          texture.needsUpdate = true;
-          setParticleTexture(texture);
-        };
-        img.src = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    loader.load("/drop.png", (texture) => {
+      setParticleTexture(texture);
+    });
+  }, []);
 
   return (
     <div className="app-container">
@@ -77,7 +65,6 @@ const App: React.FC = () => {
         setScaleX={setScaleX}
         scaleY={scaleY}
         setScaleY={setScaleY}
-        onImageUpload={handleImageUpload}
       />
       <div
         className="container"
@@ -86,7 +73,7 @@ const App: React.FC = () => {
           overflow: "hidden",
           position: "relative",
           width: "800px",
-          height: "600px",
+          height: "800px",
         }}
       >
         <div
