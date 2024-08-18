@@ -83,12 +83,12 @@ const App: React.FC = () => {
             height: "120%",
             left: "-10%",
             top: "-10%",
-            transform: "scale(1.5)",
+            // transform: "scale(1.5)",
             transformOrigin: "center center",
           }}
         >
           <Canvas
-            camera={{ position: [0, 0, 100], fov: fov, near: 0.1, far: 1000 }}
+            camera={{ position: [0, 0, 10], fov: fov, near: 0.1, far: 1000 }}
           >
             <CameraController fov={fov} />
             <HexagonParticles
