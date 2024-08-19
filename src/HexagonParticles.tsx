@@ -8,13 +8,20 @@ import {
   getSpiralParticleData,
   getRandomParticleData,
   getStaggeredGridParticleData,
+  getHexParticleData,
 } from "./util/particleArrangements";
 
 const FIELD_SIZE = 8; // centered on the origin
 
 interface HexagonParticlesProps {
   density: number;
-  arrangement: "grid" | "staggeredGrid" | "circular" | "spiral" | "random";
+  arrangement:
+    | "grid"
+    | "staggeredGrid"
+    | "circular"
+    | "spiral"
+    | "random"
+    | "hexagon";
   particleSize: number;
   center: [number, number, number];
   animationMagnitude: number;
@@ -97,6 +104,8 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         return getRandomParticleData(density);
       case "staggeredGrid":
         return getStaggeredGridParticleData(density);
+      case "hexagon":
+        return getHexParticleData(density);
       default:
         return getGridParticleData(density);
     }
@@ -117,6 +126,9 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           break;
         case "staggeredGrid":
           particleData = getStaggeredGridParticleData(density);
+          break;
+        case "hexagon":
+          particleData = getHexParticleData(density);
           break;
         default:
           particleData = getGridParticleData(density);

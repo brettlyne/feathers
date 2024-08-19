@@ -44,6 +44,58 @@ export const getStaggeredGridParticleData = (density: number) => {
   return getGrid(density, true);
 };
 
+export const getHexParticleData = (density: number) => {
+  const rawCount = getLogScaledCount(density);
+  const pointsPerSide = Math.ceil(Math.sqrt(rawCount / 3));
+  const hexRadius = FIELD_SIZE / (pointsPerSide * Math.sqrt(2));
+
+  const directions = [
+    [1, 0],
+    [0.5, Math.sqrt(3) / 2],
+    [-0.5, Math.sqrt(3) / 2],
+    [-1, 0],
+    [-0.5, -Math.sqrt(3) / 2],
+    [0.5, -Math.sqrt(3) / 2],
+  ];
+
+  let ring = 0;
+  let count = 0;
+  const positionsArr = [];
+
+  while (count < rawCount) {
+    if (ring === 0) {
+      positionsArr.push([0, 0]);
+      count++;
+    } else {
+      const ringCount = ring * 6;
+      for (let side = 0; side < 6; side++) {
+        for (let i = 0; i < ring; i++) {
+          const x =
+            (directions[side][0] * ring + directions[(side + 2) % 6][0] * i) *
+            hexRadius;
+          const y =
+            (directions[side][1] * ring + directions[(side + 2) % 6][1] * i) *
+            hexRadius;
+          positionsArr.push([x, y]);
+        }
+      }
+      count += ringCount;
+    }
+    ring++;
+  }
+
+  const positions = new Float32Array(count * 3);
+  const scales = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = positionsArr[i][0]; // x
+    positions[i * 3 + 1] = positionsArr[i][1]; // y
+    positions[i * 3 + 2] = 0; // z
+    scales[i] = 1;
+  }
+
+  return { positions, scales, count };
+};
+
 export const getCircularParticleData = (density: number) => {
   const count = getLogScaledCount(density);
   const positions = new Float32Array(count * 3);
