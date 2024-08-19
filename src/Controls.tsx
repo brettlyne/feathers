@@ -1,6 +1,8 @@
 import React from "react";
 
 interface ControlsProps {
+  density: number;
+  setDensity: (density: number) => void;
   particleSize: number;
   setParticleSize: (size: number) => void;
   center: [number, number, number];
@@ -26,6 +28,8 @@ interface ControlsProps {
 }
 
 const Controls: React.FC<ControlsProps> = ({
+  density,
+  setDensity,
   particleSize,
   setParticleSize,
   center,
@@ -51,6 +55,17 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   return (
     <div className="controls">
+      <div className="control-group">
+        <label>Density: {density.toFixed(2)}</label>
+        <input
+          type="range"
+          min="1"
+          max="10"
+          step="0.1"
+          value={density}
+          onChange={(e) => setDensity(parseFloat(e.target.value))}
+        />
+      </div>
       <div className="control-group">
         <label>Particle Size: {particleSize.toFixed(2)}</label>
         <input

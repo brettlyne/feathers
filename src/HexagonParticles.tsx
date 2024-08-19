@@ -1,10 +1,11 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 const FIELD_SIZE = 8; // centered on the origin
 
 interface HexagonParticlesProps {
+  density: number;
   particleSize: number;
   center: [number, number, number];
   animationMagnitude: number;
@@ -18,6 +19,7 @@ interface HexagonParticlesProps {
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
+  density,
   particleSize,
   center,
   animationMagnitude,
@@ -46,29 +48,58 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uTexture: { value: particleTexture },
   });
 
-  const [positions, scales] = useMemo(() => {
-    const count = 10000;
-    const cols = Math.ceil(Math.sqrt(count));
+  const getParticleData = (density: number) => {
+    // apply density input (1-10) on log scale to range 9-10000
+    const minCount = Math.log(9);
+    const maxCount = Math.log(10000);
+    const normalizedDensity = (density - 1) / 9;
+    const rawCount = Math.floor(
+      Math.exp(minCount + (maxCount - minCount) * normalizedDensity)
+    );
 
-    const positions = new Float32Array(cols * cols * 3);
-    const scales = new Float32Array(cols * cols);
+    const cols = Math.ceil(Math.sqrt(rawCount));
+    const count = cols * cols;
+
+    const positions = new Float32Array(count * 3);
+    const scales = new Float32Array(count);
     const colWidth = FIELD_SIZE / (cols - 1);
     const start = -FIELD_SIZE / 2;
 
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < cols; j++) {
-        const x = start + i * colWidth;
-        const y = start + j * colWidth;
-        const index = i * cols + j;
-        positions[index * 3] = x;
-        positions[index * 3 + 1] = y;
-        positions[index * 3 + 2] = 0;
-        scales[index] = 1;
-      }
+    for (let i = 0; i < count; i++) {
+      const x = start + (i % cols) * colWidth;
+      const y = start + Math.floor(i / cols) * colWidth;
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = 0; // z
+      scales[i] = 1;
     }
 
-    return [positions, scales];
-  }, []);
+    return { positions, scales, count };
+  };
+
+  const { positions, scales, count } = useMemo(
+    () => getParticleData(density),
+    [density]
+  );
+
+  useEffect(() => {
+    if (points.current) {
+      const { positions, scales, count } = getParticleData(density);
+
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+      );
+      geometry.setAttribute(
+        "scale",
+        new THREE.Float32BufferAttribute(scales, 1)
+      );
+
+      points.current.geometry.dispose();
+      points.current.geometry = geometry;
+    }
+  }, [density]);
 
   useFrame((state) => {
     const { clock } = state;
@@ -182,13 +213,13 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={positions.length / 3}
+          count={count}
           array={positions}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-scale"
-          count={scales.length}
+          count={count}
           array={scales}
           itemSize={1}
         />
