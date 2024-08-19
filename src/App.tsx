@@ -23,7 +23,7 @@ const App: React.FC = () => {
     "grid" | "staggeredGrid" | "circular" | "spiral" | "random" | "hexagon"
   >("grid");
   const [animationType, setAnimationType] = useState<AnimationType>("ripples");
-  const [particleSize, setParticleSize] = useState(12);
+  const [particleSize, setParticleSize] = useState(10);
   const [center, setCenter] = useState<[number, number, number]>([0, 0, 0]);
   const [animationMagnitude, setAnimationMagnitude] = useState(0.5);
   const [rotation, setRotation] = useState(0);

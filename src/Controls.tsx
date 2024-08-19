@@ -131,8 +131,8 @@ const Controls: React.FC<ControlsProps> = ({
         <label>Particle Size: {particleSize.toFixed(2)}</label>
         <input
           type="range"
-          min="0.1"
-          max="8"
+          min="1"
+          max="20"
           step="0.1"
           value={particleSize}
           onChange={(e) => setParticleSize(parseFloat(e.target.value))}
