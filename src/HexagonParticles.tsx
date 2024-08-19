@@ -47,24 +47,24 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   });
 
   const [positions, scales] = useMemo(() => {
-    const count = 1000;
-    const positions = new Float32Array(count * 3);
-    const scales = new Float32Array(count);
+    const count = 10000;
     const cols = Math.ceil(Math.sqrt(count));
-    const rows = Math.ceil(count / cols);
-    const hexSize = FIELD_SIZE / cols;
-    const totalWidth = cols * hexSize * 2 * 1.4;
-    const totalHeight = rows * hexSize * Math.sqrt(3) * 1.4;
-    const startX = -totalWidth / 2;
-    const startY = -totalHeight / 2;
 
-    for (let i = 0; i < count; i++) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      positions[i * 3] = startX + col * hexSize * 2 + (row % 2) * hexSize;
-      positions[i * 3 + 1] = startY + row * hexSize * Math.sqrt(3);
-      positions[i * 3 + 2] = 0;
-      scales[i] = 1;
+    const positions = new Float32Array(cols * cols * 3);
+    const scales = new Float32Array(cols * cols);
+    const colWidth = FIELD_SIZE / (cols - 1);
+    const start = -FIELD_SIZE / 2;
+
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < cols; j++) {
+        const x = start + i * colWidth;
+        const y = start + j * colWidth;
+        const index = i * cols + j;
+        positions[index * 3] = x;
+        positions[index * 3 + 1] = y;
+        positions[index * 3 + 2] = 0;
+        scales[index] = 1;
+      }
     }
 
     return [positions, scales];
