@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimationType } from "./animations";
 
 interface ControlsProps {
   density: number;
@@ -19,6 +20,8 @@ interface ControlsProps {
       | "random"
       | "hexagon"
   ) => void;
+  animationType: AnimationType;
+  setAnimationType: (type: AnimationType) => void;
   particleSize: number;
   setParticleSize: (size: number) => void;
   center: [number, number, number];
@@ -70,6 +73,8 @@ const Controls: React.FC<ControlsProps> = ({
   setScaleX,
   scaleY,
   setScaleY,
+  animationType,
+  setAnimationType,
 }) => {
   return (
     <div className="controls">
@@ -106,6 +111,20 @@ const Controls: React.FC<ControlsProps> = ({
           <option value="circular">Circular</option>
           <option value="spiral">Spiral</option>
           <option value="random">Random</option>
+        </select>
+      </div>
+      <div className="control-group">
+        <label>Animation Type:</label>
+        <select
+          value={animationType}
+          onChange={(e) => setAnimationType(e.target.value as AnimationType)}
+        >
+          <option value="ripples">Ripples</option>
+          <option value="waves">Waves</option>
+          <option value="jello">Jello</option>
+          <option value="banner">Banner</option>
+          <option value="orbits">Orbits</option>
+          <option value="snake">Snake</option>
         </select>
       </div>
       <div className="control-group">

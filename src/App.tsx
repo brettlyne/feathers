@@ -5,6 +5,7 @@ import * as THREE from "three";
 import Controls from "./Controls";
 import HexagonParticles from "./HexagonParticles";
 import "./HexagonParticles.css";
+import { AnimationType } from "./util/animations";
 
 const CameraController = ({ fov }: { fov: number }) => {
   useFrame((state) => {
@@ -19,7 +20,8 @@ const App: React.FC = () => {
   const [arrangement, setArrangement] = useState<
     "grid" | "staggeredGrid" | "circular" | "spiral" | "random" | "hexagon"
   >("grid");
-  const [particleSize, setParticleSize] = useState(0.5);
+  const [animationType, setAnimationType] = useState<AnimationType>("ripples");
+  const [particleSize, setParticleSize] = useState(12);
   const [center, setCenter] = useState<[number, number, number]>([0, 0, 0]);
   const [animationMagnitude, setAnimationMagnitude] = useState(0.5);
   const [rotation, setRotation] = useState(0);
@@ -70,6 +72,8 @@ const App: React.FC = () => {
         setScaleX={setScaleX}
         scaleY={scaleY}
         setScaleY={setScaleY}
+        animationType={animationType}
+        setAnimationType={setAnimationType}
       />
       <div
         className="container"
@@ -108,6 +112,7 @@ const App: React.FC = () => {
               scaleX={scaleX}
               scaleY={scaleY}
               particleTexture={particleTexture}
+              animationType={animationType}
             />
             <OrbitControls />
             <Stats />

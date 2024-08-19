@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { AnimationType, animateParticles } from "./util/animations";
 
 import {
   getGridParticleData,
@@ -10,8 +11,6 @@ import {
   getStaggeredGridParticleData,
   getHexParticleData,
 } from "./util/particleArrangements";
-
-const FIELD_SIZE = 8; // centered on the origin
 
 interface HexagonParticlesProps {
   density: number;
@@ -32,6 +31,7 @@ interface HexagonParticlesProps {
   scaleX: number;
   scaleY: number;
   particleTexture: THREE.Texture | null;
+  animationType: AnimationType;
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
@@ -47,6 +47,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   scaleX,
   scaleY,
   particleTexture,
+  animationType,
 }) => {
   const points = useRef<THREE.Points>(null);
   const { viewport } = useThree();
@@ -65,47 +66,33 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uTexture: { value: particleTexture },
   });
 
-  const { positions, scales, count } = useMemo(() => {
+  const { positions, scales, count, originalPositions } = useMemo(() => {
+    let particleData;
     switch (arrangement) {
       case "circular":
-        return getCircularParticleData(density);
+        particleData = getCircularParticleData(density);
+        break;
       case "spiral":
-        return getSpiralParticleData(density);
+        particleData = getSpiralParticleData(density);
+        break;
       case "random":
-        return getRandomParticleData(density);
+        particleData = getRandomParticleData(density);
+        break;
       case "staggeredGrid":
-        return getStaggeredGridParticleData(density);
+        particleData = getStaggeredGridParticleData(density);
+        break;
       case "hexagon":
-        return getHexParticleData(density);
+        particleData = getHexParticleData(density);
+        break;
       default:
-        return getGridParticleData(density);
+        particleData = getGridParticleData(density);
     }
+    const originalPositions = new Float32Array(particleData.positions);
+    return { ...particleData, originalPositions };
   }, [density, arrangement]);
 
   useEffect(() => {
     if (points.current) {
-      let particleData;
-      switch (arrangement) {
-        case "circular":
-          particleData = getCircularParticleData(density);
-          break;
-        case "spiral":
-          particleData = getSpiralParticleData(density);
-          break;
-        case "random":
-          particleData = getRandomParticleData(density);
-          break;
-        case "staggeredGrid":
-          particleData = getStaggeredGridParticleData(density);
-          break;
-        case "hexagon":
-          particleData = getHexParticleData(density);
-          break;
-        default:
-          particleData = getGridParticleData(density);
-      }
-      const { positions, scales, count } = particleData;
-
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute(
         "position",
@@ -119,7 +106,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
       points.current.geometry.dispose();
       points.current.geometry = geometry;
     }
-  }, [density, arrangement]);
+  }, [density, arrangement, positions, scales]);
 
   useFrame((state) => {
     const { clock } = state;
@@ -138,13 +125,14 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     if (points.current) {
       const positions = points.current.geometry.attributes.position
         .array as Float32Array;
-      for (let i = 0; i < positions.length; i += 3) {
-        const x = positions[i];
-        const y = positions[i + 1];
-        const dist = Math.sqrt((x - center[0]) ** 2 + (y - center[1]) ** 2);
-        positions[i + 2] =
-          Math.sin(dist * 0.5 - clock.elapsedTime * 2.0) * animationMagnitude;
-      }
+      animateParticles(
+        positions,
+        originalPositions,
+        clock.getElapsedTime(),
+        animationType,
+        uniformsRef.current.uCenter.value,
+        animationMagnitude
+      );
       points.current.geometry.attributes.position.needsUpdate = true;
     }
   });
