@@ -65,35 +65,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uTexture: { value: particleTexture },
   });
 
-  const getParticleData = (density: number) => {
-    // apply density input (1-10) on log scale to range 9-10000
-    const minCount = Math.log(9);
-    const maxCount = Math.log(10000);
-    const normalizedDensity = (density - 1) / 9;
-    const rawCount = Math.floor(
-      Math.exp(minCount + (maxCount - minCount) * normalizedDensity)
-    );
-
-    const cols = Math.ceil(Math.sqrt(rawCount));
-    const count = cols * cols;
-
-    const positions = new Float32Array(count * 3);
-    const scales = new Float32Array(count);
-    const colWidth = FIELD_SIZE / (cols - 1);
-    const start = -FIELD_SIZE / 2;
-
-    for (let i = 0; i < count; i++) {
-      const x = start + (i % cols) * colWidth;
-      const y = start + Math.floor(i / cols) * colWidth;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = 0; // z
-      scales[i] = 1;
-    }
-
-    return { positions, scales, count };
-  };
-
   const { positions, scales, count } = useMemo(() => {
     switch (arrangement) {
       case "circular":
