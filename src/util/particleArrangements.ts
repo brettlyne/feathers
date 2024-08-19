@@ -100,13 +100,49 @@ export const getCircularParticleData = (density: number) => {
   const count = getLogScaledCount(density);
   const positions = new Float32Array(count * 3);
   const scales = new Float32Array(count);
+  const radius = FIELD_SIZE / 1.6;
+
+  const rings = Math.ceil(Math.sqrt(count / Math.PI));
+  const totalArea = Math.PI * radius * radius;
+
+  const positionsArr = [];
+
+  let remainingPoints = count;
+  for (let r = 0; r < rings && remainingPoints > 0; r++) {
+    const outerRadiusRing = (radius * (r + 1)) / rings;
+    const innerRadiusRing = (radius * r) / rings;
+    const ringArea =
+      Math.PI *
+      (outerRadiusRing * outerRadiusRing - innerRadiusRing * innerRadiusRing);
+
+    let pointsInRing = Math.round((ringArea / totalArea) * count);
+    pointsInRing = Math.min(pointsInRing, remainingPoints);
+
+    const ringRadius = (outerRadiusRing + innerRadiusRing) / 2;
+
+    for (let i = 0; i < pointsInRing; i++) {
+      const angle = (i / pointsInRing) * Math.PI * 2;
+      const x = ringRadius * Math.cos(angle);
+      const y = ringRadius * Math.sin(angle);
+      positionsArr.push([x, y]);
+    }
+
+    remainingPoints -= pointsInRing;
+  }
+
+  if (remainingPoints > 0) {
+    const angle = (2 * Math.PI) / remainingPoints;
+    for (let i = 0; i < remainingPoints; i++) {
+      const x = radius * Math.cos(i * angle);
+      const y = radius * Math.sin(i * angle);
+      positionsArr.push([x, y]);
+    }
+  }
 
   for (let i = 0; i < count; i++) {
-    const angle = (i / count) * Math.PI * 2;
-    const radius = (Math.sqrt(Math.random()) * FIELD_SIZE) / 2;
-    positions[i * 3] = Math.cos(angle) * radius;
-    positions[i * 3 + 1] = Math.sin(angle) * radius;
-    positions[i * 3 + 2] = 0;
+    positions[i * 3] = positionsArr[i][0]; // x
+    positions[i * 3 + 1] = positionsArr[i][1]; // y
+    positions[i * 3 + 2] = 0; // z
     scales[i] = 1;
   }
 
