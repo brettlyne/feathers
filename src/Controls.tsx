@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimationType } from "./animations";
+import { AnimationType } from "./util/animations";
 
 interface ControlsProps {
   density: number;

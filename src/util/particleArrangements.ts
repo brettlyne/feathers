@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 const FIELD_SIZE = 8; // centered on the origin
 
 const getLogScaledCount = (density: number) => {

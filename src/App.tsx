@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,8 +9,10 @@ import { AnimationType } from "./util/animations";
 
 const CameraController = ({ fov }: { fov: number }) => {
   useFrame((state) => {
-    state.camera.fov = fov;
-    state.camera.updateProjectionMatrix();
+    if (state.camera.type === "PerspectiveCamera") {
+      (state.camera as THREE.PerspectiveCamera).fov = fov;
+      state.camera.updateProjectionMatrix();
+    }
   });
   return null;
 };
@@ -38,7 +40,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
-    loader.load("/drop.png", (texture) => {
+    loader.load("./drop.png", (texture) => {
       setParticleTexture(texture);
     });
   }, []);

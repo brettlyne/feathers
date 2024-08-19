@@ -1,5 +1,6 @@
 {
   "name": "feathers",
+  "homepage": "https://brettlyne.github.io/feathers/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,11 +8,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",
+    "gh-pages": "^6.1.1",
     "rc-input-number": "^9.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
