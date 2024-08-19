@@ -16,6 +16,9 @@ const CameraController = ({ fov }: { fov: number }) => {
 
 const App: React.FC = () => {
   const [density, setDensity] = useState(5); // New state for density
+  const [arrangement, setArrangement] = useState<
+    "grid" | "circular" | "spiral" | "random"
+  >("grid");
   const [particleSize, setParticleSize] = useState(0.5);
   const [center, setCenter] = useState<[number, number, number]>([0, 0, 0]);
   const [animationMagnitude, setAnimationMagnitude] = useState(0.5);
@@ -43,6 +46,8 @@ const App: React.FC = () => {
       <Controls
         density={density}
         setDensity={setDensity}
+        arrangement={arrangement}
+        setArrangement={setArrangement}
         particleSize={particleSize}
         setParticleSize={setParticleSize}
         center={center}
@@ -92,6 +97,7 @@ const App: React.FC = () => {
             <CameraController fov={fov} />
             <HexagonParticles
               density={density}
+              arrangement={arrangement}
               particleSize={particleSize}
               center={center}
               animationMagnitude={animationMagnitude}

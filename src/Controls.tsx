@@ -3,6 +3,10 @@ import React from "react";
 interface ControlsProps {
   density: number;
   setDensity: (density: number) => void;
+  arrangement: "grid" | "circular" | "spiral" | "random";
+  setArrangement: (
+    arrangement: "grid" | "circular" | "spiral" | "random"
+  ) => void;
   particleSize: number;
   setParticleSize: (size: number) => void;
   center: [number, number, number];
@@ -30,6 +34,8 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({
   density,
   setDensity,
+  arrangement,
+  setArrangement,
   particleSize,
   setParticleSize,
   center,
@@ -65,6 +71,22 @@ const Controls: React.FC<ControlsProps> = ({
           value={density}
           onChange={(e) => setDensity(parseFloat(e.target.value))}
         />
+      </div>
+      <div className="control-group">
+        <label>Arrangement:</label>
+        <select
+          value={arrangement}
+          onChange={(e) =>
+            setArrangement(
+              e.target.value as "grid" | "circular" | "spiral" | "random"
+            )
+          }
+        >
+          <option value="grid">Grid</option>
+          <option value="circular">Circular</option>
+          <option value="spiral">Spiral</option>
+          <option value="random">Random</option>
+        </select>
       </div>
       <div className="control-group">
         <label>Particle Size: {particleSize.toFixed(2)}</label>

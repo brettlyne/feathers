@@ -2,10 +2,18 @@ import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
+import {
+  getGridParticleData,
+  getCircularParticleData,
+  getSpiralParticleData,
+  getRandomParticleData,
+} from "./util/particleArrangements";
+
 const FIELD_SIZE = 8; // centered on the origin
 
 interface HexagonParticlesProps {
   density: number;
+  arrangement: "grid" | "circular" | "spiral" | "random";
   particleSize: number;
   center: [number, number, number];
   animationMagnitude: number;
@@ -20,6 +28,7 @@ interface HexagonParticlesProps {
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   density,
+  arrangement,
   particleSize,
   center,
   animationMagnitude,
@@ -77,14 +86,36 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     return { positions, scales, count };
   };
 
-  const { positions, scales, count } = useMemo(
-    () => getParticleData(density),
-    [density]
-  );
+  const { positions, scales, count } = useMemo(() => {
+    switch (arrangement) {
+      case "circular":
+        return getCircularParticleData(density);
+      case "spiral":
+        return getSpiralParticleData(density);
+      case "random":
+        return getRandomParticleData(density);
+      default:
+        return getGridParticleData(density);
+    }
+  }, [density, arrangement]);
 
   useEffect(() => {
     if (points.current) {
-      const { positions, scales, count } = getParticleData(density);
+      let particleData;
+      switch (arrangement) {
+        case "circular":
+          particleData = getCircularParticleData(density);
+          break;
+        case "spiral":
+          particleData = getSpiralParticleData(density);
+          break;
+        case "random":
+          particleData = getRandomParticleData(density);
+          break;
+        default:
+          particleData = getGridParticleData(density);
+      }
+      const { positions, scales, count } = particleData;
 
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute(
@@ -99,7 +130,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
       points.current.geometry.dispose();
       points.current.geometry = geometry;
     }
-  }, [density]);
+  }, [density, arrangement]);
 
   useFrame((state) => {
     const { clock } = state;
