@@ -2,9 +2,10 @@ import React, { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
+const FIELD_SIZE = 8; // centered on the origin
+
 interface HexagonParticlesProps {
   particleSize: number;
-  fieldSize: number;
   center: [number, number, number];
   animationMagnitude: number;
   rotation: number;
@@ -18,7 +19,6 @@ interface HexagonParticlesProps {
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   particleSize,
-  fieldSize,
   center,
   animationMagnitude,
   rotation,
@@ -47,12 +47,12 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   });
 
   const [positions, scales] = useMemo(() => {
-    const count = 10000;
+    const count = 1000;
     const positions = new Float32Array(count * 3);
     const scales = new Float32Array(count);
     const cols = Math.ceil(Math.sqrt(count));
     const rows = Math.ceil(count / cols);
-    const hexSize = fieldSize / cols;
+    const hexSize = FIELD_SIZE / cols;
     const totalWidth = cols * hexSize * 2 * 1.4;
     const totalHeight = rows * hexSize * Math.sqrt(3) * 1.4;
     const startX = -totalWidth / 2;
@@ -68,7 +68,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     }
 
     return [positions, scales];
-  }, [fieldSize]);
+  }, []);
 
   useFrame((state) => {
     const { clock } = state;

@@ -16,7 +16,6 @@ const CameraController = ({ fov }: { fov: number }) => {
 
 const App: React.FC = () => {
   const [particleSize, setParticleSize] = useState(0.5);
-  const [fieldSize, setFieldSize] = useState(100);
   const [center, setCenter] = useState<[number, number, number]>([0, 0, 0]);
   const [animationMagnitude, setAnimationMagnitude] = useState(0.5);
   const [rotation, setRotation] = useState(0);
@@ -43,8 +42,6 @@ const App: React.FC = () => {
       <Controls
         particleSize={particleSize}
         setParticleSize={setParticleSize}
-        fieldSize={fieldSize}
-        setFieldSize={setFieldSize}
         center={center}
         setCenter={setCenter}
         animationMagnitude={animationMagnitude}
@@ -83,7 +80,6 @@ const App: React.FC = () => {
             height: "120%",
             left: "-10%",
             top: "-10%",
-            // transform: "scale(1.5)",
             transformOrigin: "center center",
           }}
         >
@@ -93,7 +89,6 @@ const App: React.FC = () => {
             <CameraController fov={fov} />
             <HexagonParticles
               particleSize={particleSize}
-              fieldSize={fieldSize}
               center={center}
               animationMagnitude={animationMagnitude}
               rotation={rotation}

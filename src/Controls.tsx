@@ -3,8 +3,6 @@ import React from "react";
 interface ControlsProps {
   particleSize: number;
   setParticleSize: (size: number) => void;
-  fieldSize: number;
-  setFieldSize: (size: number) => void;
   center: [number, number, number];
   setCenter: (center: [number, number, number]) => void;
   animationMagnitude: number;
@@ -30,8 +28,6 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({
   particleSize,
   setParticleSize,
-  fieldSize,
-  setFieldSize,
   center,
   setCenter,
   animationMagnitude,
@@ -64,17 +60,6 @@ const Controls: React.FC<ControlsProps> = ({
           step="0.1"
           value={particleSize}
           onChange={(e) => setParticleSize(parseFloat(e.target.value))}
-        />
-      </div>
-      <div className="control-group">
-        <label>Field Size: {fieldSize.toFixed(2)}</label>
-        <input
-          type="range"
-          min="50"
-          max="200"
-          step="1"
-          value={fieldSize}
-          onChange={(e) => setFieldSize(parseFloat(e.target.value))}
         />
       </div>
       <div className="control-group">
