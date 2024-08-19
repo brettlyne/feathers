@@ -12,7 +12,7 @@ const getLogScaledCount = (density: number) => {
   );
 };
 
-export const getGridParticleData = (density: number) => {
+const getGrid = (density: number, staggered: boolean) => {
   const rawCount = getLogScaledCount(density);
   const cols = Math.ceil(Math.sqrt(rawCount));
   const count = cols * cols;
@@ -22,8 +22,12 @@ export const getGridParticleData = (density: number) => {
   const start = -FIELD_SIZE / 2;
 
   for (let i = 0; i < count; i++) {
-    const x = start + (i % cols) * colWidth;
+    let x = start + (i % cols) * colWidth;
     const y = start + Math.floor(i / cols) * colWidth;
+    if (staggered) {
+      const evenRow = Math.floor(i / cols) % 2 === 0;
+      x += ((evenRow ? 1 : -1) * colWidth) / 4;
+    }
     positions[i * 3] = x;
     positions[i * 3 + 1] = y;
     positions[i * 3 + 2] = 0; // z
@@ -31,6 +35,13 @@ export const getGridParticleData = (density: number) => {
   }
 
   return { positions, scales, count };
+};
+
+export const getGridParticleData = (density: number) => {
+  return getGrid(density, false);
+};
+export const getStaggeredGridParticleData = (density: number) => {
+  return getGrid(density, true);
 };
 
 export const getCircularParticleData = (density: number) => {

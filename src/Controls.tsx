@@ -3,9 +3,9 @@ import React from "react";
 interface ControlsProps {
   density: number;
   setDensity: (density: number) => void;
-  arrangement: "grid" | "circular" | "spiral" | "random";
+  arrangement: "grid" | "staggeredGrid" | "circular" | "spiral" | "random";
   setArrangement: (
-    arrangement: "grid" | "circular" | "spiral" | "random"
+    arrangement: "grid" | "staggeredGrid" | "circular" | "spiral" | "random"
   ) => void;
   particleSize: number;
   setParticleSize: (size: number) => void;
@@ -78,11 +78,17 @@ const Controls: React.FC<ControlsProps> = ({
           value={arrangement}
           onChange={(e) =>
             setArrangement(
-              e.target.value as "grid" | "circular" | "spiral" | "random"
+              e.target.value as
+                | "grid"
+                | "staggeredGrid"
+                | "circular"
+                | "spiral"
+                | "random"
             )
           }
         >
           <option value="grid">Grid</option>
+          <option value="staggeredGrid">Staggered Grid</option>
           <option value="circular">Circular</option>
           <option value="spiral">Spiral</option>
           <option value="random">Random</option>
