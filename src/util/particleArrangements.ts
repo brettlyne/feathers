@@ -117,16 +117,16 @@ export const getSpiralParticleData = (density: number) => {
   const count = getLogScaledCount(density);
   const positions = new Float32Array(count * 3);
   const scales = new Float32Array(count);
-
-  const a = 0.1; // controls how tightly wound the spiral is
-  const b = 0.2; // controls how quickly the spiral expands
+  const radius = FIELD_SIZE / 1.6;
+  const turns = Math.ceil(Math.sqrt(count) / 2);
 
   for (let i = 0; i < count; i++) {
-    const t = (i / count) * Math.PI * 20;
-    const r = a + b * t;
-    positions[i * 3] = r * Math.cos(t);
-    positions[i * 3 + 1] = r * Math.sin(t);
-    positions[i * 3 + 2] = 0;
+    const t = Math.sqrt(i / count) * turns * 2 * Math.PI;
+    const r = radius * Math.sqrt(i / count);
+
+    positions[i * 3] = r * Math.cos(t); // x
+    positions[i * 3 + 1] = r * Math.sin(t); // y
+    positions[i * 3 + 2] = 0; // z
     scales[i] = 1;
   }
 
