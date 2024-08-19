@@ -177,7 +177,7 @@ export const getRandomParticleData = (density: number) => {
   for (let i = 0; i < count; i++) {
     positions[i * 3] = (Math.random() - 0.5) * FIELD_SIZE;
     positions[i * 3 + 1] = (Math.random() - 0.5) * FIELD_SIZE;
-    positions[i * 3 + 2] = 0;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * FIELD_SIZE;
     scales[i] = 1;
   }
 
