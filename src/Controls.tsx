@@ -1,131 +1,36 @@
 import React from "react";
 import { AnimationType } from "./util/animations";
+import {
+  VisualizationState,
+  VisualizationStateUpdater,
+} from "./util/visualizationState";
 
 interface ControlsProps {
-  density: number;
-  setDensity: (density: number) => void;
-  arrangement:
-    | "grid"
-    | "staggeredGrid"
-    | "circular"
-    | "spiral"
-    | "random"
-    | "hexagon";
-  setArrangement: (
-    arrangement:
-      | "grid"
-      | "staggeredGrid"
-      | "circular"
-      | "spiral"
-      | "random"
-      | "hexagon"
-  ) => void;
-  animationType: AnimationType;
-  setAnimationType: (type: AnimationType) => void;
-  particleSize: number;
-  setParticleSize: (size: number) => void;
-  center: [number, number, number];
-  setCenter: (center: [number, number, number]) => void;
-  animationMagnitude: number;
-  setAnimationMagnitude: (magnitude: number) => void;
-  rotation: number;
-  setRotation: (rotation: number) => void;
-  color1: string;
-  setColor1: (color: string) => void;
-  color2: string;
-  setColor2: (color: string) => void;
-  bgColor: string;
-  setBgColor: (color: string) => void;
-  fov: number;
-  setFov: (fov: number) => void;
-  scaleX: number;
-  setScaleX: (scale: number) => void;
-  scaleY: number;
-  setScaleY: (scale: number) => void;
-  activeImage: string;
-  setActiveImage: (image: string) => void;
-  innerRadius: number;
-  setInnerRadius: (radius: number) => void;
-  innerScaling: number;
-  setInnerScaling: (scaling: number) => void;
-  outerRadius: number;
-  setOuterRadius: (radius: number) => void;
-  outerScaling: number;
-  setOuterScaling: (scaling: number) => void;
-  animationSpeed: number;
-  setAnimationSpeed: (speed: number) => void;
-  xMagnitude: number;
-  setXMagnitude: (magnitude: number) => void;
-  yMagnitude: number;
-  setYMagnitude: (magnitude: number) => void;
+  state: VisualizationState;
+  updateState: VisualizationStateUpdater;
 }
 
-const Controls: React.FC<ControlsProps> = ({
-  density,
-  setDensity,
-  arrangement,
-  setArrangement,
-  particleSize,
-  setParticleSize,
-  center,
-  setCenter,
-  animationMagnitude,
-  setAnimationMagnitude,
-  rotation,
-  setRotation,
-  color1,
-  setColor1,
-  color2,
-  setColor2,
-  bgColor,
-  setBgColor,
-  fov,
-  setFov,
-  scaleX,
-  setScaleX,
-  scaleY,
-  setScaleY,
-  animationType,
-  setAnimationType,
-  activeImage,
-  setActiveImage,
-  innerRadius,
-  setInnerRadius,
-  innerScaling,
-  setInnerScaling,
-  outerRadius,
-  setOuterRadius,
-  outerScaling,
-  setOuterScaling,
-  animationSpeed,
-  setAnimationSpeed,
-  xMagnitude,
-  setXMagnitude,
-  yMagnitude,
-  setYMagnitude,
-}) => {
-  const showCenterControls =
-    animationType === "ripples" || animationType === "orbits";
-
+const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
   return (
     <div className="controls">
       <div className="control-group">
-        <label>Density: {density.toFixed(2)}</label>
+        <label>Density: {state.density.toFixed(2)}</label>
         <input
           type="range"
           min="1"
           max="10"
           step="0.1"
-          value={density}
-          onChange={(e) => setDensity(parseFloat(e.target.value))}
+          value={state.density}
+          onChange={(e) => updateState("density", parseFloat(e.target.value))}
         />
       </div>
       <div className="control-group">
         <label>Arrangement:</label>
         <select
-          value={arrangement}
+          value={state.arrangement}
           onChange={(e) =>
-            setArrangement(
+            updateState(
+              "arrangement",
               e.target.value as
                 | "grid"
                 | "staggeredGrid"
@@ -147,8 +52,10 @@ const Controls: React.FC<ControlsProps> = ({
       <div className="control-group">
         <label>Animation Type:</label>
         <select
-          value={animationType}
-          onChange={(e) => setAnimationType(e.target.value as AnimationType)}
+          value={state.animationType}
+          onChange={(e) =>
+            updateState("animationType", e.target.value as AnimationType)
+          }
         >
           <option value="ripples">Ripples</option>
           <option value="waves">Waves</option>
@@ -169,218 +76,242 @@ const Controls: React.FC<ControlsProps> = ({
         }}
       >
         <div className="control-group">
-          <label>Inner Radius: {innerRadius.toFixed(2)}</label>
+          <label>Inner Radius: {state.innerRadius.toFixed(2)}</label>
           <input
             type="range"
             min="0"
             max="10"
             step="0.1"
-            value={innerRadius}
-            onChange={(e) => setInnerRadius(parseFloat(e.target.value))}
+            value={state.innerRadius}
+            onChange={(e) =>
+              updateState("innerRadius", parseFloat(e.target.value))
+            }
           />
         </div>
         <div className="control-group">
-          <label>Inner Scaling: {innerScaling.toFixed(2)}</label>
+          <label>Inner Scaling: {state.innerScaling.toFixed(2)}</label>
           <input
             type="range"
             min="0"
             max="5"
             step="0.1"
-            value={innerScaling}
-            onChange={(e) => setInnerScaling(parseFloat(e.target.value))}
+            value={state.innerScaling}
+            onChange={(e) =>
+              updateState("innerScaling", parseFloat(e.target.value))
+            }
           />
         </div>
         <div className="control-group">
-          <label>Outer Radius: {outerRadius.toFixed(2)}</label>
+          <label>Outer Radius: {state.outerRadius.toFixed(2)}</label>
           <input
             type="range"
             min="0"
             max="10"
             step="0.1"
-            value={outerRadius}
-            onChange={(e) => setOuterRadius(parseFloat(e.target.value))}
+            value={state.outerRadius}
+            onChange={(e) =>
+              updateState("outerRadius", parseFloat(e.target.value))
+            }
           />
         </div>
         <div className="control-group">
-          <label>Outer Scaling: {outerScaling.toFixed(2)}</label>
+          <label>Outer Scaling: {state.outerScaling.toFixed(2)}</label>
           <input
             type="range"
             min="0"
             max="5"
             step="0.1"
-            value={outerScaling}
-            onChange={(e) => setOuterScaling(parseFloat(e.target.value))}
+            value={state.outerScaling}
+            onChange={(e) =>
+              updateState("outerScaling", parseFloat(e.target.value))
+            }
           />
         </div>
-        {showCenterControls && (
-          <>
-            <div className="control-group">
-              <label>Center X: {center[0].toFixed(2)}</label>
-              <input
-                type="range"
-                min="-50"
-                max="50"
-                step="0.1"
-                value={center[0]}
-                onChange={(e) =>
-                  setCenter([parseFloat(e.target.value), center[1], center[2]])
-                }
-              />
-            </div>
-            <div className="control-group">
-              <label>Center Y: {center[1].toFixed(2)}</label>
-              <input
-                type="range"
-                min="-50"
-                max="50"
-                step="0.1"
-                value={center[1]}
-                onChange={(e) =>
-                  setCenter([center[0], parseFloat(e.target.value), center[2]])
-                }
-              />
-            </div>
-          </>
-        )}
         <div className="control-group">
-          <label>X Magnitude: {xMagnitude.toFixed(2)}</label>
+          <label>Center X: {state.center[0].toFixed(2)}</label>
+          <input
+            type="range"
+            min="-50"
+            max="50"
+            step="0.1"
+            value={state.center[0]}
+            onChange={(e) =>
+              updateState("center", [
+                parseFloat(e.target.value),
+                state.center[1],
+                state.center[2],
+              ])
+            }
+          />
+        </div>
+        <div className="control-group">
+          <label>Center Y: {state.center[1].toFixed(2)}</label>
+          <input
+            type="range"
+            min="-50"
+            max="50"
+            step="0.1"
+            value={state.center[1]}
+            onChange={(e) =>
+              updateState("center", [
+                state.center[0],
+                parseFloat(e.target.value),
+                state.center[2],
+              ])
+            }
+          />
+        </div>
+        <div className="control-group">
+          <label>X Magnitude: {state.xMagnitude.toFixed(2)}</label>
           <input
             type="range"
             min="0"
             max="10"
             step="0.1"
-            value={xMagnitude}
-            onChange={(e) => setXMagnitude(parseFloat(e.target.value))}
+            value={state.xMagnitude}
+            onChange={(e) =>
+              updateState("xMagnitude", parseFloat(e.target.value))
+            }
           />
         </div>
         <div className="control-group">
-          <label>Y Magnitude: {yMagnitude.toFixed(2)}</label>
+          <label>Y Magnitude: {state.yMagnitude.toFixed(2)}</label>
           <input
             type="range"
             min="0"
             max="10"
             step="0.1"
-            value={yMagnitude}
-            onChange={(e) => setYMagnitude(parseFloat(e.target.value))}
+            value={state.yMagnitude}
+            onChange={(e) =>
+              updateState("yMagnitude", parseFloat(e.target.value))
+            }
           />
         </div>
       </div>
       <div className="control-group">
-        <label>Animation Speed: {animationSpeed.toFixed(2)}x</label>
+        <label>Animation Speed: {state.animationSpeed.toFixed(2)}x</label>
         <input
           type="range"
           min="0.1"
           max="10"
           step="0.1"
-          value={animationSpeed}
-          onChange={(e) => setAnimationSpeed(parseFloat(e.target.value))}
+          value={state.animationSpeed}
+          onChange={(e) =>
+            updateState("animationSpeed", parseFloat(e.target.value))
+          }
         />
       </div>
       <div className="control-group">
-        <label>Particle Size: {particleSize.toFixed(2)}</label>
+        <label>Particle Size: {state.particleSize.toFixed(2)}</label>
         <input
           type="range"
           min="1"
           max="50"
           step="0.1"
-          value={particleSize}
-          onChange={(e) => setParticleSize(parseFloat(e.target.value))}
+          value={state.particleSize}
+          onChange={(e) =>
+            updateState("particleSize", parseFloat(e.target.value))
+          }
         />
       </div>
-      {animationType !== "orbits" && (
-        <div className="control-group">
-          <label>Animation Magnitude: {animationMagnitude.toFixed(2)}</label>
-          <input
-            type="range"
-            min="0"
-            max="2"
-            step="0.1"
-            value={animationMagnitude}
-            onChange={(e) => setAnimationMagnitude(parseFloat(e.target.value))}
-          />
-        </div>
-      )}
       <div className="control-group">
-        <label>Rotation: {((rotation * 180) / Math.PI).toFixed(2)}°</label>
+        <label>
+          Animation Magnitude: {state.animationMagnitude.toFixed(2)}
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="2"
+          step="0.1"
+          value={state.animationMagnitude}
+          onChange={(e) =>
+            updateState("animationMagnitude", parseFloat(e.target.value))
+          }
+        />
+      </div>
+      <div className="control-group">
+        <label>
+          Rotation: {((state.rotation * 180) / Math.PI).toFixed(2)}°
+        </label>
         <input
           type="range"
           min="0"
           max={2 * Math.PI}
           step="0.1"
-          value={rotation}
-          onChange={(e) => setRotation(parseFloat(e.target.value))}
+          value={state.rotation}
+          onChange={(e) => updateState("rotation", parseFloat(e.target.value))}
         />
       </div>
       <div className="control-group">
         <label>Color 1:</label>
         <input
           type="color"
-          value={color1}
-          onChange={(e) => setColor1(e.target.value)}
+          value={state.color1}
+          onChange={(e) => updateState("color1", e.target.value)}
         />
       </div>
       <div className="control-group">
         <label>Color 2:</label>
         <input
           type="color"
-          value={color2}
-          onChange={(e) => setColor2(e.target.value)}
+          value={state.color2}
+          onChange={(e) => updateState("color2", e.target.value)}
         />
       </div>
       <div className="control-group">
         <label>Background Color:</label>
         <input
           type="color"
-          value={bgColor}
-          onChange={(e) => setBgColor(e.target.value)}
+          value={state.bgColor}
+          onChange={(e) => updateState("bgColor", e.target.value)}
         />
       </div>
       <div className="control-group">
-        <label>Camera FOV: {fov.toFixed(2)}°</label>
+        <label>Camera FOV: {state.fov.toFixed(2)}°</label>
         <input
           type="range"
           min="20"
           max="120"
           step="1"
-          value={fov}
-          onChange={(e) => setFov(parseFloat(e.target.value))}
+          value={state.fov}
+          onChange={(e) => updateState("fov", parseFloat(e.target.value))}
         />
       </div>
       <div className="control-group">
-        <label>Scale X: {scaleX.toFixed(2)}</label>
+        <label>Scale X: {state.scaleX.toFixed(2)}</label>
         <input
           type="range"
           min="0.1"
           max="8"
           step="0.1"
-          value={scaleX}
-          onChange={(e) => setScaleX(parseFloat(e.target.value))}
+          value={state.scaleX}
+          onChange={(e) => updateState("scaleX", parseFloat(e.target.value))}
         />
       </div>
       <div className="control-group">
-        <label>Scale Y: {scaleY.toFixed(2)}</label>
+        <label>Scale Y: {state.scaleY.toFixed(2)}</label>
         <input
           type="range"
           min="0.1"
           max="8"
           step="0.1"
-          value={scaleY}
-          onChange={(e) => setScaleY(parseFloat(e.target.value))}
+          value={state.scaleY}
+          onChange={(e) => updateState("scaleY", parseFloat(e.target.value))}
         />
       </div>
       <div className="control-group">
         <label>Particle Image:</label>
         <select
-          value={activeImage}
-          onChange={(e) => setActiveImage(e.target.value)}
+          value={state.image}
+          onChange={(e) => updateState("image", e.target.value)}
         >
-          <option value="cloud.png">Cloud</option>
-          <option value="coin.png">Coin</option>
-          <option value="drop.png">Drop</option>
-          <option value="feather.png">Feather</option>
-          <option value="glow.png">Glow</option>
-          <option value="moon.png">Moon</option>
-          <option value="mushroom.png">Mushroom</option>
+          <option value="cloud">Cloud</option>
+          <option value="coin">Coin</option>
+          <option value="drop">Drop</option>
+          <option value="feather">Feather</option>
+          <option value="glow">Glow</option>
+          <option value="moon">Moon</option>
+          <option value="mushroom">Mushroom</option>
         </select>
       </div>
     </div>

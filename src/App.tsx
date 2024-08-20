@@ -5,7 +5,11 @@ import * as THREE from "three";
 import Controls from "./Controls";
 import HexagonParticles from "./HexagonParticles";
 import "./HexagonParticles.css";
-import { AnimationType } from "./util/animations";
+import {
+  VisualizationState,
+  VisualizationStateUpdater,
+  defaultVisualizationState,
+} from "./util/visualizationState";
 
 const CameraController = ({ fov }: { fov: number }) => {
   useFrame((state) => {
@@ -18,91 +22,35 @@ const CameraController = ({ fov }: { fov: number }) => {
 };
 
 const App: React.FC = () => {
-  const [density, setDensity] = useState(5);
-  const [arrangement, setArrangement] = useState<
-    "grid" | "staggeredGrid" | "circular" | "spiral" | "random" | "hexagon"
-  >("grid");
-  const [animationType, setAnimationType] = useState<AnimationType>("ripples");
-  const [particleSize, setParticleSize] = useState(10);
-  const [center, setCenter] = useState<[number, number, number]>([0, 0, 0]);
-  const [animationMagnitude, setAnimationMagnitude] = useState(0.5);
-  const [rotation, setRotation] = useState(0);
-  const [color1, setColor1] = useState("#ffffff");
-  const [color2, setColor2] = useState("#ff00ff");
-  const [bgColor, setBgColor] = useState("#f0f0f0");
-  const [fov, setFov] = useState(75);
-  const [scaleX, setScaleX] = useState(1);
-  const [scaleY, setScaleY] = useState(1);
   const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
     null
   );
-  const [activeImage, setActiveImage] = useState("mushroom.png");
-  const [innerRadius, setInnerRadius] = useState(0);
-  const [innerScaling, setInnerScaling] = useState(1);
-  const [outerRadius, setOuterRadius] = useState(8);
-  const [outerScaling, setOuterScaling] = useState(1);
-  const [animationSpeed, setAnimationSpeed] = useState(1);
-  const [xMagnitude, setXMagnitude] = useState(1);
-  const [yMagnitude, setYMagnitude] = useState(1);
+  const [vState, setVState] = useState<VisualizationState>(
+    defaultVisualizationState
+  );
+
+  const updateVState: VisualizationStateUpdater = (key, value) => {
+    setVState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
-    loader.load(`./${activeImage}`, (texture) => {
+    loader.load(`./${vState.image}.png`, (texture) => {
       texture.flipY = false;
       setParticleTexture(texture);
     });
-  }, [activeImage]);
+  }, [vState.image]);
 
   return (
     <div className="app-container">
-      <Controls
-        density={density}
-        setDensity={setDensity}
-        arrangement={arrangement}
-        setArrangement={setArrangement}
-        particleSize={particleSize}
-        setParticleSize={setParticleSize}
-        center={center}
-        setCenter={setCenter}
-        animationMagnitude={animationMagnitude}
-        setAnimationMagnitude={setAnimationMagnitude}
-        rotation={rotation}
-        setRotation={setRotation}
-        color1={color1}
-        setColor1={setColor1}
-        color2={color2}
-        setColor2={setColor2}
-        bgColor={bgColor}
-        setBgColor={setBgColor}
-        fov={fov}
-        setFov={setFov}
-        scaleX={scaleX}
-        setScaleX={setScaleX}
-        scaleY={scaleY}
-        setScaleY={setScaleY}
-        animationType={animationType}
-        setAnimationType={setAnimationType}
-        activeImage={activeImage}
-        setActiveImage={setActiveImage}
-        innerRadius={innerRadius}
-        setInnerRadius={setInnerRadius}
-        innerScaling={innerScaling}
-        setInnerScaling={setInnerScaling}
-        outerRadius={outerRadius}
-        setOuterRadius={setOuterRadius}
-        outerScaling={outerScaling}
-        setOuterScaling={setOuterScaling}
-        animationSpeed={animationSpeed}
-        setAnimationSpeed={setAnimationSpeed}
-        xMagnitude={xMagnitude}
-        setXMagnitude={setXMagnitude}
-        yMagnitude={yMagnitude}
-        setYMagnitude={setYMagnitude}
-      />
+      <Controls state={vState} updateState={updateVState} />
       <div
         className="container"
         style={{
-          backgroundColor: bgColor,
+          backgroundColor: vState.bgColor,
           overflow: "hidden",
           position: "relative",
           width: "800px",
@@ -120,30 +68,15 @@ const App: React.FC = () => {
           }}
         >
           <Canvas
-            camera={{ position: [0, 0, 10], fov: fov, near: 0.1, far: 1000 }}
+            camera={{
+              position: [0, 0, 10],
+              fov: vState.fov,
+              near: 0.1,
+              far: 1000,
+            }}
           >
-            <CameraController fov={fov} />
-            <HexagonParticles
-              density={density}
-              arrangement={arrangement}
-              particleSize={particleSize}
-              center={center}
-              animationMagnitude={animationMagnitude}
-              rotation={rotation}
-              color1={color1}
-              color2={color2}
-              scaleX={scaleX}
-              scaleY={scaleY}
-              particleTexture={particleTexture}
-              animationType={animationType}
-              innerRadius={innerRadius}
-              innerScaling={innerScaling}
-              outerRadius={outerRadius}
-              outerScaling={outerScaling}
-              animationSpeed={animationSpeed}
-              xMagnitude={xMagnitude}
-              yMagnitude={yMagnitude}
-            />
+            <CameraController fov={vState.fov} />
+            <HexagonParticles particleTexture={particleTexture} {...vState} />
             <ArcballControls />
             <Stats />
           </Canvas>
