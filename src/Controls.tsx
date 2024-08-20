@@ -52,6 +52,8 @@ interface ControlsProps {
   setOuterRadius: (radius: number) => void;
   outerScaling: number;
   setOuterScaling: (scaling: number) => void;
+  animationSpeed: number;
+  setAnimationSpeed: (speed: number) => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -91,6 +93,8 @@ const Controls: React.FC<ControlsProps> = ({
   setOuterRadius,
   outerScaling,
   setOuterScaling,
+  animationSpeed,
+  setAnimationSpeed,
 }) => {
   const showCenterControls =
     animationType === "ripples" || animationType === "orbits";
@@ -231,7 +235,17 @@ const Controls: React.FC<ControlsProps> = ({
           </>
         )}
       </div>
-
+      <div className="control-group">
+        <label>Animation Speed: {animationSpeed.toFixed(2)}x</label>
+        <input
+          type="range"
+          min="0.1"
+          max="10"
+          step="0.1"
+          value={animationSpeed}
+          onChange={(e) => setAnimationSpeed(parseFloat(e.target.value))}
+        />
+      </div>
       <div className="control-group">
         <label>Particle Size: {particleSize.toFixed(2)}</label>
         <input
@@ -243,17 +257,19 @@ const Controls: React.FC<ControlsProps> = ({
           onChange={(e) => setParticleSize(parseFloat(e.target.value))}
         />
       </div>
-      <div className="control-group">
-        <label>Animation Magnitude: {animationMagnitude.toFixed(2)}</label>
-        <input
-          type="range"
-          min="0"
-          max="2"
-          step="0.1"
-          value={animationMagnitude}
-          onChange={(e) => setAnimationMagnitude(parseFloat(e.target.value))}
-        />
-      </div>
+      {animationType !== "orbits" && (
+        <div className="control-group">
+          <label>Animation Magnitude: {animationMagnitude.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="2"
+            step="0.1"
+            value={animationMagnitude}
+            onChange={(e) => setAnimationMagnitude(parseFloat(e.target.value))}
+          />
+        </div>
+      )}
       <div className="control-group">
         <label>Rotation: {((rotation * 180) / Math.PI).toFixed(2)}°</label>
         <input

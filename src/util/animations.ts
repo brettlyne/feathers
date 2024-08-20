@@ -49,12 +49,9 @@ export const animateParticles = (
         positions[i + 2] = 0;
         break;
       case "orbits":
-        positions[i] =
-          Math.cos(Math.atan2(y, x) + time * dist * 0.05 * animationMagnitude) *
-          dist;
+        positions[i] = Math.cos(Math.atan2(y, x) + time * dist * 0.05) * dist;
         positions[i + 1] =
-          Math.sin(Math.atan2(y, x) + time * dist * 0.05 * animationMagnitude) *
-          dist;
+          Math.sin(Math.atan2(y, x) + time * dist * 0.05) * dist;
         positions[i + 2] = 0;
         break;
       case "snake":
