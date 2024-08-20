@@ -221,6 +221,33 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
             }
           />
         </div>
+
+        <div className="control-group">
+          <label>Orbit Inner Radius {state.orbitInnerRadius.toFixed(2)}</label>
+          <input
+            type="range"
+            min="-5"
+            max="5"
+            step="0.1"
+            value={state.orbitInnerRadius}
+            onChange={(e) =>
+              updateState("orbitInnerRadius", parseFloat(e.target.value))
+            }
+          />
+        </div>
+        <div className="control-group">
+          <label>Orbit Scale {state.orbitScale.toFixed(2)}</label>
+          <input
+            type="range"
+            min="-4"
+            max="4"
+            step="0.1"
+            value={state.orbitScale}
+            onChange={(e) =>
+              updateState("orbitScale", parseFloat(e.target.value))
+            }
+          />
+        </div>
       </div>
       <div className="control-group">
         <label>Animation Speed: {state.animationSpeed.toFixed(2)}x</label>

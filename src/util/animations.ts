@@ -16,21 +16,22 @@ export const animateParticles = (
   rippleCenter: THREE.Vector3,
   animationMagnitude: number,
   xMagnitude: number,
-  yMagnitude: number
+  yMagnitude: number,
+  orbitInnerRadius: number,
+  orbitScale: number
 ) => {
   for (let i = 0; i < positions.length; i += 3) {
     const x = originalPositions[i];
     const y = originalPositions[i + 1];
     const z = originalPositions[i + 2];
-    const dist = Math.sqrt(
-      (x - rippleCenter.x) ** 2 + (y - rippleCenter.y) ** 2
-    );
-    const roughColWidth = 8 / Math.sqrt(positions.length / 3);
+    let dist;
+    let roughColWidth;
 
     switch (animationType) {
       case "ripples":
         // positions[i] = x;
         // positions[i + 1] = y;
+        dist = Math.sqrt((x - rippleCenter.x) ** 2 + (y - rippleCenter.y) ** 2);
         positions[i + 2] =
           Math.sin(dist * 0.5 - time * 2.0) * animationMagnitude;
         break;
@@ -51,6 +52,7 @@ export const animateParticles = (
         // positions[i + 2] = 0;
         break;
       case "orbits":
+        dist = Math.sqrt(x ** 2 + y ** 2) * orbitScale + orbitInnerRadius;
         positions[i] =
           Math.cos(Math.atan2(y, x) + time * dist * 0.05) * dist * xMagnitude;
         positions[i + 1] =
@@ -58,6 +60,7 @@ export const animateParticles = (
         // positions[i + 2] = 0;
         break;
       case "snake":
+        roughColWidth = 8 / Math.sqrt(positions.length / 3);
         positions[i] =
           ((x - time / 4) % (8 + roughColWidth)) * xMagnitude + 4 * xMagnitude;
         positions[i + 1] =

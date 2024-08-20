@@ -33,6 +33,8 @@ export interface VisualizationState {
   animationSpeed: number;
   xMagnitude: number;
   yMagnitude: number;
+  orbitInnerRadius: number;
+  orbitScale: number;
   innerRadius: number;
   innerScaling: number;
   outerRadius: number;
@@ -63,6 +65,8 @@ export const defaultVisualizationState: VisualizationState = {
   animationSpeed: 1,
   xMagnitude: 1,
   yMagnitude: 1,
+  orbitInnerRadius: 0,
+  orbitScale: 1,
   innerRadius: 0,
   innerScaling: 1,
   outerRadius: 8,
