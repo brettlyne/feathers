@@ -75,6 +75,8 @@ const Controls: React.FC<ControlsProps> = ({
   setScaleY,
   animationType,
   setAnimationType,
+  activeImage,
+  setActiveImage,
 }) => {
   return (
     <div className="controls">
@@ -111,6 +113,21 @@ const Controls: React.FC<ControlsProps> = ({
           <option value="circular">Circular</option>
           <option value="spiral">Spiral</option>
           <option value="random">Random</option>
+        </select>
+      </div>
+      <div className="control-group">
+        <label>Particle Image:</label>
+        <select
+          value={activeImage}
+          onChange={(e) => setActiveImage(e.target.value)}
+        >
+          <option value="cloud.png">Cloud</option>
+          <option value="coin.png">Coin</option>
+          <option value="drop.png">Drop</option>
+          <option value="feather.png">Feather</option>
+          <option value="glow.png">Glow</option>
+          <option value="moon.png">Moon</option>
+          <option value="mushroom.png">Mushroom</option>
         </select>
       </div>
       <div className="control-group">

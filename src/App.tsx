@@ -18,7 +18,7 @@ const CameraController = ({ fov }: { fov: number }) => {
 };
 
 const App: React.FC = () => {
-  const [density, setDensity] = useState(5); // New state for density
+  const [density, setDensity] = useState(5);
   const [arrangement, setArrangement] = useState<
     "grid" | "staggeredGrid" | "circular" | "spiral" | "random" | "hexagon"
   >("grid");
@@ -37,14 +37,15 @@ const App: React.FC = () => {
   const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
     null
   );
+  const [activeImage, setActiveImage] = useState("mushroom.png");
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
-    loader.load("./mushroom.png", (texture) => {
+    loader.load(`./${activeImage}`, (texture) => {
       texture.flipY = false;
       setParticleTexture(texture);
     });
-  }, []);
+  }, [activeImage]);
 
   return (
     <div className="app-container">
@@ -77,6 +78,8 @@ const App: React.FC = () => {
         setScaleY={setScaleY}
         animationType={animationType}
         setAnimationType={setAnimationType}
+        activeImage={activeImage}
+        setActiveImage={setActiveImage}
       />
       <div
         className="container"
