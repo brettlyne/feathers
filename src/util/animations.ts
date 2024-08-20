@@ -40,19 +40,19 @@ export const animateParticles = (
         positions[i + 1] =
           y * (1 + 0.5 * Math.cos(2 * time) * animationMagnitude);
         // positions[i + 2] = Math.sin(x * 0.1 - time) * animationMagnitude;
-        positions[i + 2] = 0;
+        // positions[i + 2] = 0;
         break;
       case "banner":
         positions[i] = x + Math.sin(0.5 * time + 0.5 * x) * animationMagnitude;
         positions[i + 1] =
           y + Math.sin(1 * time + 0.5 * x) * animationMagnitude;
-        positions[i + 2] = 0;
+        // positions[i + 2] = 0;
         break;
       case "orbits":
         positions[i] = Math.cos(Math.atan2(y, x) + time * dist * 0.05) * dist;
         positions[i + 1] =
           Math.sin(Math.atan2(y, x) + time * dist * 0.05) * dist;
-        positions[i + 2] = 0;
+        // positions[i + 2] = 0;
         break;
       case "snake":
         positions[i] = ((x - time / 4) % (8 + roughColWidth)) + 4;
@@ -62,7 +62,7 @@ export const animateParticles = (
             2;
         // positions[i + 2] =
         // Math.sin(positions[i + 1]) * 0.1 * animationMagnitude;
-        positions[i + 2] = 0;
+        // positions[i + 2] = 0;
 
         break;
     }
