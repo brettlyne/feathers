@@ -9,19 +9,9 @@ export interface VisualizationState {
     | "spiral"
     | "random"
     | "hexagon";
-  image:
-    | "drop"
-    | "mushroom"
-    | "feather"
-    | "cloud"
-    | "coin"
-    | "glow"
-    | "moon"
-    | string;
   animationType: AnimationType;
   particleSize: number;
   center: [number, number, number];
-  rippleCenter: [number, number, number];
   animationMagnitude: number;
   rotation: number;
   color1: string;
@@ -29,10 +19,7 @@ export interface VisualizationState {
   bgColor: string;
   fov: number;
   animationSpeed: number;
-  xMagnitude: number;
   yMagnitude: number;
-  orbitInnerRadius: number;
-  orbitScale: number;
   innerRadius: number;
   innerScaling: number;
   outerRadius: number;
@@ -47,11 +34,9 @@ export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
 export const defaultVisualizationState: VisualizationState = {
   density: 5,
   arrangement: "grid",
-  image: "drop",
   animationType: "ripples",
   particleSize: 10,
   center: [0, 0, 0],
-  rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 0,
   color1: "#ffffff",
@@ -59,10 +44,7 @@ export const defaultVisualizationState: VisualizationState = {
   bgColor: "#f0f0f0",
   fov: 75,
   animationSpeed: 1,
-  xMagnitude: 1,
   yMagnitude: 1,
-  orbitInnerRadius: 0,
-  orbitScale: 1,
   innerRadius: 0,
   innerScaling: 1,
   outerRadius: 8,

@@ -338,28 +338,7 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
           onChange={(e) => updateState("fov", parseFloat(e.target.value))}
         />
       </div>
-      <div className="control-group">
-        <label>Scale X: {state.scaleX.toFixed(2)}</label>
-        <input
-          type="range"
-          min="0.1"
-          max="8"
-          step="0.1"
-          value={state.scaleX}
-          onChange={(e) => updateState("scaleX", parseFloat(e.target.value))}
-        />
-      </div>
-      <div className="control-group">
-        <label>Scale Y: {state.scaleY.toFixed(2)}</label>
-        <input
-          type="range"
-          min="0.1"
-          max="8"
-          step="0.1"
-          value={state.scaleY}
-          onChange={(e) => updateState("scaleY", parseFloat(e.target.value))}
-        />
-      </div>
+
       <div className="control-group">
         <label>Particle Image:</label>
         <select

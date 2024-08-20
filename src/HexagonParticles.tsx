@@ -28,8 +28,6 @@ interface HexagonParticlesProps {
   rotation: number;
   color1: string;
   color2: string;
-  scaleX: number;
-  scaleY: number;
   particleTexture: THREE.Texture | null;
   animationType: AnimationType;
   innerRadius: number;
@@ -53,8 +51,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   rotation,
   color1,
   color2,
-  scaleX,
-  scaleY,
   particleTexture,
   animationType,
   innerRadius,
@@ -79,8 +75,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uRotation: { value: rotation },
     uColor1: { value: new THREE.Color(color1) },
     uColor2: { value: new THREE.Color(color2) },
-    uScaleX: { value: scaleX },
-    uScaleY: { value: scaleY },
     uTexture: { value: particleTexture },
     uInnerRadius: { value: innerRadius },
     uInnerScaling: { value: innerScaling },
@@ -141,8 +135,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uniformsRef.current.uRotation.value = rotation;
     uniformsRef.current.uColor1.value.set(color1);
     uniformsRef.current.uColor2.value.set(color2);
-    uniformsRef.current.uScaleX.value = scaleX;
-    uniformsRef.current.uScaleY.value = scaleY;
     uniformsRef.current.uInnerRadius.value = innerRadius;
     uniformsRef.current.uInnerScaling.value = innerScaling;
     uniformsRef.current.uOuterRadius.value = outerRadius;
@@ -177,8 +169,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform vec3 uRippleCenter;
           uniform vec2 uViewport;
           uniform float uAnimationMagnitude;
-          uniform float uScaleX;
-          uniform float uScaleY;
           uniform float uInnerRadius;
           uniform float uInnerScaling;
           uniform float uOuterRadius;
@@ -211,17 +201,11 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform vec3 uColor1;
           uniform vec3 uColor2;
           uniform float uRotation;
-          uniform float uScaleX;
-          uniform float uScaleY;
           uniform sampler2D uTexture;
           varying vec2 vUv;
           
           void main() {
             vec2 uv = gl_PointCoord * 2.0 - 1.0;
-            
-            // Apply scaling to UV coordinates
-            uv.x *= uScaleX;
-            uv.y *= uScaleY;
             
             // Rotate the UV coordinates
             float s = sin(uRotation);
