@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stats } from "@react-three/drei";
+import { ArcballControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
 import Controls from "./Controls";
 import HexagonParticles from "./HexagonParticles";
@@ -40,7 +40,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
-    loader.load("./drop.png", (texture) => {
+    loader.load("./mushroom.png", (texture) => {
+      texture.flipY = false;
       setParticleTexture(texture);
     });
   }, []);
@@ -90,10 +91,10 @@ const App: React.FC = () => {
         <div
           style={{
             position: "absolute",
-            width: "120%",
-            height: "120%",
-            left: "-10%",
-            top: "-10%",
+            width: "140%",
+            height: "140%",
+            left: "-20%",
+            top: "-20%",
             transformOrigin: "center center",
           }}
         >
@@ -116,7 +117,7 @@ const App: React.FC = () => {
               particleTexture={particleTexture}
               animationType={animationType}
             />
-            <OrbitControls />
+            <ArcballControls />
             <Stats />
           </Canvas>
         </div>
