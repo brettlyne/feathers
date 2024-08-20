@@ -42,6 +42,8 @@ const App: React.FC = () => {
   const [outerRadius, setOuterRadius] = useState(8);
   const [outerScaling, setOuterScaling] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState(1);
+  const [xMagnitude, setXMagnitude] = useState(1);
+  const [yMagnitude, setYMagnitude] = useState(1);
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -92,6 +94,10 @@ const App: React.FC = () => {
         setOuterScaling={setOuterScaling}
         animationSpeed={animationSpeed}
         setAnimationSpeed={setAnimationSpeed}
+        xMagnitude={xMagnitude}
+        setXMagnitude={setXMagnitude}
+        yMagnitude={yMagnitude}
+        setYMagnitude={setYMagnitude}
       />
       <div
         className="container"
@@ -135,6 +141,8 @@ const App: React.FC = () => {
               outerRadius={outerRadius}
               outerScaling={outerScaling}
               animationSpeed={animationSpeed}
+              xMagnitude={xMagnitude}
+              yMagnitude={yMagnitude}
             />
             <ArcballControls />
             <Stats />

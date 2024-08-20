@@ -54,6 +54,10 @@ interface ControlsProps {
   setOuterScaling: (scaling: number) => void;
   animationSpeed: number;
   setAnimationSpeed: (speed: number) => void;
+  xMagnitude: number;
+  setXMagnitude: (magnitude: number) => void;
+  yMagnitude: number;
+  setYMagnitude: (magnitude: number) => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -95,6 +99,10 @@ const Controls: React.FC<ControlsProps> = ({
   setOuterScaling,
   animationSpeed,
   setAnimationSpeed,
+  xMagnitude,
+  setXMagnitude,
+  yMagnitude,
+  setYMagnitude,
 }) => {
   const showCenterControls =
     animationType === "ripples" || animationType === "orbits";
@@ -234,6 +242,28 @@ const Controls: React.FC<ControlsProps> = ({
             </div>
           </>
         )}
+        <div className="control-group">
+          <label>X Magnitude: {xMagnitude.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="0.1"
+            value={xMagnitude}
+            onChange={(e) => setXMagnitude(parseFloat(e.target.value))}
+          />
+        </div>
+        <div className="control-group">
+          <label>Y Magnitude: {yMagnitude.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="0.1"
+            value={yMagnitude}
+            onChange={(e) => setYMagnitude(parseFloat(e.target.value))}
+          />
+        </div>
       </div>
       <div className="control-group">
         <label>Animation Speed: {animationSpeed.toFixed(2)}x</label>

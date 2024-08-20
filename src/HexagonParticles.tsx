@@ -36,6 +36,8 @@ interface HexagonParticlesProps {
   outerRadius: number;
   outerScaling: number;
   animationSpeed: number;
+  xMagnitude: number;
+  yMagnitude: number;
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
@@ -56,6 +58,8 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   outerRadius,
   outerScaling,
   animationSpeed,
+  xMagnitude,
+  yMagnitude,
 }) => {
   const points = useRef<THREE.Points>(null);
   const { viewport } = useThree();
@@ -146,7 +150,9 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         clock.getElapsedTime() * animationSpeed,
         animationType,
         uniformsRef.current.uCenter.value,
-        animationMagnitude
+        animationMagnitude,
+        xMagnitude,
+        yMagnitude
       );
       points.current.geometry.attributes.position.needsUpdate = true;
     }
