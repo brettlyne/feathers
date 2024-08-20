@@ -21,6 +21,7 @@ export interface VisualizationState {
   animationType: AnimationType;
   particleSize: number;
   center: [number, number, number];
+  rippleCenter: [number, number, number];
   animationMagnitude: number;
   rotation: number;
   color1: string;
@@ -50,6 +51,7 @@ export const defaultVisualizationState: VisualizationState = {
   animationType: "ripples",
   particleSize: 10,
   center: [0, 0, 0],
+  rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 0,
   color1: "#ffffff",

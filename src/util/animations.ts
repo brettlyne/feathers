@@ -13,7 +13,7 @@ export const animateParticles = (
   originalPositions: Float32Array,
   time: number,
   animationType: AnimationType,
-  center: THREE.Vector3,
+  rippleCenter: THREE.Vector3,
   animationMagnitude: number,
   xMagnitude: number,
   yMagnitude: number
@@ -22,7 +22,9 @@ export const animateParticles = (
     const x = originalPositions[i];
     const y = originalPositions[i + 1];
     const z = originalPositions[i + 2];
-    const dist = Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2);
+    const dist = Math.sqrt(
+      (x - rippleCenter.x) ** 2 + (y - rippleCenter.y) ** 2
+    );
     const roughColWidth = 8 / Math.sqrt(positions.length / 3);
 
     switch (animationType) {

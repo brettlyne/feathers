@@ -162,6 +162,40 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
           />
         </div>
         <div className="control-group">
+          <label>Ripple Center X: {state.rippleCenter[0].toFixed(2)}</label>
+          <input
+            type="range"
+            min="-20"
+            max="20"
+            step="0.1"
+            value={state.rippleCenter[0]}
+            onChange={(e) =>
+              updateState("rippleCenter", [
+                parseFloat(e.target.value),
+                state.rippleCenter[1],
+                state.rippleCenter[2],
+              ])
+            }
+          />
+        </div>
+        <div className="control-group">
+          <label>Ripple Center Y: {state.rippleCenter[1].toFixed(2)}</label>
+          <input
+            type="range"
+            min="-20"
+            max="20"
+            step="0.1"
+            value={state.rippleCenter[1]}
+            onChange={(e) =>
+              updateState("rippleCenter", [
+                state.rippleCenter[0],
+                parseFloat(e.target.value),
+                state.rippleCenter[2],
+              ])
+            }
+          />
+        </div>
+        <div className="control-group">
           <label>X Magnitude: {state.xMagnitude.toFixed(2)}</label>
           <input
             type="range"

@@ -23,6 +23,7 @@ interface HexagonParticlesProps {
     | "hexagon";
   particleSize: number;
   center: [number, number, number];
+  rippleCenter: [number, number, number];
   animationMagnitude: number;
   rotation: number;
   color1: string;
@@ -45,6 +46,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   arrangement,
   particleSize,
   center,
+  rippleCenter,
   animationMagnitude,
   rotation,
   color1,
@@ -67,6 +69,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uTime: { value: 0 },
     uSize: { value: particleSize },
     uCenter: { value: new THREE.Vector3(...center) },
+    uRippleCenter: { value: new THREE.Vector3(...rippleCenter) },
     uViewport: { value: new THREE.Vector2(viewport.width, viewport.height) },
     uAnimationMagnitude: { value: animationMagnitude },
     uRotation: { value: rotation },
@@ -126,9 +129,9 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   useFrame((state) => {
     const { clock } = state;
     uniformsRef.current.uTime.value = clock.getElapsedTime() * animationSpeed;
-    // uniformsRef.current.uTime.value = clock.getElapsedTime();
     uniformsRef.current.uSize.value = particleSize;
     uniformsRef.current.uCenter.value.set(...center);
+    uniformsRef.current.uRippleCenter.value.set(...rippleCenter);
     uniformsRef.current.uViewport.value.set(viewport.width, viewport.height);
     uniformsRef.current.uAnimationMagnitude.value = animationMagnitude;
     uniformsRef.current.uRotation.value = rotation;
@@ -149,7 +152,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         originalPositions,
         clock.getElapsedTime() * animationSpeed,
         animationType,
-        uniformsRef.current.uCenter.value,
+        uniformsRef.current.uRippleCenter.value,
         animationMagnitude,
         xMagnitude,
         yMagnitude
@@ -165,6 +168,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform float uTime;
           uniform float uSize;
           uniform vec3 uCenter;
+          uniform vec3 uRippleCenter;
           uniform vec2 uViewport;
           uniform float uAnimationMagnitude;
           uniform float uScaleX;
