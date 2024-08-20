@@ -205,6 +205,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         transparent: true,
         depthWrite: true,
         depthTest: true,
+        blending: THREE.NormalBlending,
       }),
     []
   );

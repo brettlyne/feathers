@@ -132,7 +132,7 @@ const Controls: React.FC<ControlsProps> = ({
         <input
           type="range"
           min="1"
-          max="20"
+          max="50"
           step="0.1"
           value={particleSize}
           onChange={(e) => setParticleSize(parseFloat(e.target.value))}
@@ -225,7 +225,7 @@ const Controls: React.FC<ControlsProps> = ({
         <label>Camera FOV: {fov.toFixed(2)}°</label>
         <input
           type="range"
-          min="45"
+          min="20"
           max="120"
           step="1"
           value={fov}

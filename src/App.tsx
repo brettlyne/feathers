@@ -29,7 +29,7 @@ const App: React.FC = () => {
   const [rotation, setRotation] = useState(0);
   const [color1, setColor1] = useState("#ffffff");
   const [color2, setColor2] = useState("#ff00ff");
-  const [bgColor, setBgColor] = useState("#2d3748");
+  const [bgColor, setBgColor] = useState("#f0f0f0");
   const [centerScaling, setCenterScaling] = useState(1);
   const [fov, setFov] = useState(75);
   const [scaleX, setScaleX] = useState(1);
