@@ -4,14 +4,8 @@ import App from "./App.tsx";
 import MobileApp from "./MobileApp.tsx";
 import "./index.css";
 
-const isMobile = () => {
-  const userAgent =
-    typeof window.navigator === "undefined" ? "" : navigator.userAgent;
-  const mobileRegex =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-  return mobileRegex.test(userAgent);
-};
+import { isMobile } from "react-device-detect";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>{isMobile() ? <MobileApp /> : <App />}</React.StrictMode>
+  <React.StrictMode>{isMobile ? <MobileApp /> : <App />}</React.StrictMode>
 );

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ArcballControls, Stats } from "@react-three/drei";
+// import { ArcballControls, Stats } from "@react-three/drei";
+import { ArcballControls } from "@react-three/drei";
 import * as THREE from "three";
-import Controls from "./Controls";
 import HexagonParticles from "./HexagonParticles";
 import "./mobile.css";
 import {
   VisualizationState,
-  VisualizationStateUpdater,
+  // VisualizationStateUpdater,
   defaultVisualizationState,
 } from "./util/visualizationState";
 
@@ -25,16 +25,15 @@ const App: React.FC = () => {
   const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
     null
   );
-  const [vState, setVState] = useState<VisualizationState>(
-    defaultVisualizationState
-  );
+  // const [vState, setVState] = useState<VisualizationState>(
+  const [vState] = useState<VisualizationState>(defaultVisualizationState);
 
-  const updateVState: VisualizationStateUpdater = (key, value) => {
-    setVState((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
-  };
+  // const updateVState: VisualizationStateUpdater = (key, value) => {
+  //   setVState((prevState) => ({
+  //     ...prevState,
+  //     [key]: value,
+  //   }));
+  // };
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -52,8 +51,8 @@ const App: React.FC = () => {
           backgroundColor: vState.bgColor,
           overflow: "hidden",
           position: "relative",
-          width: "800px",
-          height: "800px",
+          width: "100vw",
+          height: "100vw",
         }}
       >
         <div
@@ -77,7 +76,7 @@ const App: React.FC = () => {
             <CameraController fov={vState.fov} />
             <HexagonParticles particleTexture={particleTexture} {...vState} />
             <ArcballControls />
-            <Stats />
+            {/* <Stats /> */}
           </Canvas>
         </div>
       </div>
