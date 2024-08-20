@@ -44,6 +44,8 @@ interface ControlsProps {
   setScaleX: (scale: number) => void;
   scaleY: number;
   setScaleY: (scale: number) => void;
+  activeImage: string;
+  setActiveImage: (image: string) => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -78,6 +80,9 @@ const Controls: React.FC<ControlsProps> = ({
   activeImage,
   setActiveImage,
 }) => {
+  const showCenterControls =
+    animationType === "ripples" || animationType === "orbits";
+
   return (
     <div className="controls">
       <div className="control-group">
@@ -116,21 +121,6 @@ const Controls: React.FC<ControlsProps> = ({
         </select>
       </div>
       <div className="control-group">
-        <label>Particle Image:</label>
-        <select
-          value={activeImage}
-          onChange={(e) => setActiveImage(e.target.value)}
-        >
-          <option value="cloud.png">Cloud</option>
-          <option value="coin.png">Coin</option>
-          <option value="drop.png">Drop</option>
-          <option value="feather.png">Feather</option>
-          <option value="glow.png">Glow</option>
-          <option value="moon.png">Moon</option>
-          <option value="mushroom.png">Mushroom</option>
-        </select>
-      </div>
-      <div className="control-group">
         <label>Animation Type:</label>
         <select
           value={animationType}
@@ -153,32 +143,6 @@ const Controls: React.FC<ControlsProps> = ({
           step="0.1"
           value={particleSize}
           onChange={(e) => setParticleSize(parseFloat(e.target.value))}
-        />
-      </div>
-      <div className="control-group">
-        <label>Center X: {center[0].toFixed(2)}</label>
-        <input
-          type="range"
-          min="-50"
-          max="50"
-          step="0.1"
-          value={center[0]}
-          onChange={(e) =>
-            setCenter([parseFloat(e.target.value), center[1], center[2]])
-          }
-        />
-      </div>
-      <div className="control-group">
-        <label>Center Y: {center[1].toFixed(2)}</label>
-        <input
-          type="range"
-          min="-50"
-          max="50"
-          step="0.1"
-          value={center[1]}
-          onChange={(e) =>
-            setCenter([center[0], parseFloat(e.target.value), center[2]])
-          }
         />
       </div>
       <div className="control-group">
@@ -228,17 +192,6 @@ const Controls: React.FC<ControlsProps> = ({
         />
       </div>
       <div className="control-group">
-        <label>Center Scaling: {centerScaling.toFixed(2)}</label>
-        <input
-          type="range"
-          min="0.1"
-          max="2"
-          step="0.1"
-          value={centerScaling}
-          onChange={(e) => setCenterScaling(parseFloat(e.target.value))}
-        />
-      </div>
-      <div className="control-group">
         <label>Camera FOV: {fov.toFixed(2)}°</label>
         <input
           type="range"
@@ -271,6 +224,70 @@ const Controls: React.FC<ControlsProps> = ({
           onChange={(e) => setScaleY(parseFloat(e.target.value))}
         />
       </div>
+      <div className="control-group">
+        <label>Particle Image:</label>
+        <select
+          value={activeImage}
+          onChange={(e) => setActiveImage(e.target.value)}
+        >
+          <option value="cloud.png">Cloud</option>
+          <option value="coin.png">Coin</option>
+          <option value="drop.png">Drop</option>
+          <option value="feather.png">Feather</option>
+          <option value="glow.png">Glow</option>
+          <option value="moon.png">Moon</option>
+          <option value="mushroom.png">Mushroom</option>
+        </select>
+      </div>
+
+      {showCenterControls && (
+        <div
+          className="center-controls"
+          style={{
+            backgroundColor: "#555",
+            padding: "10px",
+            marginTop: "10px",
+          }}
+        >
+          <div className="control-group">
+            <label>Center X: {center[0].toFixed(2)}</label>
+            <input
+              type="range"
+              min="-20"
+              max="20"
+              step="0.1"
+              value={center[0]}
+              onChange={(e) =>
+                setCenter([parseFloat(e.target.value), center[1], center[2]])
+              }
+            />
+          </div>
+          <div className="control-group">
+            <label>Center Y: {center[1].toFixed(2)}</label>
+            <input
+              type="range"
+              min="-20"
+              max="20"
+              step="0.1"
+              value={center[1]}
+              onChange={(e) =>
+                setCenter([center[0], parseFloat(e.target.value), center[2]])
+              }
+            />
+          </div>
+          <div className="control-group">
+            <label>Center Scaling: {centerScaling.toFixed(2)}</label>
+            <input
+              type="range"
+              min="0.1"
+              max="2"
+              step="0.1"
+              value={centerScaling}
+              onChange={(e) => setCenterScaling(parseFloat(e.target.value))}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
