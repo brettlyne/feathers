@@ -52,7 +52,7 @@ const App: React.FC = () => {
           overflow: "hidden",
           position: "relative",
           width: "100vw",
-          height: "100vw",
+          height: "100vh",
         }}
       >
         <div
@@ -67,7 +67,7 @@ const App: React.FC = () => {
         >
           <Canvas
             camera={{
-              position: [0, 0, 10],
+              position: [0, 0, 18],
               fov: vState.fov,
               near: 0.1,
               far: 1000,
