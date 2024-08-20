@@ -36,8 +36,6 @@ interface ControlsProps {
   setColor2: (color: string) => void;
   bgColor: string;
   setBgColor: (color: string) => void;
-  centerScaling: number;
-  setCenterScaling: (scaling: number) => void;
   fov: number;
   setFov: (fov: number) => void;
   scaleX: number;
@@ -46,6 +44,14 @@ interface ControlsProps {
   setScaleY: (scale: number) => void;
   activeImage: string;
   setActiveImage: (image: string) => void;
+  innerRadius: number;
+  setInnerRadius: (radius: number) => void;
+  innerScaling: number;
+  setInnerScaling: (scaling: number) => void;
+  outerRadius: number;
+  setOuterRadius: (radius: number) => void;
+  outerScaling: number;
+  setOuterScaling: (scaling: number) => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -67,8 +73,6 @@ const Controls: React.FC<ControlsProps> = ({
   setColor2,
   bgColor,
   setBgColor,
-  centerScaling,
-  setCenterScaling,
   fov,
   setFov,
   scaleX,
@@ -79,6 +83,14 @@ const Controls: React.FC<ControlsProps> = ({
   setAnimationType,
   activeImage,
   setActiveImage,
+  innerRadius,
+  setInnerRadius,
+  innerScaling,
+  setInnerScaling,
+  outerRadius,
+  setOuterRadius,
+  outerScaling,
+  setOuterScaling,
 }) => {
   const showCenterControls =
     animationType === "ripples" || animationType === "orbits";
@@ -134,6 +146,92 @@ const Controls: React.FC<ControlsProps> = ({
           <option value="snake">Snake</option>
         </select>
       </div>
+
+      <div
+        className="animation-specific-controls"
+        style={{
+          backgroundColor: "#555",
+          padding: "10px",
+          marginTop: "10px",
+          marginBottom: "10px",
+        }}
+      >
+        <div className="control-group">
+          <label>Inner Radius: {innerRadius.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="0.1"
+            value={innerRadius}
+            onChange={(e) => setInnerRadius(parseFloat(e.target.value))}
+          />
+        </div>
+        <div className="control-group">
+          <label>Inner Scaling: {innerScaling.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            step="0.1"
+            value={innerScaling}
+            onChange={(e) => setInnerScaling(parseFloat(e.target.value))}
+          />
+        </div>
+        <div className="control-group">
+          <label>Outer Radius: {outerRadius.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="0.1"
+            value={outerRadius}
+            onChange={(e) => setOuterRadius(parseFloat(e.target.value))}
+          />
+        </div>
+        <div className="control-group">
+          <label>Outer Scaling: {outerScaling.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            step="0.1"
+            value={outerScaling}
+            onChange={(e) => setOuterScaling(parseFloat(e.target.value))}
+          />
+        </div>
+        {showCenterControls && (
+          <>
+            <div className="control-group">
+              <label>Center X: {center[0].toFixed(2)}</label>
+              <input
+                type="range"
+                min="-50"
+                max="50"
+                step="0.1"
+                value={center[0]}
+                onChange={(e) =>
+                  setCenter([parseFloat(e.target.value), center[1], center[2]])
+                }
+              />
+            </div>
+            <div className="control-group">
+              <label>Center Y: {center[1].toFixed(2)}</label>
+              <input
+                type="range"
+                min="-50"
+                max="50"
+                step="0.1"
+                value={center[1]}
+                onChange={(e) =>
+                  setCenter([center[0], parseFloat(e.target.value), center[2]])
+                }
+              />
+            </div>
+          </>
+        )}
+      </div>
+
       <div className="control-group">
         <label>Particle Size: {particleSize.toFixed(2)}</label>
         <input
@@ -239,55 +337,6 @@ const Controls: React.FC<ControlsProps> = ({
           <option value="mushroom.png">Mushroom</option>
         </select>
       </div>
-
-      {showCenterControls && (
-        <div
-          className="center-controls"
-          style={{
-            backgroundColor: "#555",
-            padding: "10px",
-            marginTop: "10px",
-          }}
-        >
-          <div className="control-group">
-            <label>Center X: {center[0].toFixed(2)}</label>
-            <input
-              type="range"
-              min="-20"
-              max="20"
-              step="0.1"
-              value={center[0]}
-              onChange={(e) =>
-                setCenter([parseFloat(e.target.value), center[1], center[2]])
-              }
-            />
-          </div>
-          <div className="control-group">
-            <label>Center Y: {center[1].toFixed(2)}</label>
-            <input
-              type="range"
-              min="-20"
-              max="20"
-              step="0.1"
-              value={center[1]}
-              onChange={(e) =>
-                setCenter([center[0], parseFloat(e.target.value), center[2]])
-              }
-            />
-          </div>
-          <div className="control-group">
-            <label>Center Scaling: {centerScaling.toFixed(2)}</label>
-            <input
-              type="range"
-              min="0.1"
-              max="2"
-              step="0.1"
-              value={centerScaling}
-              onChange={(e) => setCenterScaling(parseFloat(e.target.value))}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

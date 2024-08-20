@@ -27,11 +27,14 @@ interface HexagonParticlesProps {
   rotation: number;
   color1: string;
   color2: string;
-  centerScaling: number;
   scaleX: number;
   scaleY: number;
   particleTexture: THREE.Texture | null;
   animationType: AnimationType;
+  innerRadius: number;
+  innerScaling: number;
+  outerRadius: number;
+  outerScaling: number;
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
@@ -43,11 +46,14 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   rotation,
   color1,
   color2,
-  centerScaling,
   scaleX,
   scaleY,
   particleTexture,
   animationType,
+  innerRadius,
+  innerScaling,
+  outerRadius,
+  outerScaling,
 }) => {
   const points = useRef<THREE.Points>(null);
   const { viewport } = useThree();
@@ -60,10 +66,13 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uRotation: { value: rotation },
     uColor1: { value: new THREE.Color(color1) },
     uColor2: { value: new THREE.Color(color2) },
-    uCenterScaling: { value: centerScaling },
     uScaleX: { value: scaleX },
     uScaleY: { value: scaleY },
     uTexture: { value: particleTexture },
+    uInnerRadius: { value: innerRadius },
+    uInnerScaling: { value: innerScaling },
+    uOuterRadius: { value: outerRadius },
+    uOuterScaling: { value: outerScaling },
   });
 
   const { positions, scales, count, originalPositions } = useMemo(() => {
@@ -118,9 +127,12 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uniformsRef.current.uRotation.value = rotation;
     uniformsRef.current.uColor1.value.set(color1);
     uniformsRef.current.uColor2.value.set(color2);
-    uniformsRef.current.uCenterScaling.value = centerScaling;
     uniformsRef.current.uScaleX.value = scaleX;
     uniformsRef.current.uScaleY.value = scaleY;
+    uniformsRef.current.uInnerRadius.value = innerRadius;
+    uniformsRef.current.uInnerScaling.value = innerScaling;
+    uniformsRef.current.uOuterRadius.value = outerRadius;
+    uniformsRef.current.uOuterScaling.value = outerScaling;
 
     if (points.current) {
       const positions = points.current.geometry.attributes.position
@@ -132,6 +144,10 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         animationType,
         uniformsRef.current.uCenter.value,
         animationMagnitude
+        // innerRadius,
+        // innerScaling,
+        // outerRadius,
+        // outerScaling
       );
       points.current.geometry.attributes.position.needsUpdate = true;
     }
@@ -146,9 +162,12 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform vec3 uCenter;
           uniform vec2 uViewport;
           uniform float uAnimationMagnitude;
-          uniform float uCenterScaling;
           uniform float uScaleX;
           uniform float uScaleY;
+          uniform float uInnerRadius;
+          uniform float uInnerScaling;
+          uniform float uOuterRadius;
+          uniform float uOuterScaling;
           attribute float scale;
           varying vec2 vUv;
           
@@ -159,7 +178,17 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             gl_Position = projectionMatrix * mvPosition;
             
             float dist = distance(pos.xy, uCenter.xy);
-            float scaleFactor = 1.0 - (1.0 - uCenterScaling) * (1.0 - smoothstep(0.0, 50.0, dist));
+            float scaleFactor = 1.0;
+            
+            if (dist <= uInnerRadius) {
+              scaleFactor = uInnerScaling;
+            } else if (dist >= uOuterRadius) {
+              scaleFactor = uOuterScaling;
+            } else {
+              float t = (dist - uInnerRadius) / (uOuterRadius - uInnerRadius);
+              scaleFactor = mix(uInnerScaling, uOuterScaling, t);
+            }
+            
             gl_PointSize = uSize * scale * scaleFactor * (uViewport.y / -mvPosition.z);
           }
         `,

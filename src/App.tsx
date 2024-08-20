@@ -30,7 +30,6 @@ const App: React.FC = () => {
   const [color1, setColor1] = useState("#ffffff");
   const [color2, setColor2] = useState("#ff00ff");
   const [bgColor, setBgColor] = useState("#f0f0f0");
-  const [centerScaling, setCenterScaling] = useState(1);
   const [fov, setFov] = useState(75);
   const [scaleX, setScaleX] = useState(1);
   const [scaleY, setScaleY] = useState(1);
@@ -38,6 +37,10 @@ const App: React.FC = () => {
     null
   );
   const [activeImage, setActiveImage] = useState("mushroom.png");
+  const [innerRadius, setInnerRadius] = useState(0);
+  const [innerScaling, setInnerScaling] = useState(1);
+  const [outerRadius, setOuterRadius] = useState(8);
+  const [outerScaling, setOuterScaling] = useState(1);
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -68,8 +71,6 @@ const App: React.FC = () => {
         setColor2={setColor2}
         bgColor={bgColor}
         setBgColor={setBgColor}
-        centerScaling={centerScaling}
-        setCenterScaling={setCenterScaling}
         fov={fov}
         setFov={setFov}
         scaleX={scaleX}
@@ -80,6 +81,14 @@ const App: React.FC = () => {
         setAnimationType={setAnimationType}
         activeImage={activeImage}
         setActiveImage={setActiveImage}
+        innerRadius={innerRadius}
+        setInnerRadius={setInnerRadius}
+        innerScaling={innerScaling}
+        setInnerScaling={setInnerScaling}
+        outerRadius={outerRadius}
+        setOuterRadius={setOuterRadius}
+        outerScaling={outerScaling}
+        setOuterScaling={setOuterScaling}
       />
       <div
         className="container"
@@ -114,11 +123,14 @@ const App: React.FC = () => {
               rotation={rotation}
               color1={color1}
               color2={color2}
-              centerScaling={centerScaling}
               scaleX={scaleX}
               scaleY={scaleY}
               particleTexture={particleTexture}
               animationType={animationType}
+              innerRadius={innerRadius}
+              innerScaling={innerScaling}
+              outerRadius={outerRadius}
+              outerScaling={outerScaling}
             />
             <ArcballControls />
             <Stats />
