@@ -12,7 +12,7 @@ interface ControlsProps {
 
 const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
   return (
-    <div className="controls">
+    <div className="desktop-controls">
       <div className="control-group">
         <label>Density: {state.density.toFixed(2)}</label>
         <input

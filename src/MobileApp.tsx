@@ -4,7 +4,7 @@ import { ArcballControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
 import Controls from "./Controls";
 import HexagonParticles from "./HexagonParticles";
-import "./desktop.css";
+import "./mobile.css";
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -45,8 +45,7 @@ const App: React.FC = () => {
   }, [vState.image]);
 
   return (
-    <div className="desktop-app-container">
-      <Controls state={vState} updateState={updateVState} />
+    <div className="">
       <div
         className="container"
         style={{
