@@ -29,6 +29,18 @@ body {
   justify-content: center;
   padding: 8px;
 }
+.double-color-control {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 16px 8px;
+  gap: 8px;
+  .react-colorful {
+    width: 40vw;
+    max-width: 180px;
+    height: 40vw;
+    max-height: 180px;
+  }
+}
 .slider-control {
   padding: 8px 16px;
 }
@@ -43,5 +55,8 @@ body {
     height: 80px;
     border-radius: 8px;
     border: 2px solid #444;
+  }
+  .tile.active {
+    border-color: #fff097;
   }
 }
