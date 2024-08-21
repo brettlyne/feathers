@@ -1,6 +1,8 @@
 import React from "react";
 
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Tabs from "@mui/material/Tabs";
@@ -14,6 +16,11 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 import { HexColorPicker } from "react-colorful";
 import { motion, AnimatePresence } from "framer-motion";
+
+import preset1img from "/presets/preset-1.png";
+import preset2img from "/presets/preset-2.png";
+import preset3img from "/presets/preset-3.png";
+import preset4img from "/presets/preset-4.png";
 
 // import { AnimationType } from "./util/animations";
 import {
@@ -67,6 +74,22 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
           >
+            {sceneTab === "presets" && (
+              <div className="tile-control">
+                <IconButton sx={{ padding: 0 }}>
+                  <img src={preset1img} className="tile" />
+                </IconButton>
+                <IconButton sx={{ padding: 0 }}>
+                  <img src={preset2img} className="tile" />
+                </IconButton>
+                <IconButton sx={{ padding: 0 }}>
+                  <img src={preset3img} className="tile" />
+                </IconButton>
+                <IconButton sx={{ padding: 0 }}>
+                  <img src={preset4img} className="tile" />
+                </IconButton>
+              </div>
+            )}
             {sceneTab === "background" && (
               <div className="color-control">
                 <HexColorPicker
