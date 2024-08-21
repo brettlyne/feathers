@@ -10,6 +10,8 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import AppsIcon from "@mui/icons-material/Apps";
 import HexagonIcon from "@mui/icons-material/Hexagon";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+
+import { HexColorPicker } from "react-colorful";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { AnimationType } from "./util/animations";
@@ -26,6 +28,7 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
   const [activeTab, setActiveTab] = React.useState(0);
   const [sceneTab, setSceneTab] = React.useState("presets");
+  const [color, setColor] = React.useState("#aabbcc");
 
   return (
     <div className="mobile-controls">
@@ -64,6 +67,16 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
           >
+            {sceneTab === "background" && (
+              <div className="color-control">
+                <HexColorPicker
+                  color={state.bgColor}
+                  onChange={(newColor) => {
+                    updateState("bgColor", newColor);
+                  }}
+                />
+              </div>
+            )}
             <div className="tabs">
               <Tabs
                 value={sceneTab}

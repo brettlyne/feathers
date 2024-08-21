@@ -24,3 +24,8 @@ body {
   justify-content: center;
   padding: 8px;
 }
+.color-control {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+}

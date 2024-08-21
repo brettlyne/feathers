@@ -8,7 +8,7 @@ import MobileControls from "./MobileControls";
 import "./mobile.css";
 import {
   VisualizationState,
-  // VisualizationStateUpdater,
+  VisualizationStateUpdater,
   defaultVisualizationState,
 } from "./util/visualizationState";
 
@@ -26,15 +26,16 @@ const App: React.FC = () => {
   const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
     null
   );
-  // const [vState, setVState] = useState<VisualizationState>(
-  const [vState] = useState<VisualizationState>(defaultVisualizationState);
+  const [vState, setVState] = useState<VisualizationState>(
+    defaultVisualizationState
+  );
 
-  // const updateVState: VisualizationStateUpdater = (key, value) => {
-  //   setVState((prevState) => ({
-  //     ...prevState,
-  //     [key]: value,
-  //   }));
-  // };
+  const updateVState: VisualizationStateUpdater = (key, value) => {
+    setVState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -81,7 +82,7 @@ const App: React.FC = () => {
           </Canvas>
         </div>
       </div>
-      <MobileControls state={vState} />
+      <MobileControls state={vState} updateState={updateVState} />
     </div>
   );
 };
