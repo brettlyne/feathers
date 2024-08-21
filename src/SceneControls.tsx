@@ -17,18 +17,24 @@ import preset4img from "/presets/preset-4.png";
 import {
   VisualizationState,
   VisualizationStateUpdater,
+  preset1,
+  preset2,
+  preset3,
+  preset4,
 } from "./util/visualizationState";
 
 interface ControlsProps {
   state: VisualizationState;
   updateState: VisualizationStateUpdater;
   setActiveTab: React.Dispatch<React.SetStateAction<number>>;
+  setVState: React.Dispatch<React.SetStateAction<VisualizationState>>;
 }
 
 const SceneControls: React.FC<ControlsProps> = ({
   state,
   updateState,
   setActiveTab,
+  setVState,
 }) => {
   const [sceneTab, setSceneTab] = React.useState("presets");
 
@@ -36,16 +42,16 @@ const SceneControls: React.FC<ControlsProps> = ({
     <>
       {sceneTab === "presets" && (
         <div className="tile-control">
-          <IconButton sx={{ padding: 0 }}>
+          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset1)}>
             <img src={preset1img} className="tile" />
           </IconButton>
-          <IconButton sx={{ padding: 0 }}>
+          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset2)}>
             <img src={preset2img} className="tile" />
           </IconButton>
-          <IconButton sx={{ padding: 0 }}>
+          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset3)}>
             <img src={preset3img} className="tile" />
           </IconButton>
-          <IconButton sx={{ padding: 0 }}>
+          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset4)}>
             <img src={preset4img} className="tile" />
           </IconButton>
         </div>

@@ -23,10 +23,15 @@ import {
 interface ControlsProps {
   state: VisualizationState;
   updateState: VisualizationStateUpdater;
+  setVState: React.Dispatch<React.SetStateAction<VisualizationState>>;
 }
 
-const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
-  const [activeTab, setActiveTab] = React.useState(1);
+const Controls: React.FC<ControlsProps> = ({
+  state,
+  updateState,
+  setVState,
+}) => {
+  const [activeTab, setActiveTab] = React.useState(-1);
 
   return (
     <div className="mobile-controls">
@@ -69,6 +74,7 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
               state={state}
               updateState={updateState}
               setActiveTab={setActiveTab}
+              setVState={setVState}
             />
           </motion.div>
         )}

@@ -8,7 +8,8 @@ import "./desktop.css";
 import {
   VisualizationState,
   VisualizationStateUpdater,
-  defaultVisualizationState,
+  preset1,
+  preset2,
 } from "./util/visualizationState";
 
 const CameraController = ({ fov }: { fov: number }) => {
@@ -25,9 +26,7 @@ const App: React.FC = () => {
   const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
     null
   );
-  const [vState, setVState] = useState<VisualizationState>(
-    defaultVisualizationState
-  );
+  const [vState, setVState] = useState<VisualizationState>(preset1);
 
   const updateVState: VisualizationStateUpdater = (key, value) => {
     setVState((prevState) => ({

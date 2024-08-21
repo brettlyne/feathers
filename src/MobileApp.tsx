@@ -9,7 +9,7 @@ import "./mobile.css";
 import {
   VisualizationState,
   VisualizationStateUpdater,
-  defaultVisualizationState,
+  preset1,
 } from "./util/visualizationState";
 
 const CameraController = ({ fov }: { fov: number }) => {
@@ -26,9 +26,7 @@ const App: React.FC = () => {
   const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
     null
   );
-  const [vState, setVState] = useState<VisualizationState>(
-    defaultVisualizationState
-  );
+  const [vState, setVState] = useState<VisualizationState>(preset1);
 
   const updateVState: VisualizationStateUpdater = (key, value) => {
     setVState((prevState) => ({
@@ -36,6 +34,19 @@ const App: React.FC = () => {
       [key]: value,
     }));
   };
+
+  // if i press the p key, log vState to console
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "p") {
+        console.log(vState);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [vState]);
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -82,7 +93,11 @@ const App: React.FC = () => {
           </Canvas>
         </div>
       </div>
-      <MobileControls state={vState} updateState={updateVState} />
+      <MobileControls
+        state={vState}
+        updateState={updateVState}
+        setVState={setVState}
+      />
     </div>
   );
 };
