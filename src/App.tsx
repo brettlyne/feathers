@@ -9,7 +9,6 @@ import {
   VisualizationState,
   VisualizationStateUpdater,
   preset1,
-  preset2,
 } from "./util/visualizationState";
 
 const CameraController = ({ fov }: { fov: number }) => {
