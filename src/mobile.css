@@ -69,3 +69,9 @@ body {
     border-color: #fff097;
   }
 }
+.tile-control.center {
+  justify-content: center;
+}
+.tile-control.buttons {
+  padding-top: 12px;
+}

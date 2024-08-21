@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // import { AnimationType } from "./util/animations";
 import SceneControls from "./SceneControls";
+import FieldControls from "./FieldControls";
 import ShapeControls from "./ShapeControls";
 import AnimationControls from "./AnimationControls";
 import {
@@ -25,7 +26,7 @@ interface ControlsProps {
 }
 
 const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
-  const [activeTab, setActiveTab] = React.useState(3);
+  const [activeTab, setActiveTab] = React.useState(1);
 
   return (
     <div className="mobile-controls">
@@ -70,6 +71,24 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
               setActiveTab={setActiveTab}
             />
           </motion.div>
+        )}
+
+        {activeTab === 1 && (
+          <div className="scene-controls">
+            <motion.div
+              className="scene-controls"
+              key="field"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+            >
+              <FieldControls
+                state={state}
+                updateState={updateState}
+                setActiveTab={setActiveTab}
+              />
+            </motion.div>
+          </div>
         )}
 
         {activeTab === 2 && (
