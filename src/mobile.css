@@ -9,6 +9,18 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+.scene-controls {
+  background-color: #1a1a1a;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.solo-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 8px;
 }
