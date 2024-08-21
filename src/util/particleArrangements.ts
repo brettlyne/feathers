@@ -58,7 +58,7 @@ export const getHexParticleData = (density: number) => {
 
   let ring = 0;
   let count = 0;
-  const positionsArr = [];
+  const positionsArr: [number, number][] = [];
 
   while (count < rawCount) {
     if (ring === 0) {
@@ -103,7 +103,7 @@ export const getCircularParticleData = (density: number) => {
   const rings = Math.ceil(Math.sqrt(count / Math.PI));
   const totalArea = Math.PI * radius * radius;
 
-  const positionsArr = [];
+  const positionsArr: [number, number][] = [];
 
   let remainingPoints = count;
   for (let r = 0; r < rings && remainingPoints > 0; r++) {

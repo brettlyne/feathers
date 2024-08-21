@@ -14,7 +14,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { HexColorPicker } from "react-colorful";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { AnimationType } from "./util/animations";
+// import { AnimationType } from "./util/animations";
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -28,7 +28,6 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
   const [activeTab, setActiveTab] = React.useState(0);
   const [sceneTab, setSceneTab] = React.useState("presets");
-  const [color, setColor] = React.useState("#aabbcc");
 
   return (
     <div className="mobile-controls">
@@ -44,7 +43,7 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
             <BottomNavigation
               showLabels
               value={activeTab}
-              onChange={(event, newValue) => {
+              onChange={(_event, newValue) => {
                 console.log(newValue);
                 setActiveTab(newValue);
               }}
@@ -80,7 +79,7 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
             <div className="tabs">
               <Tabs
                 value={sceneTab}
-                onChange={(event, newValue) => {
+                onChange={(_event, newValue) => {
                   setSceneTab(newValue);
                 }}
                 variant="scrollable"
