@@ -23,4 +23,8 @@ var URLS = [
   `${GHPATH}/feather.svg`,
   `${GHPATH}/glow.png`,
   `${GHPATH}/moon.png`,
+  `${GHPATH}/presets/preset-1.png`,
+  `${GHPATH}/presets/preset-2.png`,
+  `${GHPATH}/presets/preset-3.png`,
+  `${GHPATH}/presets/preset-4.png`,
 ];
