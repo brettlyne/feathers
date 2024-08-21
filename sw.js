@@ -5,7 +5,7 @@ var APP_PREFIX = "feathers_";
 // you need to change this version (version_01, version_02…).
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = "version_00";
+var VERSION = "version_01";
 
 // The files to make available for offline use. make sure to add
 // others to this list
@@ -13,8 +13,8 @@ var URLS = [
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
 
-  `${GHPATH}/assets/index-BfDuDVHZ.js`,
-  `${GHPATH}/assets/index-CHpxEex4.css`,
+  `${GHPATH}/assets/index-FFoy6OyJ.js`,
+  `${GHPATH}/assets/index-FFoy6OyJ.js`,
   `${GHPATH}/mushroom.png`,
   `${GHPATH}/cloud.png`,
   `${GHPATH}/coin.png`,
