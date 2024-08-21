@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { ArcballControls } from "@react-three/drei";
 import * as THREE from "three";
 import HexagonParticles from "./HexagonParticles";
+import MobileControls from "./MobileControls";
 import "./mobile.css";
 import {
   VisualizationState,
@@ -80,6 +81,7 @@ const App: React.FC = () => {
           </Canvas>
         </div>
       </div>
+      <MobileControls state={vState} />
     </div>
   );
 };
