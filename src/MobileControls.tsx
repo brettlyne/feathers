@@ -41,7 +41,6 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
               showLabels
               value={activeTab}
               onChange={(_event, newValue) => {
-                console.log(newValue);
                 setActiveTab(newValue);
               }}
             >
