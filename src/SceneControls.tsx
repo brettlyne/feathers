@@ -1,0 +1,103 @@
+import React from "react";
+
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Slider from "@mui/material/Slider";
+
+import { HexColorPicker } from "react-colorful";
+
+import preset1img from "/presets/preset-1.png";
+import preset2img from "/presets/preset-2.png";
+import preset3img from "/presets/preset-3.png";
+import preset4img from "/presets/preset-4.png";
+
+import {
+  VisualizationState,
+  VisualizationStateUpdater,
+} from "./util/visualizationState";
+
+interface ControlsProps {
+  state: VisualizationState;
+  updateState: VisualizationStateUpdater;
+  setActiveTab: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const SceneControls: React.FC<ControlsProps> = ({
+  state,
+  updateState,
+  setActiveTab,
+}) => {
+  const [sceneTab, setSceneTab] = React.useState("presets");
+
+  return (
+    <>
+      {sceneTab === "presets" && (
+        <div className="tile-control">
+          <IconButton sx={{ padding: 0 }}>
+            <img src={preset1img} className="tile" />
+          </IconButton>
+          <IconButton sx={{ padding: 0 }}>
+            <img src={preset2img} className="tile" />
+          </IconButton>
+          <IconButton sx={{ padding: 0 }}>
+            <img src={preset3img} className="tile" />
+          </IconButton>
+          <IconButton sx={{ padding: 0 }}>
+            <img src={preset4img} className="tile" />
+          </IconButton>
+        </div>
+      )}
+      {sceneTab === "background" && (
+        <div className="color-control">
+          <HexColorPicker
+            color={state.bgColor}
+            onChange={(newColor) => {
+              updateState("bgColor", newColor);
+            }}
+          />
+        </div>
+      )}
+      {sceneTab === "fov" && (
+        <div className="slider-control">
+          <Slider
+            value={state.fov}
+            valueLabelDisplay="auto"
+            min={20}
+            max={120}
+            onChange={(_event, newValue) => {
+              updateState("fov", newValue as number);
+            }}
+          />
+        </div>
+      )}
+      <div className="tabs">
+        <Tabs
+          value={sceneTab}
+          onChange={(_event, newValue) => {
+            setSceneTab(newValue);
+          }}
+          variant="scrollable"
+        >
+          <Tab label="Presets" value="presets" />
+          <Tab label="Background" value="background" />
+          <Tab label="Field of View" value="fov" />
+        </Tabs>
+      </div>
+      <div className="solo-button">
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setActiveTab(-1);
+          }}
+        >
+          Done
+        </Button>
+      </div>
+    </>
+  );
+};
+
+export default SceneControls;
