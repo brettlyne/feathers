@@ -5,6 +5,7 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Slider from "@mui/material/Slider";
 
 import VideocamIcon from "@mui/icons-material/Videocam";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -72,6 +73,19 @@ const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
                   color={state.bgColor}
                   onChange={(newColor) => {
                     updateState("bgColor", newColor);
+                  }}
+                />
+              </div>
+            )}
+            {sceneTab === "fov" && (
+              <div className="slider-control">
+                <Slider
+                  value={state.fov}
+                  valueLabelDisplay="auto"
+                  min={20}
+                  max={120}
+                  onChange={(_event, newValue) => {
+                    updateState("fov", newValue as number);
                   }}
                 />
               </div>
