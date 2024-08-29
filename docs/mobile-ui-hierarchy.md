@@ -20,6 +20,12 @@
   - spiral
   - hexagon
   - random
+- Z Axis Arrangement
+  - flat
+  - dome
+  - wavy
+  - valley
+  - cone
 - Density
   - number 1 to 10
 - Scaling
