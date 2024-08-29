@@ -38,6 +38,7 @@ export interface VisualizationState {
   innerScaling: number;
   outerRadius: number;
   outerScaling: number;
+  depthTestOn: boolean;
 }
 
 export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
@@ -69,12 +70,13 @@ export const preset1: VisualizationState = {
   innerScaling: 1,
   outerRadius: 4,
   outerScaling: 1,
+  depthTestOn: true,
 };
 
 export const preset2: VisualizationState = {
   density: 6.9,
   arrangement: "random",
-  zAxisArrangement: "flat",
+  zAxisArrangement: "random",
   image: "moon",
   animationType: "orbits",
   particleSize: 14,
@@ -95,6 +97,7 @@ export const preset2: VisualizationState = {
   innerScaling: 2.6,
   outerRadius: 4,
   outerScaling: 0.5,
+  depthTestOn: true,
 };
 
 export const preset3: VisualizationState = {
@@ -121,6 +124,7 @@ export const preset3: VisualizationState = {
   innerScaling: 4.7,
   outerRadius: 3.3,
   outerScaling: 0,
+  depthTestOn: false,
 };
 
 export const preset4: VisualizationState = {
@@ -147,4 +151,5 @@ export const preset4: VisualizationState = {
   innerScaling: 0,
   outerRadius: 4,
   outerScaling: 1.1,
+  depthTestOn: false,
 };

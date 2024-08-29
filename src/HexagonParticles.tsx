@@ -40,6 +40,7 @@ interface HexagonParticlesProps {
   yMagnitude: number;
   orbitInnerRadius: number;
   orbitScale: number;
+  depthTestOn: boolean;
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
@@ -64,6 +65,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   yMagnitude,
   orbitInnerRadius,
   orbitScale,
+  depthTestOn,
 }) => {
   const points = useRef<THREE.Points>(null);
   const { viewport } = useThree();
@@ -82,6 +84,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uInnerScaling: { value: innerScaling },
     uOuterRadius: { value: outerRadius },
     uOuterScaling: { value: outerScaling },
+    uDepthTestOn: { value: depthTestOn },
   });
 
   const { positions, scales, count, originalPositions } = useMemo(() => {
@@ -124,7 +127,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
       points.current.geometry.dispose();
       points.current.geometry = geometry;
     }
-  }, [density, arrangement, positions, scales]);
+  }, [density, arrangement, positions, scales, depthTestOn]);
 
   useFrame((state) => {
     const { clock } = state;
@@ -141,6 +144,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uniformsRef.current.uInnerScaling.value = innerScaling;
     uniformsRef.current.uOuterRadius.value = outerRadius;
     uniformsRef.current.uOuterScaling.value = outerScaling;
+    uniformsRef.current.uDepthTestOn.value = depthTestOn;
 
     if (points.current) {
       const positions = points.current.geometry.attributes.position
@@ -233,11 +237,11 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         `,
         uniforms: uniformsRef.current,
         transparent: true,
-        depthWrite: true,
-        depthTest: true,
+        depthWrite: depthTestOn,
+        depthTest: depthTestOn,
         blending: THREE.NormalBlending,
       }),
-    []
+    [depthTestOn]
   );
 
   // Update the texture uniform when it changes

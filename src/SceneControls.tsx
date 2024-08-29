@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import ScienceIcon from "@mui/icons-material/Science";
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -79,6 +80,28 @@ const SceneControls: React.FC<ControlsProps> = ({
           />
         </div>
       )}
+      {sceneTab === "depthTest" && (
+        <div className="tile-control">
+          <IconButton
+            className={`text-tile ${state.depthTestOn ? "active" : ""}`}
+            sx={{ padding: 0 }}
+            onClick={() => {
+              updateState("depthTestOn", true);
+            }}
+          >
+            on
+          </IconButton>
+          <IconButton
+            className={`text-tile ${state.depthTestOn ? "" : "active"}`}
+            sx={{ padding: 0 }}
+            onClick={() => {
+              updateState("depthTestOn", false);
+            }}
+          >
+            off
+          </IconButton>
+        </div>
+      )}
       <div className="tabs">
         <Tabs
           value={sceneTab}
@@ -90,6 +113,13 @@ const SceneControls: React.FC<ControlsProps> = ({
           <Tab label="Presets" value="presets" />
           <Tab label="Background" value="background" />
           <Tab label="Field of View" value="fov" />
+          <Tab
+            icon={<ScienceIcon />}
+            iconPosition="start"
+            label="Depth Test"
+            value="depthTest"
+            sx={{ minHeight: "unset" }}
+          />
         </Tabs>
       </div>
       <div className="solo-button">
