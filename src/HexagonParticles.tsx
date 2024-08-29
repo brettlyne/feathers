@@ -189,17 +189,9 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             gl_Position = projectionMatrix * mvPosition;
             
             float dist = distance(pos.xy, uCenter.xy);
-            float scaleFactor = 1.0;
-            
-            if (dist <= uInnerRadius) {
-              scaleFactor = uInnerScaling;
-            } else if (dist >= uOuterRadius) {
-              scaleFactor = uOuterScaling;
-            } else {
-              float t = (dist - uInnerRadius) / (uOuterRadius - uInnerRadius);
-              scaleFactor = mix(uInnerScaling, uOuterScaling, t);
-            }
-            
+            float t = smoothstep(uInnerRadius, uOuterRadius, dist);
+            float scaleFactor = mix(uInnerScaling, uOuterScaling, t);
+
             gl_PointSize = uSize * scale * scaleFactor * (uViewport.y / -mvPosition.z);
           }
         `,
