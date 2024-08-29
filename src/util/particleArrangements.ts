@@ -83,12 +83,40 @@ const applyZAxisArrangement = (
   }
 };
 
+// Sort particles by Y, then X
+const sortParticles = (positions: Float32Array) => {
+  const count = positions.length / 3;
+  const indices = new Array(count).fill(0).map((_, i) => i);
+
+  indices.sort((a, b) => {
+    const yA = positions[a * 3 + 1];
+    const yB = positions[b * 3 + 1];
+    if (yA !== yB) {
+      return yA - yB; // Sort by Y first
+    }
+    const xA = positions[a * 3];
+    const xB = positions[b * 3];
+    return xA - xB; // If Y is the same, sort by X
+  });
+
+  const sortedPositions = new Float32Array(positions.length);
+  for (let i = 0; i < count; i++) {
+    const oldIndex = indices[i];
+    sortedPositions[i * 3] = positions[oldIndex * 3];
+    sortedPositions[i * 3 + 1] = positions[oldIndex * 3 + 1];
+    sortedPositions[i * 3 + 2] = positions[oldIndex * 3 + 2];
+  }
+
+  return sortedPositions;
+};
+
 export const getGridParticleData = (
   density: number,
   zAxisArrangement: VisualizationState["zAxisArrangement"]
 ) => {
   const { positions, scales, count } = getGrid(density, false);
   applyZAxisArrangement(positions, zAxisArrangement);
+  positions.set(sortParticles(positions));
   return { positions, scales, count };
 };
 
@@ -98,6 +126,7 @@ export const getStaggeredGridParticleData = (
 ) => {
   const { positions, scales, count } = getGrid(density, true);
   applyZAxisArrangement(positions, zAxisArrangement);
+  positions.set(sortParticles(positions));
   return { positions, scales, count };
 };
 
@@ -154,6 +183,7 @@ export const getHexParticleData = (
   }
 
   applyZAxisArrangement(positions, zAxisArrangement);
+  positions.set(sortParticles(positions));
   return { positions, scales, count };
 };
 
@@ -211,6 +241,7 @@ export const getCircularParticleData = (
   }
 
   applyZAxisArrangement(positions, zAxisArrangement);
+  positions.set(sortParticles(positions));
   return { positions, scales, count };
 };
 
@@ -235,6 +266,7 @@ export const getSpiralParticleData = (
   }
 
   applyZAxisArrangement(positions, zAxisArrangement);
+  positions.set(sortParticles(positions));
   return { positions, scales, count };
 };
 
@@ -254,5 +286,6 @@ export const getRandomParticleData = (
   }
 
   applyZAxisArrangement(positions, zAxisArrangement);
+  positions.set(sortParticles(positions));
   return { positions, scales, count };
 };
