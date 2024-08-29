@@ -9,7 +9,7 @@ export interface VisualizationState {
     | "spiral"
     | "random"
     | "hexagon";
-  zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone";
+  zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone" | "random";
   image:
     | "drop"
     | "mushroom"

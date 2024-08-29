@@ -35,7 +35,14 @@ const FieldControls: React.FC<ControlsProps> = ({
     "hexagon",
     "random",
   ];
-  const zAxisArrangements = ["flat", "dome", "wavy", "valley", "cone"];
+  const zAxisArrangements = [
+    "flat",
+    "dome",
+    "wavy",
+    "valley",
+    "cone",
+    "random",
+  ];
 
   return (
     <AnimatePresence>

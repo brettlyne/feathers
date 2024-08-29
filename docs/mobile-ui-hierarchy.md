@@ -26,6 +26,7 @@
   - wavy
   - valley
   - cone
+  - random
 - Density
   - number 1 to 10
 - Scaling

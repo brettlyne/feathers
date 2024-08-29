@@ -10,7 +10,6 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 import { motion, AnimatePresence } from "framer-motion";
 
-// import { AnimationType } from "./util/animations";
 import SceneControls from "./SceneControls";
 import FieldControls from "./FieldControls";
 import ShapeControls from "./ShapeControls";

@@ -73,6 +73,9 @@ const applyZAxisArrangement = (
         distFromCenter = Math.sqrt(x * x + y * y);
         z = (1 - distFromCenter / (FIELD_SIZE / 2)) * maxHeight - maxHeight / 2;
         break;
+      case "random":
+        z = Math.random() * maxHeight - maxHeight / 2;
+        break;
       // 'flat' is default, z remains 0
     }
 

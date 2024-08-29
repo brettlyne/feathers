@@ -21,7 +21,7 @@ interface HexagonParticlesProps {
     | "spiral"
     | "random"
     | "hexagon";
-  zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone";
+  zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone" | "random";
   particleSize: number;
   center: [number, number, number];
   rippleCenter: [number, number, number];
