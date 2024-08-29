@@ -21,6 +21,7 @@ interface HexagonParticlesProps {
     | "spiral"
     | "random"
     | "hexagon";
+  zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone";
   particleSize: number;
   center: [number, number, number];
   rippleCenter: [number, number, number];
@@ -44,6 +45,7 @@ interface HexagonParticlesProps {
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   density,
   arrangement,
+  zAxisArrangement,
   particleSize,
   center,
   rippleCenter,
@@ -86,26 +88,26 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     let particleData;
     switch (arrangement) {
       case "circular":
-        particleData = getCircularParticleData(density);
+        particleData = getCircularParticleData(density, zAxisArrangement);
         break;
       case "spiral":
-        particleData = getSpiralParticleData(density);
+        particleData = getSpiralParticleData(density, zAxisArrangement);
         break;
       case "random":
-        particleData = getRandomParticleData(density);
+        particleData = getRandomParticleData(density, zAxisArrangement);
         break;
       case "staggeredGrid":
-        particleData = getStaggeredGridParticleData(density);
+        particleData = getStaggeredGridParticleData(density, zAxisArrangement);
         break;
       case "hexagon":
-        particleData = getHexParticleData(density);
+        particleData = getHexParticleData(density, zAxisArrangement);
         break;
       default:
-        particleData = getGridParticleData(density);
+        particleData = getGridParticleData(density, zAxisArrangement);
     }
     const originalPositions = new Float32Array(particleData.positions);
     return { ...particleData, originalPositions };
-  }, [density, arrangement]);
+  }, [density, arrangement, zAxisArrangement]);
 
   useEffect(() => {
     if (points.current) {

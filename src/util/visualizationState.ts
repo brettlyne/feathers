@@ -9,6 +9,7 @@ export interface VisualizationState {
     | "spiral"
     | "random"
     | "hexagon";
+  zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone";
   image:
     | "drop"
     | "mushroom"
@@ -47,6 +48,7 @@ export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
 export const preset1: VisualizationState = {
   density: 5,
   arrangement: "grid",
+  zAxisArrangement: "flat",
   image: "drop",
   animationType: "ripples",
   particleSize: 10,
@@ -72,6 +74,7 @@ export const preset1: VisualizationState = {
 export const preset2: VisualizationState = {
   density: 6.9,
   arrangement: "random",
+  zAxisArrangement: "flat",
   image: "moon",
   animationType: "orbits",
   particleSize: 14,
@@ -97,6 +100,7 @@ export const preset2: VisualizationState = {
 export const preset3: VisualizationState = {
   density: 5.9,
   arrangement: "random",
+  zAxisArrangement: "flat",
   image: "mushroom",
   animationType: "jello",
   particleSize: 10,
@@ -122,6 +126,7 @@ export const preset3: VisualizationState = {
 export const preset4: VisualizationState = {
   density: 6.5,
   arrangement: "circular",
+  zAxisArrangement: "flat",
   image: "feather",
   animationType: "waves",
   particleSize: 13,

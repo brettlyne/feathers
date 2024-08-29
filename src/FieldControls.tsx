@@ -26,7 +26,7 @@ const FieldControls: React.FC<ControlsProps> = ({
   const [scalingTab, setScalingTab] = React.useState("innerScaling");
   const [mode, setMode] = React.useState("");
 
-  const modes = ["arrangement", "density", "scaling"];
+  const modes = ["arrangement", "zAxisArrangement", "density", "scaling"];
   const arrangements = [
     "grid",
     "staggeredGrid",
@@ -35,6 +35,7 @@ const FieldControls: React.FC<ControlsProps> = ({
     "hexagon",
     "random",
   ];
+  const zAxisArrangements = ["flat", "dome", "wavy", "valley", "cone"];
 
   return (
     <AnimatePresence>
@@ -56,7 +57,7 @@ const FieldControls: React.FC<ControlsProps> = ({
                   setMode(mode);
                 }}
               >
-                {mode}
+                {mode === "zAxisArrangement" ? "Z-Axis Arrangement" : mode}
               </Button>
             ))}
           </div>
@@ -92,17 +93,51 @@ const FieldControls: React.FC<ControlsProps> = ({
                 onClick={() => {
                   updateState(
                     "arrangement",
-                    arrangement as
-                      | "grid"
-                      | "staggeredGrid"
-                      | "circular"
-                      | "spiral"
-                      | "hexagon"
-                      | "random"
+                    arrangement as VisualizationState["arrangement"]
                   );
                 }}
               >
                 {arrangement}
+              </IconButton>
+            ))}
+          </div>
+          <div className="solo-button">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setMode("");
+              }}
+            >
+              Back to Field Settings
+            </Button>
+          </div>
+        </motion.div>
+      )}
+
+      {mode === "zAxisArrangement" && (
+        <motion.div
+          key="zAxisArrangement"
+          className="scene-controls"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          <div className="tile-control">
+            {zAxisArrangements.map((zAxisArrangement) => (
+              <IconButton
+                className={`text-tile ${
+                  state.zAxisArrangement === zAxisArrangement ? "active" : ""
+                }`}
+                sx={{ padding: 0 }}
+                key={zAxisArrangement}
+                onClick={() => {
+                  updateState(
+                    "zAxisArrangement",
+                    zAxisArrangement as VisualizationState["zAxisArrangement"]
+                  );
+                }}
+              >
+                {zAxisArrangement}
               </IconButton>
             ))}
           </div>

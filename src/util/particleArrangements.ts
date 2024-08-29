@@ -1,3 +1,5 @@
+import { VisualizationState } from "./visualizationState";
+
 const FIELD_SIZE = 8; // centered on the origin
 
 const getLogScaledCount = (density: number) => {
@@ -35,14 +37,71 @@ const getGrid = (density: number, staggered: boolean) => {
   return { positions, scales, count };
 };
 
-export const getGridParticleData = (density: number) => {
-  return getGrid(density, false);
-};
-export const getStaggeredGridParticleData = (density: number) => {
-  return getGrid(density, true);
+const applyZAxisArrangement = (
+  positions: Float32Array,
+  zAxisArrangement: VisualizationState["zAxisArrangement"],
+  maxHeight: number = 2
+) => {
+  const count = positions.length / 3;
+  for (let i = 0; i < count; i++) {
+    const x = positions[i * 3];
+    const y = positions[i * 3 + 1];
+    let z = 0;
+    let distFromCenter;
+
+    switch (zAxisArrangement) {
+      case "dome":
+        distFromCenter = Math.sqrt(x * x + y * y);
+        z =
+          Math.sqrt(
+            Math.max(0, 1 - (distFromCenter / (FIELD_SIZE / 1.3)) ** 2)
+          ) *
+            maxHeight -
+          maxHeight / 2;
+        break;
+      case "wavy":
+        z =
+          (Math.sin((0.6 * x * Math.PI) / 2) *
+            -Math.cos((0.2 * y * Math.PI) / 2) *
+            maxHeight) /
+          2;
+        break;
+      case "valley":
+        z = ((Math.abs(x) + 0.75 * Math.abs(y)) * maxHeight) / FIELD_SIZE - 1;
+        break;
+      case "cone":
+        distFromCenter = Math.sqrt(x * x + y * y);
+        z = (1 - distFromCenter / (FIELD_SIZE / 2)) * maxHeight - maxHeight / 2;
+        break;
+      // 'flat' is default, z remains 0
+    }
+
+    positions[i * 3 + 2] = z;
+  }
 };
 
-export const getHexParticleData = (density: number) => {
+export const getGridParticleData = (
+  density: number,
+  zAxisArrangement: VisualizationState["zAxisArrangement"]
+) => {
+  const { positions, scales, count } = getGrid(density, false);
+  applyZAxisArrangement(positions, zAxisArrangement);
+  return { positions, scales, count };
+};
+
+export const getStaggeredGridParticleData = (
+  density: number,
+  zAxisArrangement: VisualizationState["zAxisArrangement"]
+) => {
+  const { positions, scales, count } = getGrid(density, true);
+  applyZAxisArrangement(positions, zAxisArrangement);
+  return { positions, scales, count };
+};
+
+export const getHexParticleData = (
+  density: number,
+  zAxisArrangement: VisualizationState["zAxisArrangement"]
+) => {
   const rawCount = getLogScaledCount(density);
   const pointsPerSide = Math.ceil(Math.sqrt(rawCount / 3));
   const hexRadius = FIELD_SIZE / (pointsPerSide * Math.sqrt(2));
@@ -91,10 +150,14 @@ export const getHexParticleData = (density: number) => {
     scales[i] = 1;
   }
 
+  applyZAxisArrangement(positions, zAxisArrangement);
   return { positions, scales, count };
 };
 
-export const getCircularParticleData = (density: number) => {
+export const getCircularParticleData = (
+  density: number,
+  zAxisArrangement: VisualizationState["zAxisArrangement"]
+) => {
   const count = getLogScaledCount(density);
   const positions = new Float32Array(count * 3);
   const scales = new Float32Array(count);
@@ -144,10 +207,14 @@ export const getCircularParticleData = (density: number) => {
     scales[i] = 1;
   }
 
+  applyZAxisArrangement(positions, zAxisArrangement);
   return { positions, scales, count };
 };
 
-export const getSpiralParticleData = (density: number) => {
+export const getSpiralParticleData = (
+  density: number,
+  zAxisArrangement: VisualizationState["zAxisArrangement"]
+) => {
   const count = getLogScaledCount(density);
   const positions = new Float32Array(count * 3);
   const scales = new Float32Array(count);
@@ -164,10 +231,14 @@ export const getSpiralParticleData = (density: number) => {
     scales[i] = 1;
   }
 
+  applyZAxisArrangement(positions, zAxisArrangement);
   return { positions, scales, count };
 };
 
-export const getRandomParticleData = (density: number) => {
+export const getRandomParticleData = (
+  density: number,
+  zAxisArrangement: VisualizationState["zAxisArrangement"]
+) => {
   const count = getLogScaledCount(density);
   const positions = new Float32Array(count * 3);
   const scales = new Float32Array(count);
@@ -179,5 +250,6 @@ export const getRandomParticleData = (density: number) => {
     scales[i] = 1;
   }
 
+  applyZAxisArrangement(positions, zAxisArrangement);
   return { positions, scales, count };
 };
