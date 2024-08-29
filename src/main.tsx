@@ -4,7 +4,6 @@ import { isMobile } from "react-device-detect";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
 
-// import App from "./App.tsx";
 import MobileApp from "./MobileApp.tsx";
 
 import { themeOptions } from "./util/muiTheme";

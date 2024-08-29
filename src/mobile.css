@@ -48,7 +48,7 @@ body {
   padding: 8px 14px;
   display: flex;
   width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
   gap: 12px;
   .tile {
     width: 80px;
