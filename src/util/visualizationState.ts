@@ -39,6 +39,7 @@ export interface VisualizationState {
   outerRadius: number;
   outerScaling: number;
   depthTestOn: boolean;
+  cameraMatrix: number[];
 }
 
 export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
@@ -52,7 +53,7 @@ export const preset1: VisualizationState = {
   zAxisArrangement: "flat",
   image: "drop",
   animationType: "ripples",
-  particleSize: 10,
+  particleSize: 30,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
@@ -71,15 +72,16 @@ export const preset1: VisualizationState = {
   outerRadius: 4,
   outerScaling: 1,
   depthTestOn: true,
+  cameraMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 18, 1],
 };
 
 export const preset2: VisualizationState = {
   density: 6.9,
   arrangement: "random",
-  zAxisArrangement: "random",
+  zAxisArrangement: "wavy",
   image: "moon",
   animationType: "orbits",
-  particleSize: 14,
+  particleSize: 50,
   center: [-1.3, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
@@ -87,26 +89,32 @@ export const preset2: VisualizationState = {
   color1: "#ff3333",
   color2: "#ff00ff",
   bgColor: "#333f69",
-  fov: 38,
+  fov: 55,
   animationSpeed: 1,
-  xMagnitude: 1.1,
+  xMagnitude: 0.8,
   yMagnitude: 1,
   orbitInnerRadius: 1.4,
-  orbitScale: 0.5,
-  innerRadius: 0.6,
-  innerScaling: 2.6,
-  outerRadius: 4,
-  outerScaling: 0.5,
+  orbitScale: 0.7,
+  innerRadius: 0.7,
+  innerScaling: 2.7,
+  outerRadius: 4.4,
+  outerScaling: 0,
   depthTestOn: true,
+  cameraMatrix: [
+    0.9835927286821329, -0.040225039313114636, 0.17586156571547457, 0,
+    -0.10587381713737798, 0.6605852750676465, 0.7432481612547478, 0,
+    -0.14606874726785565, -0.749672622266586, 0.645488094774441, 0,
+    -3.008596162733603, -13.40079125814129, 10.526752683366672, 1,
+  ],
 };
 
 export const preset3: VisualizationState = {
   density: 5.9,
   arrangement: "random",
-  zAxisArrangement: "flat",
+  zAxisArrangement: "dome",
   image: "mushroom",
   animationType: "jello",
-  particleSize: 10,
+  particleSize: 31,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
@@ -125,6 +133,10 @@ export const preset3: VisualizationState = {
   outerRadius: 3.3,
   outerScaling: 0,
   depthTestOn: false,
+  cameraMatrix: [
+    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.0751308981393026,
+    -0.07395166079615599, 15.143740007205523, 1,
+  ],
 };
 
 export const preset4: VisualizationState = {
@@ -147,36 +159,15 @@ export const preset4: VisualizationState = {
   yMagnitude: 1,
   orbitInnerRadius: 0,
   orbitScale: 1,
-  innerRadius: 0,
+  innerRadius: 0.5,
   innerScaling: 0,
-  outerRadius: 4,
-  outerScaling: 1.1,
+  outerRadius: 5.9,
+  outerScaling: 3.5,
   depthTestOn: false,
-};
-
-export const preset5: VisualizationState = {
-  density: 2.8,
-  arrangement: "staggeredGrid",
-  zAxisArrangement: "dome",
-  image: "glow",
-  animationType: "waves",
-  particleSize: 43,
-  center: [0, 0, 0],
-  rippleCenter: [10.8, 0, 0],
-  animationMagnitude: 1.7,
-  rotation: 5.22,
-  color1: "#ffe9dd",
-  color2: "#fffbae",
-  bgColor: "#040513",
-  fov: 120,
-  animationSpeed: 0.5,
-  xMagnitude: 2.1,
-  yMagnitude: 4.2,
-  orbitInnerRadius: 0,
-  orbitScale: 1,
-  innerRadius: 1.4,
-  innerScaling: 3.1,
-  outerRadius: 5.6,
-  outerScaling: 0,
-  depthTestOn: false,
+  cameraMatrix: [
+    0.9969121740464922, 0.007568075754644811, 0.07815907795813744, 0,
+    0.06671383086721562, -0.606615801723314, -0.7921909705813368, 0,
+    0.04141717046002543, 0.794959114249879, -0.6052475730328313, 0,
+    0.43920447807773527, 9.186013296316714, -5.033052190348866, 1,
+  ],
 };

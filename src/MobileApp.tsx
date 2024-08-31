@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-// import { ArcballControls, Stats } from "@react-three/drei";
+import React, { useState, useEffect, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ArcballControls } from "@react-three/drei";
 import * as THREE from "three";
 import HexagonParticles from "./HexagonParticles";
@@ -12,13 +11,24 @@ import {
   preset1,
 } from "./util/visualizationState";
 
-const CameraController = ({ fov }: { fov: number }) => {
-  useFrame((state) => {
-    if (state.camera.type === "PerspectiveCamera") {
-      (state.camera as THREE.PerspectiveCamera).fov = fov;
-      state.camera.updateProjectionMatrix();
+const CameraController = ({
+  fov,
+  cameraMatrix,
+}: {
+  fov: number;
+  cameraMatrix: number[];
+}) => {
+  const { camera } = useThree();
+
+  useFrame(() => {
+    if (camera instanceof THREE.PerspectiveCamera) {
+      camera.fov = fov;
+      camera.matrix.fromArray(cameraMatrix);
+      camera.matrix.decompose(camera.position, camera.quaternion, camera.scale);
+      camera.updateProjectionMatrix();
     }
   });
+
   return null;
 };
 
@@ -27,6 +37,7 @@ const App: React.FC = () => {
     null
   );
   const [vState, setVState] = useState<VisualizationState>(preset1);
+  const controlsRef = useRef<ArcballControls>(null);
 
   const updateVState: VisualizationStateUpdater = (key, value) => {
     setVState((prevState) => ({
@@ -34,7 +45,6 @@ const App: React.FC = () => {
       [key]: value,
     }));
   };
-
   // if i press the p key, log vState to console
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -55,6 +65,13 @@ const App: React.FC = () => {
       setParticleTexture(texture);
     });
   }, [vState.image]);
+
+  const handleControlsChange = () => {
+    if (controlsRef.current && controlsRef.current.camera) {
+      const newMatrix = controlsRef.current.camera.matrix.toArray();
+      updateVState("cameraMatrix", newMatrix);
+    }
+  };
 
   return (
     <div className="">
@@ -80,16 +97,20 @@ const App: React.FC = () => {
         >
           <Canvas
             camera={{
-              position: [0, 0, 18],
               fov: vState.fov,
               near: 0.1,
               far: 1000,
             }}
           >
-            <CameraController fov={vState.fov} />
+            <CameraController
+              fov={vState.fov}
+              cameraMatrix={vState.cameraMatrix}
+            />
             <HexagonParticles particleTexture={particleTexture} {...vState} />
-            <ArcballControls />
-            {/* <Stats /> */}
+            <ArcballControls
+              ref={controlsRef}
+              onChange={handleControlsChange}
+            />
           </Canvas>
         </div>
       </div>
