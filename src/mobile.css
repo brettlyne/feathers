@@ -76,3 +76,10 @@ body {
 .tile-control.buttons {
   padding-top: 12px;
 }
+
+.info {
+  padding: 8px 12px;
+  border-bottom: 1px solid #252525;
+  border-top: 1px solid #252525;
+  font-size: 0.8em;
+}

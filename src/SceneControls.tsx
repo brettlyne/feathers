@@ -81,26 +81,35 @@ const SceneControls: React.FC<ControlsProps> = ({
         </div>
       )}
       {sceneTab === "depthTest" && (
-        <div className="tile-control">
-          <IconButton
-            className={`text-tile ${state.depthTestOn ? "active" : ""}`}
-            sx={{ padding: 0 }}
-            onClick={() => {
-              updateState("depthTestOn", true);
-            }}
-          >
-            on
-          </IconButton>
-          <IconButton
-            className={`text-tile ${state.depthTestOn ? "" : "active"}`}
-            sx={{ padding: 0 }}
-            onClick={() => {
-              updateState("depthTestOn", false);
-            }}
-          >
-            off
-          </IconButton>
-        </div>
+        <>
+          <div className="info">
+            <p style={{ maxWidth: "42em" }}>
+              Disabling depth test can look nice with transparent shapes and
+              prevents "popping" when ordering changes, but layering is
+              predetermined and ignores the camera position.
+            </p>
+          </div>
+          <div className="tile-control">
+            <IconButton
+              className={`text-tile ${state.depthTestOn ? "active" : ""}`}
+              sx={{ padding: 0 }}
+              onClick={() => {
+                updateState("depthTestOn", true);
+              }}
+            >
+              on
+            </IconButton>
+            <IconButton
+              className={`text-tile ${state.depthTestOn ? "" : "active"}`}
+              sx={{ padding: 0 }}
+              onClick={() => {
+                updateState("depthTestOn", false);
+              }}
+            >
+              off
+            </IconButton>
+          </div>
+        </>
       )}
       <div className="tabs">
         <Tabs
