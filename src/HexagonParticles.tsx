@@ -192,7 +192,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             float t = smoothstep(uInnerRadius, uOuterRadius, dist);
             float scaleFactor = mix(uInnerScaling, uOuterScaling, t);
 
-            gl_PointSize = uSize * scale * scaleFactor * (uViewport.y / -mvPosition.z);
+            gl_PointSize = uSize * scale * scaleFactor * (10. / -mvPosition.z);
           }
         `,
         fragmentShader: `
