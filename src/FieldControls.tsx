@@ -44,6 +44,11 @@ const FieldControls: React.FC<ControlsProps> = ({
     "random",
   ];
 
+  const modeLabels = {
+    zAxisArrangement: "Z-Axis Arrangement",
+    scaling: "Radial Scaling",
+  };
+
   return (
     <AnimatePresence>
       {mode === "" && (
@@ -64,7 +69,7 @@ const FieldControls: React.FC<ControlsProps> = ({
                   setMode(mode);
                 }}
               >
-                {mode === "zAxisArrangement" ? "Z-Axis Arrangement" : mode}
+                {modeLabels[mode] || mode}
               </Button>
             ))}
           </div>
@@ -207,8 +212,8 @@ const FieldControls: React.FC<ControlsProps> = ({
               <Slider
                 value={state.center[0]}
                 valueLabelDisplay="auto"
-                min={-50}
-                max={50}
+                min={-20}
+                max={20}
                 step={0.1}
                 onChange={(_event, newValue) => {
                   updateState("center", [
@@ -226,8 +231,8 @@ const FieldControls: React.FC<ControlsProps> = ({
               <Slider
                 value={state.center[1]}
                 valueLabelDisplay="auto"
-                min={-50}
-                max={50}
+                min={-20}
+                max={20}
                 step={0.1}
                 onChange={(_event, newValue) => {
                   updateState("center", [
@@ -276,7 +281,7 @@ const FieldControls: React.FC<ControlsProps> = ({
                 value={state.innerScaling}
                 valueLabelDisplay="auto"
                 min={0}
-                max={5}
+                max={10}
                 step={0.1}
                 onChange={(_event, newValue) => {
                   updateState("innerScaling", newValue as number);
@@ -291,7 +296,7 @@ const FieldControls: React.FC<ControlsProps> = ({
                 value={state.outerScaling}
                 valueLabelDisplay="auto"
                 min={0}
-                max={5}
+                max={10}
                 step={0.1}
                 onChange={(_event, newValue) => {
                   updateState("outerScaling", newValue as number);
@@ -308,12 +313,12 @@ const FieldControls: React.FC<ControlsProps> = ({
               }}
               variant="scrollable"
             >
-              <Tab label="Inner Scaling" value="innerScaling" />
-              <Tab label="Outer Scaling" value="outerScaling" />
-              <Tab label="X" value="x" />
-              <Tab label="Y" value="y" />
+              <Tab label="Inner" value="innerScaling" />
+              <Tab label="Outer" value="outerScaling" />
               <Tab label="Inner Radius" value="innerRadius" />
               <Tab label="Outer Radius" value="outerRadius" />
+              <Tab label="Center X" value="x" />
+              <Tab label="Center Y" value="y" />
             </Tabs>
           </div>
           <div className="solo-button">
