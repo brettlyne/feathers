@@ -171,3 +171,38 @@ export const preset4: VisualizationState = {
     0.43920447807773527, 9.186013296316714, -5.033052190348866, 1,
   ],
 };
+
+export const preset5: VisualizationState = {
+  density: 6.1,
+  arrangement: "circular",
+  zAxisArrangement: "dome",
+  image: "mushroom",
+  animationType: "ripples",
+  particleSize: 30,
+  center: [0, 0, 0],
+  rippleCenter: [0, 0, 0],
+  animationMagnitude: 1.3,
+  rotation: 2.8,
+  color1: "#fff900",
+  color2: "#ff00ff",
+  bgColor: "#f0f0f0",
+  fov: 97,
+  animationSpeed: 0.4,
+  xMagnitude: 1,
+  yMagnitude: 1,
+  orbitInnerRadius: 0,
+  orbitScale: 1,
+  innerRadius: 0.7,
+  innerScaling: 6.7,
+  outerRadius: 4.9,
+  outerScaling: 0,
+  depthTestOn: true,
+  cameraMatrix: [
+    0.969367321443659, 0.12274832772864377, -0.21274361131880146, 0,
+    0.1991716904418025, 0.11401284138982906, 0.9733096679499145, 0,
+    0.1437276377169637, -0.9858670904528866, 0.08607233073562108, 0,
+    1.0613684416767624, -7.280215789498701, 0.6356081335188752, 1,
+  ],
+};
+
+export const presets = [preset1, preset2, preset3, preset4, preset5];

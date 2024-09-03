@@ -14,14 +14,20 @@ import preset1img from "/presets/preset-1.png";
 import preset2img from "/presets/preset-2.png";
 import preset3img from "/presets/preset-3.png";
 import preset4img from "/presets/preset-4.png";
+import preset5img from "/presets/preset-5.png";
+
+const presetImages = [
+  preset1img,
+  preset2img,
+  preset3img,
+  preset4img,
+  preset5img,
+];
 
 import {
   VisualizationState,
   VisualizationStateUpdater,
-  preset1,
-  preset2,
-  preset3,
-  preset4,
+  presets,
 } from "./util/visualizationState";
 
 interface ControlsProps {
@@ -43,18 +49,15 @@ const SceneControls: React.FC<ControlsProps> = ({
     <>
       {sceneTab === "presets" && (
         <div className="tile-control">
-          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset1)}>
-            <img src={preset1img} className="tile" />
-          </IconButton>
-          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset2)}>
-            <img src={preset2img} className="tile" />
-          </IconButton>
-          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset3)}>
-            <img src={preset3img} className="tile" />
-          </IconButton>
-          <IconButton sx={{ padding: 0 }} onClick={() => setVState(preset4)}>
-            <img src={preset4img} className="tile" />
-          </IconButton>
+          {presets.map((preset, i) => (
+            <IconButton
+              sx={{ padding: 0 }}
+              onClick={() => setVState(preset)}
+              key={i}
+            >
+              <img src={presetImages[i]} className="tile" />
+            </IconButton>
+          ))}
         </div>
       )}
       {sceneTab === "background" && (
