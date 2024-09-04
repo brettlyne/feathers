@@ -24,7 +24,6 @@ export interface VisualizationState {
   center: [number, number, number];
   rippleCenter: [number, number, number];
   animationMagnitude: number;
-  rotation: number;
   rotationMode: "constant" | "fieldLinear" | "fieldRadial";
   rotationRange: [number, number];
   colorMode: "solid" | "gradient" | "fieldLinear" | "fieldRadial" | "zPosition";
@@ -60,7 +59,6 @@ export const preset1: VisualizationState = {
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
-  rotation: 0,
   rotationMode: "constant",
   rotationRange: [0, 0],
   colorMode: "gradient",
@@ -91,7 +89,6 @@ export const preset2: VisualizationState = {
   center: [-1.3, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
-  rotation: 0,
   rotationMode: "constant",
   rotationRange: [0, 0],
   colorMode: "gradient",
@@ -127,7 +124,6 @@ export const preset3: VisualizationState = {
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
-  rotation: 0,
   rotationMode: "constant",
   rotationRange: [0, 0],
   colorMode: "gradient",
@@ -161,9 +157,8 @@ export const preset4: VisualizationState = {
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
-  rotation: 5.55,
   rotationMode: "constant",
-  rotationRange: [0, 0],
+  rotationRange: [5.55, 0],
   colorMode: "gradient",
   color1: "#aef7ff",
   color2: "#8cffc1",
@@ -197,9 +192,8 @@ export const preset5: VisualizationState = {
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 1.3,
-  rotation: 2.8,
   rotationMode: "constant",
-  rotationRange: [0, 0],
+  rotationRange: [2.8, 0],
   colorMode: "gradient",
   color1: "#fff900",
   color2: "#ff00ff",
@@ -233,7 +227,6 @@ export const preset6: VisualizationState = {
   center: [4.2, 0, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
-  rotation: 0,
   rotationMode: "constant",
   rotationRange: [0, 0],
   colorMode: "fieldLinear",
@@ -269,7 +262,6 @@ export const preset7: VisualizationState = {
   center: [2.2, 3.4, 0],
   rippleCenter: [3.6, 5.2, 0],
   animationMagnitude: 1.5,
-  rotation: 0,
   rotationMode: "constant",
   rotationRange: [0, 0],
   colorMode: "fieldRadial",

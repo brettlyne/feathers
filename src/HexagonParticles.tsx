@@ -31,8 +31,7 @@ interface HexagonParticlesProps {
   center: [number, number, number];
   rippleCenter: [number, number, number];
   animationMagnitude: number;
-  rotation: number;
-  rotationMode: "constant" | "fieldLinear" | "fieldRadial";
+  rotationMode: "constant" | "fieldLinear" | "fieldRadial" | "zPosition";
   rotationRange: [number, number];
   color1: string;
   color2: string;
@@ -59,7 +58,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   center,
   rippleCenter,
   animationMagnitude,
-  rotation,
   rotationMode,
   rotationRange,
   color1,
@@ -87,14 +85,10 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uCenter: { value: new THREE.Vector3(...center) },
     uRippleCenter: { value: new THREE.Vector3(...rippleCenter) },
     uAnimationMagnitude: { value: animationMagnitude },
-    uRotation: { value: rotation },
     uRotationMode: {
-      value:
-        rotationMode === "constant"
-          ? 0
-          : rotationMode === "fieldLinear"
-          ? 1
-          : 2,
+      value: ["constant", "fieldLinear", "fieldRadial", "zPosition"].indexOf(
+        rotationMode
+      ),
     },
     uRotationRange: { value: new THREE.Vector2(...rotationRange) },
     uColor1: { value: new THREE.Color(color1) },
@@ -145,7 +139,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform vec3 uCenter;
           uniform vec3 uRippleCenter;
           uniform float uAnimationMagnitude;
-          uniform float uRotation;
           uniform int uRotationMode;
           uniform vec2 uRotationRange;
           uniform float uInnerRadius;
@@ -182,13 +175,16 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             gl_PointSize = uSize * scale * scaleFactor * (10. / -mvPosition.z);
 
             if (uRotationMode == 0) {
-              vRotation = uRotation;
+              vRotation = uRotationRange.x;
             } else if (uRotationMode == 1) {
               float x = (pos.x + 4.0) / 8.0; // Map x from -4 to 4 to 0 to 1
               vRotation = mix(uRotationRange.x, uRotationRange.y, x);
-            } else {
+            } else if (uRotationMode == 2) {
               float normalizedDist = dist / uOuterRadius;
               vRotation = mix(uRotationRange.x, uRotationRange.y, normalizedDist);
+            } else if (uRotationMode == 3) {
+              float normalizedZ = (pos.z + 2.0) / 4.0; // Map z from -2 to 2 to 0 to 1
+              vRotation = mix(uRotationRange.x, uRotationRange.y, normalizedZ);
             }
           }
         `,
@@ -250,9 +246,12 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uniformsRef.current.uCenter.value.set(...center);
     uniformsRef.current.uRippleCenter.value.set(...rippleCenter);
     uniformsRef.current.uAnimationMagnitude.value = animationMagnitude;
-    uniformsRef.current.uRotation.value = rotation;
-    uniformsRef.current.uRotationMode.value =
-      rotationMode === "constant" ? 0 : rotationMode === "fieldLinear" ? 1 : 2;
+    uniformsRef.current.uRotationMode.value = [
+      "constant",
+      "fieldLinear",
+      "fieldRadial",
+      "zPosition",
+    ].indexOf(rotationMode);
     uniformsRef.current.uRotationRange.value.set(
       rotationRange[0],
       rotationRange[1]

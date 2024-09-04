@@ -70,50 +70,55 @@ const ShapeControls: React.FC<ControlsProps> = ({
       {shapeTab === "rotation" && (
         <>
           <div className="tile-control">
-            {["constant", "fieldLinear", "fieldRadial"].map((mode) => (
-              <IconButton
-                className={`text-tile ${
-                  state.rotationMode === mode ? "active" : ""
-                }`}
-                sx={{ padding: 0 }}
-                key={mode}
-                onClick={() => {
-                  updateState(
-                    "rotationMode",
-                    mode as VisualizationState["rotationMode"]
-                  );
-                  setRotationTab(mode);
-                }}
-              >
-                {mode}
-              </IconButton>
-            ))}
+            {["constant", "fieldLinear", "fieldRadial", "zPosition"].map(
+              (mode) => (
+                <IconButton
+                  className={`text-tile ${
+                    state.rotationMode === mode ? "active" : ""
+                  }`}
+                  sx={{ padding: 0 }}
+                  key={mode}
+                  onClick={() => {
+                    updateState(
+                      "rotationMode",
+                      mode as VisualizationState["rotationMode"]
+                    );
+                    setRotationTab(mode);
+                  }}
+                >
+                  {mode}
+                </IconButton>
+              )
+            )}
           </div>
           {rotationTab === "constant" && (
             <div className="slider-control">
               <Slider
-                value={state.rotation}
+                value={state.rotationRange[0]}
                 valueLabelDisplay="auto"
                 min={0}
                 step={0.01}
-                max={2 * Math.PI}
+                max={4 * Math.PI}
                 valueLabelFormat={(value) =>
                   `${((value * 180) / Math.PI).toFixed(0)}°`
                 }
                 onChange={(_event, newValue) => {
-                  updateState("rotation", newValue as number);
+                  updateState("rotationRange", [
+                    newValue as number,
+                    state.rotationRange[1],
+                  ]);
                 }}
               />
             </div>
           )}
-          {(rotationTab === "fieldLinear" || rotationTab === "fieldRadial") && (
+          {rotationTab !== "constant" && (
             <div className="slider-control">
               <Slider
                 value={state.rotationRange}
                 valueLabelDisplay="auto"
                 min={0}
                 step={0.01}
-                max={2 * Math.PI}
+                max={4 * Math.PI}
                 valueLabelFormat={(value) =>
                   `${((value * 180) / Math.PI).toFixed(0)}°`
                 }
