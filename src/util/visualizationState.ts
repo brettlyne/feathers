@@ -211,4 +211,38 @@ export const preset5: VisualizationState = {
   ],
 };
 
-export const presets = [preset1, preset2, preset3, preset4, preset5];
+export const preset6: VisualizationState = {
+  density: 5,
+  arrangement: "circular",
+  zAxisArrangement: "cone",
+  image: "moon",
+  animationMode: "jello",
+  particleSize: 30,
+  center: [4.2, 0, 0],
+  rippleCenter: [0, 0, 0],
+  animationMagnitude: 0.5,
+  rotation: 0,
+  colorMode: "fieldLinear",
+  color1: "#7d00ff",
+  color2: "#abff50",
+  bgColor: "#140620",
+  fov: 127,
+  animationSpeed: 0.4,
+  xMagnitude: 1,
+  yMagnitude: 1,
+  orbitInnerRadius: 0,
+  orbitScale: 1,
+  innerRadius: 2.7,
+  innerScaling: 3.3,
+  outerRadius: 6.4,
+  outerScaling: 1,
+  depthTestOn: false,
+  cameraMatrix: [
+    0.0016511365791112226, 0.25646758242243706, 0.9665514227988162, 0,
+    -0.9971498808528314, -0.07248301862645491, 0.020936263420257534, 0,
+    0.07542803764650322, -0.9638312047123179, 0.2556169398917218, 0,
+    0.01227408039850031, -2.8094951341441834, 0.0415019453134237, 1,
+  ],
+};
+
+export const presets = [preset1, preset2, preset3, preset4, preset5, preset6];
