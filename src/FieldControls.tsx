@@ -5,7 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Slider from "@mui/material/Slider";
-import { motion, AnimatePresence } from "framer-motion";
 
 import {
   VisualizationState,
@@ -23,10 +22,9 @@ const FieldControls: React.FC<ControlsProps> = ({
   updateState,
   setActiveTab,
 }) => {
+  const [fieldTab, setFieldTab] = React.useState("arrangement");
   const [scalingTab, setScalingTab] = React.useState("innerScaling");
-  const [mode, setMode] = React.useState("");
 
-  const modes = ["arrangement", "zAxisArrangement", "density", "scaling"];
   const arrangements = [
     "grid",
     "staggeredGrid",
@@ -35,6 +33,7 @@ const FieldControls: React.FC<ControlsProps> = ({
     "hexagon",
     "random",
   ];
+
   const zAxisArrangements = [
     "flat",
     "dome",
@@ -44,266 +43,145 @@ const FieldControls: React.FC<ControlsProps> = ({
     "random",
   ];
 
-  const modeLabels = {
-    zAxisArrangement: "Z-Axis Arrangement",
-    scaling: "Radial Scaling",
+  const scalingInputs = {
+    innerScaling: {
+      label: "Inner Scaling",
+      min: 0,
+      max: 10,
+      step: 0.1,
+      getState: () => state.innerScaling,
+      updateState: (newValue: number) => {
+        updateState("innerScaling", newValue);
+      },
+    },
+    outerScaling: {
+      label: "Outer Scaling",
+      min: 0,
+      max: 10,
+      step: 0.1,
+      getState: () => state.outerScaling,
+      updateState: (newValue: number) => {
+        updateState("outerScaling", newValue);
+      },
+    },
+    innerRadius: {
+      label: "Inner Radius",
+      min: 0,
+      max: 10,
+      step: 0.1,
+      getState: () => state.innerRadius,
+      updateState: (newValue: number) => {
+        updateState("innerRadius", newValue);
+      },
+    },
+    outerRadius: {
+      label: "Outer Radius",
+      min: 0,
+      max: 10,
+      step: 0.1,
+      getState: () => state.outerRadius,
+      updateState: (newValue: number) => {
+        updateState("outerRadius", newValue);
+      },
+    },
+    centerX: {
+      label: "Center X",
+      min: -20,
+      max: 20,
+      step: 0.1,
+      getState: () => state.center[0],
+      updateState: (newValue: number) => {
+        updateState("center", [newValue, state.center[1], state.center[2]]);
+      },
+    },
+    centerY: {
+      label: "Center Y",
+      min: -20,
+      max: 20,
+      step: 0.1,
+      getState: () => state.center[1],
+      updateState: (newValue: number) => {
+        updateState("center", [state.center[0], newValue, state.center[2]]);
+      },
+    },
   };
 
   return (
-    <AnimatePresence>
-      {mode === "" && (
-        <motion.div
-          key="mode-select"
-          className="scene-controls"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-        >
-          <div className="tile-control center buttons">
-            {modes.map((mode) => (
-              <Button
-                sx={{ padding: "0.2rem .8rem" }}
-                variant="contained"
-                key={mode}
-                onClick={() => {
-                  setMode(mode);
-                }}
-              >
-                {modeLabels[mode] || mode}
-              </Button>
-            ))}
-          </div>
-          <div className="solo-button">
-            <Button
-              variant="outlined"
+    <>
+      {fieldTab === "arrangement" && (
+        <div className="tile-control">
+          {arrangements.map((arrangement) => (
+            <IconButton
+              className={`text-tile ${
+                state.arrangement === arrangement ? "active" : ""
+              }`}
+              sx={{ padding: 0 }}
+              key={arrangement}
               onClick={() => {
-                setActiveTab(-1);
+                updateState(
+                  "arrangement",
+                  arrangement as VisualizationState["arrangement"]
+                );
               }}
             >
-              Done
-            </Button>
-          </div>
-        </motion.div>
+              {arrangement}
+            </IconButton>
+          ))}
+        </div>
       )}
 
-      {mode === "arrangement" && (
-        <motion.div
-          key="arrangement"
-          className="scene-controls"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <div className="tile-control">
-            {arrangements.map((arrangement) => (
-              <IconButton
-                className={`text-tile ${
-                  state.arrangement === arrangement ? "active" : ""
-                }`}
-                sx={{ padding: 0 }}
-                key={arrangement}
-                onClick={() => {
-                  updateState(
-                    "arrangement",
-                    arrangement as VisualizationState["arrangement"]
-                  );
-                }}
-              >
-                {arrangement}
-              </IconButton>
-            ))}
-          </div>
-          <div className="solo-button">
-            <Button
-              variant="outlined"
+      {fieldTab === "zAxisArrangement" && (
+        <div className="tile-control">
+          {zAxisArrangements.map((zAxisArrangement) => (
+            <IconButton
+              className={`text-tile ${
+                state.zAxisArrangement === zAxisArrangement ? "active" : ""
+              }`}
+              sx={{ padding: 0 }}
+              key={zAxisArrangement}
               onClick={() => {
-                setMode("");
+                updateState(
+                  "zAxisArrangement",
+                  zAxisArrangement as VisualizationState["zAxisArrangement"]
+                );
               }}
             >
-              Back to Field Settings
-            </Button>
-          </div>
-        </motion.div>
+              {zAxisArrangement}
+            </IconButton>
+          ))}
+        </div>
       )}
 
-      {mode === "zAxisArrangement" && (
-        <motion.div
-          key="zAxisArrangement"
-          className="scene-controls"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <div className="tile-control">
-            {zAxisArrangements.map((zAxisArrangement) => (
-              <IconButton
-                className={`text-tile ${
-                  state.zAxisArrangement === zAxisArrangement ? "active" : ""
-                }`}
-                sx={{ padding: 0 }}
-                key={zAxisArrangement}
-                onClick={() => {
-                  updateState(
-                    "zAxisArrangement",
-                    zAxisArrangement as VisualizationState["zAxisArrangement"]
-                  );
-                }}
-              >
-                {zAxisArrangement}
-              </IconButton>
-            ))}
-          </div>
-          <div className="solo-button">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setMode("");
-              }}
-            >
-              Back to Field Settings
-            </Button>
-          </div>
-        </motion.div>
+      {fieldTab === "density" && (
+        <div className="slider-control">
+          <Slider
+            value={state.density}
+            valueLabelDisplay="auto"
+            min={1}
+            max={10}
+            step={0.1}
+            onChange={(_event, newValue) => {
+              updateState("density", newValue as number);
+            }}
+          />
+        </div>
       )}
 
-      {mode === "density" && (
-        <motion.div
-          key="density"
-          className="scene-controls"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <div className="slider-control">
+      {fieldTab === "radialScaling" && (
+        <>
+          <div className="slider-control" style={{ background: "#363636" }}>
             <Slider
-              value={state.density}
+              key={scalingTab}
+              value={scalingInputs[scalingTab].getState()}
               valueLabelDisplay="auto"
-              min={1}
-              max={10}
-              step={0.1}
+              min={scalingInputs[scalingTab].min}
+              max={scalingInputs[scalingTab].max}
+              step={scalingInputs[scalingTab].step}
               onChange={(_event, newValue) => {
-                updateState("density", newValue as number);
+                scalingInputs[scalingTab].updateState(newValue as number);
               }}
             />
           </div>
-          <div className="solo-button">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setMode("");
-              }}
-            >
-              Back to Field Settings
-            </Button>
-          </div>
-        </motion.div>
-      )}
-
-      {mode === "scaling" && (
-        <motion.div
-          key="scaling"
-          className="scene-controls"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          {scalingTab === "x" && (
-            <div className="slider-control">
-              <Slider
-                value={state.center[0]}
-                valueLabelDisplay="auto"
-                min={-20}
-                max={20}
-                step={0.1}
-                onChange={(_event, newValue) => {
-                  updateState("center", [
-                    newValue as number,
-                    state.center[1],
-                    state.center[2],
-                  ]);
-                }}
-              />
-            </div>
-          )}
-
-          {scalingTab === "y" && (
-            <div className="slider-control">
-              <Slider
-                value={state.center[1]}
-                valueLabelDisplay="auto"
-                min={-20}
-                max={20}
-                step={0.1}
-                onChange={(_event, newValue) => {
-                  updateState("center", [
-                    state.center[0],
-                    newValue as number,
-                    state.center[2],
-                  ]);
-                }}
-              />
-            </div>
-          )}
-
-          {scalingTab === "innerRadius" && (
-            <div className="slider-control">
-              <Slider
-                value={state.innerRadius}
-                valueLabelDisplay="auto"
-                min={0}
-                max={10}
-                step={0.1}
-                onChange={(_event, newValue) => {
-                  updateState("innerRadius", newValue as number);
-                }}
-              />
-            </div>
-          )}
-
-          {scalingTab === "outerRadius" && (
-            <div className="slider-control">
-              <Slider
-                value={state.outerRadius}
-                valueLabelDisplay="auto"
-                min={0}
-                max={10}
-                step={0.1}
-                onChange={(_event, newValue) => {
-                  updateState("outerRadius", newValue as number);
-                }}
-              />
-            </div>
-          )}
-
-          {scalingTab === "innerScaling" && (
-            <div className="slider-control">
-              <Slider
-                value={state.innerScaling}
-                valueLabelDisplay="auto"
-                min={0}
-                max={10}
-                step={0.1}
-                onChange={(_event, newValue) => {
-                  updateState("innerScaling", newValue as number);
-                }}
-              />
-            </div>
-          )}
-
-          {scalingTab === "outerScaling" && (
-            <div className="slider-control">
-              <Slider
-                value={state.outerScaling}
-                valueLabelDisplay="auto"
-                min={0}
-                max={10}
-                step={0.1}
-                onChange={(_event, newValue) => {
-                  updateState("outerScaling", newValue as number);
-                }}
-              />
-            </div>
-          )}
 
           <div className="tabs">
             <Tabs
@@ -312,28 +190,44 @@ const FieldControls: React.FC<ControlsProps> = ({
                 setScalingTab(newValue);
               }}
               variant="scrollable"
+              sx={{ bgcolor: "#363636" }}
             >
               <Tab label="Inner" value="innerScaling" />
               <Tab label="Outer" value="outerScaling" />
               <Tab label="Inner Radius" value="innerRadius" />
               <Tab label="Outer Radius" value="outerRadius" />
-              <Tab label="Center X" value="x" />
-              <Tab label="Center Y" value="y" />
+              <Tab label="Center X" value="centerX" />
+              <Tab label="Center Y" value="centerY" />
             </Tabs>
           </div>
-          <div className="solo-button">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setMode("");
-              }}
-            >
-              Back to Field Settings
-            </Button>
-          </div>
-        </motion.div>
+        </>
       )}
-    </AnimatePresence>
+
+      <div className="tabs">
+        <Tabs
+          value={fieldTab}
+          onChange={(_event, newValue) => {
+            setFieldTab(newValue);
+          }}
+          variant="scrollable"
+        >
+          <Tab label="Arrangement" value="arrangement" />
+          <Tab label="Z-Axis Arrangement" value="zAxisArrangement" />
+          <Tab label="Density" value="density" />
+          <Tab label="Radial Scaling" value="radialScaling" />
+        </Tabs>
+      </div>
+      <div className="solo-button">
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setActiveTab(-1);
+          }}
+        >
+          Done
+        </Button>
+      </div>
+    </>
   );
 };
 
