@@ -21,6 +21,7 @@ import {
   VisualizationState,
   VisualizationStateUpdater,
 } from "./util/visualizationState";
+import { update } from "three/examples/jsm/libs/tween.module.js";
 
 interface ControlsProps {
   state: VisualizationState;
@@ -34,6 +35,7 @@ const SceneControls: React.FC<ControlsProps> = ({
   setActiveTab,
 }) => {
   const [shapeTab, setShapeTab] = React.useState("shape");
+  const [colorTab, setColorTab] = React.useState("gradient");
 
   const shapes = {
     drop: drop,
@@ -85,20 +87,59 @@ const SceneControls: React.FC<ControlsProps> = ({
       )}
 
       {shapeTab === "colors" && (
-        <div className="double-color-control">
-          <HexColorPicker
-            color={state.color1}
-            onChange={(newColor) => {
-              updateState("color1", newColor);
-            }}
-          />
-          <HexColorPicker
-            color={state.color2}
-            onChange={(newColor) => {
-              updateState("color2", newColor);
-            }}
-          />
-        </div>
+        <>
+          {colorTab === "solid" && (
+            <div
+              className="double-color-control"
+              style={{ background: "#363636" }}
+            >
+              <HexColorPicker
+                color={state.color1}
+                onChange={(newColor) => {
+                  updateState("color1", newColor);
+                }}
+              />
+            </div>
+          )}
+
+          {colorTab !== "solid" && (
+            <div
+              className="double-color-control"
+              style={{ background: "#363636" }}
+            >
+              <HexColorPicker
+                color={state.color1}
+                onChange={(newColor) => {
+                  updateState("color1", newColor);
+                }}
+              />
+              <HexColorPicker
+                color={state.color2}
+                onChange={(newColor) => {
+                  updateState("color2", newColor);
+                }}
+              />
+            </div>
+          )}
+
+          <div className="tabs">
+            <Tabs
+              value={colorTab}
+              onChange={(_event, newValue) => {
+                setColorTab(newValue);
+                updateState("colorMode", newValue);
+              }}
+              variant="scrollable"
+              sx={{ bgcolor: "#363636" }}
+            >
+              <Tab label="Solid" value="solid" />
+              <Tab label="Gradient" value="gradient" />
+              <Tab label="Field linear" value="fieldLinear" />
+              <Tab label="Field radial" value="fieldRadial" />
+              <Tab label="Z position" value="zPosition" />
+            </Tabs>
+          </div>
+        </>
       )}
 
       {shapeTab === "size" && (
