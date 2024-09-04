@@ -76,7 +76,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
           <Slider
             value={state.animationSpeed}
             valueLabelDisplay="auto"
-            min={0}
+            min={-10}
             max={10}
             step={0.1}
             onChange={(_event, newValue) => {
