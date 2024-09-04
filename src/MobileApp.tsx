@@ -37,6 +37,7 @@ const App: React.FC = () => {
     null
   );
   const [vState, setVState] = useState<VisualizationState>(preset1);
+  // @ts-expect-error TS2749
   const controlsRef = useRef<ArcballControls>(null);
 
   const updateVState: VisualizationStateUpdater = (key, value) => {
