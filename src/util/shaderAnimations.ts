@@ -62,7 +62,7 @@ export const getAnimationShaderChunk = (
         vec3 animateSnake(vec3 position, float time, float xMagnitude, float yMagnitude) {
           vec3 newPos = position;
           float roughColWidth = ${(8.0 / Math.sqrt(particleCount)).toFixed(5)};
-          newPos.x = mod(position.x - time / 4.0, 8.0 + roughColWidth) * xMagnitude + 4.0 * xMagnitude;
+          newPos.x = mod(position.x - time / 4.0, 8.0 + roughColWidth) * xMagnitude - 4.0 * xMagnitude;
           newPos.y += (sin(time / 1.5 + position.x * 0.75 + (position.y * position.y) / 4.0) * yMagnitude) / 2.0;
           return newPos;
         }
