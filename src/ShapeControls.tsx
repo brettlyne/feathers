@@ -21,7 +21,6 @@ import {
   VisualizationState,
   VisualizationStateUpdater,
 } from "./util/visualizationState";
-import { update } from "three/examples/jsm/libs/tween.module.js";
 
 interface ControlsProps {
   state: VisualizationState;
