@@ -144,6 +144,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           attribute float scale;
           varying vec2 vUv;
           varying vec3 vPosition;
+          varying float dist;
 
           ${getAnimationShaderChunk(animationMode, positions.length / 3)}
 
@@ -157,7 +158,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
             
-            float dist = distance(pos.xy, uCenter.xy);
+            dist = distance(pos.xy, uCenter.xy);
             float t = smoothstep(uInnerRadius, uOuterRadius, dist);
             float scaleFactor = mix(uInnerScaling, uOuterScaling, t);
 
@@ -173,6 +174,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform float uOuterRadius;
           varying vec2 vUv;
           varying vec3 vPosition;
+          varying float dist;
 
           ${getColorShaderChunk(colorMode)}
 

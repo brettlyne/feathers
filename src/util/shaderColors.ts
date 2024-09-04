@@ -33,7 +33,6 @@ export const getColorShaderChunk = (colorMode: ColorMode): string => {
     case "fieldRadial":
       return `
         vec3 getColor(vec3 position, vec2 uv) {
-          float dist = length(position.xy);
           float t = smoothstep(uInnerRadius, uOuterRadius, dist);
           return mix(uColor1, uColor2, t);
         }
