@@ -1,5 +1,3 @@
-import { AnimationType } from "./animations";
-
 export interface VisualizationState {
   density: number;
   arrangement:
@@ -19,7 +17,7 @@ export interface VisualizationState {
     | "glow"
     | "moon"
     | string;
-  animationType: AnimationType;
+  animationType: "ripples" | "waves" | "jello" | "banner" | "orbits" | "snake";
   particleSize: number;
   center: [number, number, number];
   rippleCenter: [number, number, number];
