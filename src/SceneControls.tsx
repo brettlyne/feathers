@@ -76,7 +76,7 @@ const SceneControls: React.FC<ControlsProps> = ({
             value={state.fov}
             valueLabelDisplay="auto"
             min={20}
-            max={120}
+            max={160}
             onChange={(_event, newValue) => {
               updateState("fov", newValue as number);
             }}
