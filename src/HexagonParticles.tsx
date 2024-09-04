@@ -1,11 +1,12 @@
 import React, { useRef, useMemo, useEffect, useState } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { AnimationMode } from "./util/shaderAnimations";
 import {
   getAnimationShaderChunk,
   getAnimationMainCode,
 } from "./util/shaderAnimations";
+import { getColorShaderChunk, ColorMode } from "./util/shaderColors";
 
 import {
   getGridParticleData,
@@ -35,6 +36,7 @@ interface HexagonParticlesProps {
   color2: string;
   particleTexture: THREE.Texture | null;
   animationMode: AnimationMode;
+  colorMode: ColorMode;
   innerRadius: number;
   innerScaling: number;
   outerRadius: number;
@@ -60,6 +62,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   color2,
   particleTexture,
   animationMode,
+  colorMode,
   innerRadius,
   innerScaling,
   outerRadius,
@@ -72,7 +75,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   depthTestOn,
 }) => {
   const points = useRef<THREE.Points>(null);
-  const { viewport } = useThree();
   const [resetFlag, setResetFlag] = useState(0);
 
   const uniformsRef = useRef({
@@ -80,7 +82,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uSize: { value: particleSize },
     uCenter: { value: new THREE.Vector3(...center) },
     uRippleCenter: { value: new THREE.Vector3(...rippleCenter) },
-    uViewport: { value: new THREE.Vector2(viewport.width, viewport.height) },
     uAnimationMagnitude: { value: animationMagnitude },
     uRotation: { value: rotation },
     uColor1: { value: new THREE.Color(color1) },
@@ -130,7 +131,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform float uSize;
           uniform vec3 uCenter;
           uniform vec3 uRippleCenter;
-          uniform vec2 uViewport;
           uniform float uAnimationMagnitude;
           uniform float uInnerRadius;
           uniform float uInnerScaling;
@@ -169,8 +169,12 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform vec3 uColor2;
           uniform float uRotation;
           uniform sampler2D uTexture;
+          uniform float uInnerRadius;
+          uniform float uOuterRadius;
           varying vec2 vUv;
           varying vec3 vPosition;
+
+          ${getColorShaderChunk(colorMode)}
 
           void main() {
             vec2 uv = gl_PointCoord * 2.0 - 1.0;
@@ -181,12 +185,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             vec4 texColor = texture2D(uTexture, uv);
             if (texColor.a < 0.1) discard;
             
-            vec2 gradientUv = uv;
-            float gradientAngle = 3.14159 / 4.0;
-            float gradientPos = gradientUv.x * cos(gradientAngle) - gradientUv.y * sin(gradientAngle);
-            gradientPos = gradientPos * 0.5 + 0.5;
-            
-            vec3 color = mix(uColor1, uColor2, gradientPos);
+            vec3 color = getColor(vPosition, uv);
             gl_FragColor = vec4(color * texColor.rgb, texColor.a);
           }
         `,
@@ -196,7 +195,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         depthTest: depthTestOn,
         blending: THREE.NormalBlending,
       }),
-    [animationMode, depthTestOn, density]
+    [animationMode, colorMode, depthTestOn, positions.length]
   );
 
   useEffect(() => {
@@ -221,7 +220,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uniformsRef.current.uSize.value = particleSize;
     uniformsRef.current.uCenter.value.set(...center);
     uniformsRef.current.uRippleCenter.value.set(...rippleCenter);
-    uniformsRef.current.uViewport.value.set(viewport.width, viewport.height);
     uniformsRef.current.uAnimationMagnitude.value = animationMagnitude;
     uniformsRef.current.uRotation.value = rotation;
     uniformsRef.current.uColor1.value.set(color1);

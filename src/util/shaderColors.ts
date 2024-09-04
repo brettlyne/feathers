@@ -25,8 +25,9 @@ export const getColorShaderChunk = (colorMode: ColorMode): string => {
     case "fieldLinear":
       return `
         vec3 getColor(vec3 position, vec2 uv) {
-          vec2 normalizedPos = position.xy / uFieldSize + 0.5;
-          return mix(uColor1, uColor2, normalizedPos.y);
+          vec2 normalizedPos = position.xy / 8. + .5;
+          float diagonalGradient = (1.-normalizedPos.x + normalizedPos.y) * 0.5;
+          return mix(uColor1, uColor2, diagonalGradient);
         }
       `;
     case "fieldRadial":
