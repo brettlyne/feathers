@@ -6,7 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Slider from "@mui/material/Slider";
 
-import { AnimationType } from "./util/animations";
+import { AnimationMode } from "./util/shaderAnimations";
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -31,13 +31,13 @@ const AnimationControls: React.FC<ControlsProps> = ({
     { label: "Animation", value: "animation" },
     { label: "Speed", value: "speed" },
   ];
-  if (state.animationType === "orbits") {
+  if (state.animationMode === "orbits") {
     tabs.push(
       { label: "Orbit Inner Radius", value: "orbitInnerRadius" },
       { label: "Orbit Scale", value: "orbitScale" }
     );
   }
-  if (state.animationType !== "ripples") {
+  if (state.animationMode !== "ripples") {
     tabs.push(
       { label: "X Magnitude", value: "xMagnitude" },
       { label: "Y Magnitude", value: "yMagnitude" }
@@ -57,12 +57,12 @@ const AnimationControls: React.FC<ControlsProps> = ({
           {animations.map((anim) => (
             <IconButton
               className={`text-tile ${
-                state.animationType === anim ? "active" : ""
+                state.animationMode === anim ? "active" : ""
               }`}
               sx={{ padding: 0 }}
               key={anim}
               onClick={() => {
-                updateState("animationType", anim as AnimationType);
+                updateState("animationMode", anim as AnimationMode);
               }}
             >
               {anim}

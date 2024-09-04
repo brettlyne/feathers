@@ -1,3 +1,5 @@
+import { AnimationMode } from "./shaderAnimations";
+
 export interface VisualizationState {
   density: number;
   arrangement:
@@ -17,7 +19,7 @@ export interface VisualizationState {
     | "glow"
     | "moon"
     | string;
-  animationType: "ripples" | "waves" | "jello" | "banner" | "orbits" | "snake";
+  animationMode: AnimationMode;
   particleSize: number;
   center: [number, number, number];
   rippleCenter: [number, number, number];
@@ -51,7 +53,7 @@ export const preset1: VisualizationState = {
   arrangement: "grid",
   zAxisArrangement: "flat",
   image: "drop",
-  animationType: "ripples",
+  animationMode: "ripples",
   particleSize: 30,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
@@ -80,7 +82,7 @@ export const preset2: VisualizationState = {
   arrangement: "random",
   zAxisArrangement: "wavy",
   image: "moon",
-  animationType: "orbits",
+  animationMode: "orbits",
   particleSize: 50,
   center: [-1.3, 0, 0],
   rippleCenter: [0, 0, 0],
@@ -114,7 +116,7 @@ export const preset3: VisualizationState = {
   arrangement: "random",
   zAxisArrangement: "dome",
   image: "mushroom",
-  animationType: "jello",
+  animationMode: "jello",
   particleSize: 31,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
@@ -146,7 +148,7 @@ export const preset4: VisualizationState = {
   arrangement: "circular",
   zAxisArrangement: "flat",
   image: "feather",
-  animationType: "waves",
+  animationMode: "waves",
   particleSize: 13,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
@@ -180,7 +182,7 @@ export const preset5: VisualizationState = {
   arrangement: "circular",
   zAxisArrangement: "dome",
   image: "mushroom",
-  animationType: "ripples",
+  animationMode: "ripples",
   particleSize: 30,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],

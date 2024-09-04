@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { AnimationType } from "./util/animations";
+import { AnimationMode } from "./util/shaderAnimations";
 import {
   getAnimationShaderChunk,
   getAnimationMainCode,
@@ -34,7 +34,7 @@ interface HexagonParticlesProps {
   color1: string;
   color2: string;
   particleTexture: THREE.Texture | null;
-  animationType: AnimationType;
+  animationMode: AnimationMode;
   innerRadius: number;
   innerScaling: number;
   outerRadius: number;
@@ -59,7 +59,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   color1,
   color2,
   particleTexture,
-  animationType,
+  animationMode,
   innerRadius,
   innerScaling,
   outerRadius,
@@ -145,13 +145,13 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           varying vec2 vUv;
           varying vec3 vPosition;
 
-          ${getAnimationShaderChunk(animationType, positions.length / 3)}
+          ${getAnimationShaderChunk(animationMode, positions.length / 3)}
 
           void main() {
             vUv = uv;
             vec3 pos = position;
 
-            ${getAnimationMainCode(animationType)}
+            ${getAnimationMainCode(animationMode)}
 
             vPosition = pos;
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
@@ -196,7 +196,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         depthTest: depthTestOn,
         blending: THREE.NormalBlending,
       }),
-    [animationType, depthTestOn, density]
+    [animationMode, depthTestOn, density]
   );
 
   useEffect(() => {

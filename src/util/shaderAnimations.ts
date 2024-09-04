@@ -1,10 +1,16 @@
-import { AnimationType } from "./animations";
+export type AnimationMode =
+  | "ripples"
+  | "waves"
+  | "jello"
+  | "banner"
+  | "orbits"
+  | "snake";
 
 export const getAnimationShaderChunk = (
-  animationType: AnimationType,
+  animationMode: AnimationMode,
   particleCount: number = 100
 ): string => {
-  switch (animationType) {
+  switch (animationMode) {
     case "ripples":
       return `
         float animateRipples(vec3 position, float time, vec3 rippleCenter, float magnitude) {
@@ -66,8 +72,8 @@ export const getAnimationShaderChunk = (
   }
 };
 
-export const getAnimationMainCode = (animationType: AnimationType): string => {
-  switch (animationType) {
+export const getAnimationMainCode = (animationMode: AnimationMode): string => {
+  switch (animationMode) {
     case "ripples":
       return `pos.z += animateRipples(position, uTime, uRippleCenter, uAnimationMagnitude);`;
     case "waves":
