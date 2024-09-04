@@ -49,7 +49,7 @@ export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
 ) => void;
 
 export const preset1: VisualizationState = {
-  density: 14,
+  density: 5,
   arrangement: "grid",
   zAxisArrangement: "flat",
   image: "drop",
