@@ -1,7 +1,11 @@
-import React, { useRef, useMemo, useEffect } from "react";
+import React, { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { AnimationType, animateParticles } from "./util/animations";
+import { AnimationType } from "./util/animations";
+import {
+  getAnimationShaderChunk,
+  getAnimationMainCode,
+} from "./util/shaderAnimations";
 
 import {
   getGridParticleData,
@@ -69,6 +73,8 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
 }) => {
   const points = useRef<THREE.Points>(null);
   const { viewport } = useThree();
+  const [resetFlag, setResetFlag] = useState(0);
+
   const uniformsRef = useRef({
     uTime: { value: 0 },
     uSize: { value: particleSize },
@@ -84,10 +90,14 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uInnerScaling: { value: innerScaling },
     uOuterRadius: { value: outerRadius },
     uOuterScaling: { value: outerScaling },
-    uDepthTestOn: { value: depthTestOn },
+    uXMagnitude: { value: xMagnitude },
+    uYMagnitude: { value: yMagnitude },
+    uOrbitInnerRadius: { value: orbitInnerRadius },
+    uOrbitScale: { value: orbitScale },
+    uResetFlag: { value: 0 },
   });
 
-  const { positions, scales, count, originalPositions } = useMemo(() => {
+  const { positions, scales, count } = useMemo(() => {
     let particleData;
     switch (arrangement) {
       case "circular":
@@ -108,62 +118,9 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
       default:
         particleData = getGridParticleData(density, zAxisArrangement);
     }
-    const originalPositions = new Float32Array(particleData.positions);
-    return { ...particleData, originalPositions };
+    setResetFlag((prev) => prev + 1);
+    return particleData;
   }, [density, arrangement, zAxisArrangement]);
-
-  useEffect(() => {
-    if (points.current) {
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(positions, 3)
-      );
-      geometry.setAttribute(
-        "scale",
-        new THREE.Float32BufferAttribute(scales, 1)
-      );
-
-      points.current.geometry.dispose();
-      points.current.geometry = geometry;
-    }
-  }, [density, arrangement, positions, scales, depthTestOn]);
-
-  useFrame((state) => {
-    const { clock } = state;
-    uniformsRef.current.uTime.value = clock.getElapsedTime() * animationSpeed;
-    uniformsRef.current.uSize.value = particleSize;
-    uniformsRef.current.uCenter.value.set(...center);
-    uniformsRef.current.uRippleCenter.value.set(...rippleCenter);
-    uniformsRef.current.uViewport.value.set(viewport.width, viewport.height);
-    uniformsRef.current.uAnimationMagnitude.value = animationMagnitude;
-    uniformsRef.current.uRotation.value = rotation;
-    uniformsRef.current.uColor1.value.set(color1);
-    uniformsRef.current.uColor2.value.set(color2);
-    uniformsRef.current.uInnerRadius.value = innerRadius;
-    uniformsRef.current.uInnerScaling.value = innerScaling;
-    uniformsRef.current.uOuterRadius.value = outerRadius;
-    uniformsRef.current.uOuterScaling.value = outerScaling;
-    uniformsRef.current.uDepthTestOn.value = depthTestOn;
-
-    if (points.current) {
-      const positions = points.current.geometry.attributes.position
-        .array as Float32Array;
-      animateParticles(
-        positions,
-        originalPositions,
-        clock.getElapsedTime() * animationSpeed,
-        animationType,
-        uniformsRef.current.uRippleCenter.value,
-        animationMagnitude,
-        xMagnitude,
-        yMagnitude,
-        orbitInnerRadius,
-        orbitScale
-      );
-      points.current.geometry.attributes.position.needsUpdate = true;
-    }
-  });
 
   const shaderMaterial = useMemo(
     () =>
@@ -179,12 +136,24 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform float uInnerScaling;
           uniform float uOuterRadius;
           uniform float uOuterScaling;
+          uniform float uXMagnitude;
+          uniform float uYMagnitude;
+          uniform float uOrbitInnerRadius;
+          uniform float uOrbitScale;
+          uniform float uResetFlag;
           attribute float scale;
           varying vec2 vUv;
-          
+          varying vec3 vPosition;
+
+          ${getAnimationShaderChunk(animationType, positions.length / 3)}
+
           void main() {
             vUv = uv;
             vec3 pos = position;
+
+            ${getAnimationMainCode(animationType)}
+
+            vPosition = pos;
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
             
@@ -201,20 +170,15 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform float uRotation;
           uniform sampler2D uTexture;
           varying vec2 vUv;
-          
+          varying vec3 vPosition;
+
           void main() {
             vec2 uv = gl_PointCoord * 2.0 - 1.0;
-            
-            // Rotate the UV coordinates
             float s = sin(uRotation);
             float c = cos(uRotation);
             uv = mat2(c, -s, s, c) * uv;
-            
-            // Convert back to 0-1 range
             uv = uv * 0.5 + 0.5;
-            
             vec4 texColor = texture2D(uTexture, uv);
-            
             if (texColor.a < 0.1) discard;
             
             vec2 gradientUv = uv;
@@ -223,7 +187,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             gradientPos = gradientPos * 0.5 + 0.5;
             
             vec3 color = mix(uColor1, uColor2, gradientPos);
-            
             gl_FragColor = vec4(color * texColor.rgb, texColor.a);
           }
         `,
@@ -233,11 +196,52 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         depthTest: depthTestOn,
         blending: THREE.NormalBlending,
       }),
-    [depthTestOn]
+    [animationType, depthTestOn, density]
   );
 
-  // Update the texture uniform when it changes
-  React.useEffect(() => {
+  useEffect(() => {
+    if (points.current) {
+      const geometry = points.current.geometry as THREE.BufferGeometry;
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+      );
+      geometry.setAttribute(
+        "scale",
+        new THREE.Float32BufferAttribute(scales, 1)
+      );
+      geometry.attributes.position.needsUpdate = true;
+      geometry.attributes.scale.needsUpdate = true;
+    }
+  }, [positions, scales]);
+
+  useFrame((state) => {
+    const { clock } = state;
+    uniformsRef.current.uTime.value = clock.getElapsedTime() * animationSpeed;
+    uniformsRef.current.uSize.value = particleSize;
+    uniformsRef.current.uCenter.value.set(...center);
+    uniformsRef.current.uRippleCenter.value.set(...rippleCenter);
+    uniformsRef.current.uViewport.value.set(viewport.width, viewport.height);
+    uniformsRef.current.uAnimationMagnitude.value = animationMagnitude;
+    uniformsRef.current.uRotation.value = rotation;
+    uniformsRef.current.uColor1.value.set(color1);
+    uniformsRef.current.uColor2.value.set(color2);
+    uniformsRef.current.uInnerRadius.value = innerRadius;
+    uniformsRef.current.uInnerScaling.value = innerScaling;
+    uniformsRef.current.uOuterRadius.value = outerRadius;
+    uniformsRef.current.uOuterScaling.value = outerScaling;
+    uniformsRef.current.uXMagnitude.value = xMagnitude;
+    uniformsRef.current.uYMagnitude.value = yMagnitude;
+    uniformsRef.current.uOrbitInnerRadius.value = orbitInnerRadius;
+    uniformsRef.current.uOrbitScale.value = orbitScale;
+    uniformsRef.current.uResetFlag.value = resetFlag;
+
+    if (resetFlag !== 0) {
+      setResetFlag(0);
+    }
+  });
+
+  useEffect(() => {
     if (shaderMaterial) {
       shaderMaterial.uniforms.uTexture.value = particleTexture;
     }
