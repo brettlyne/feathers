@@ -2,7 +2,6 @@ import React from "react";
 
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Slider from "@mui/material/Slider";
@@ -28,13 +27,14 @@ interface ControlsProps {
   setActiveTab: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const SceneControls: React.FC<ControlsProps> = ({
+const ShapeControls: React.FC<ControlsProps> = ({
   state,
   updateState,
   setActiveTab,
 }) => {
   const [shapeTab, setShapeTab] = React.useState("shape");
   const [colorTab, setColorTab] = React.useState("gradient");
+  const [rotationTab, setRotationTab] = React.useState("constant");
 
   const shapes = {
     drop: drop,
@@ -68,21 +68,62 @@ const SceneControls: React.FC<ControlsProps> = ({
       )}
 
       {shapeTab === "rotation" && (
-        <div className="slider-control">
-          <Slider
-            value={state.rotation}
-            valueLabelDisplay="auto"
-            min={0}
-            step={0.01}
-            max={2 * Math.PI}
-            valueLabelFormat={(value) =>
-              `${((value * 180) / Math.PI).toFixed(0)}°`
-            }
-            onChange={(_event, newValue) => {
-              updateState("rotation", newValue as number);
-            }}
-          />
-        </div>
+        <>
+          <div className="tile-control">
+            {["constant", "fieldLinear", "fieldRadial"].map((mode) => (
+              <IconButton
+                className={`text-tile ${
+                  state.rotationMode === mode ? "active" : ""
+                }`}
+                sx={{ padding: 0 }}
+                key={mode}
+                onClick={() => {
+                  updateState(
+                    "rotationMode",
+                    mode as VisualizationState["rotationMode"]
+                  );
+                  setRotationTab(mode);
+                }}
+              >
+                {mode}
+              </IconButton>
+            ))}
+          </div>
+          {rotationTab === "constant" && (
+            <div className="slider-control">
+              <Slider
+                value={state.rotation}
+                valueLabelDisplay="auto"
+                min={0}
+                step={0.01}
+                max={2 * Math.PI}
+                valueLabelFormat={(value) =>
+                  `${((value * 180) / Math.PI).toFixed(0)}°`
+                }
+                onChange={(_event, newValue) => {
+                  updateState("rotation", newValue as number);
+                }}
+              />
+            </div>
+          )}
+          {(rotationTab === "fieldLinear" || rotationTab === "fieldRadial") && (
+            <div className="slider-control">
+              <Slider
+                value={state.rotationRange}
+                valueLabelDisplay="auto"
+                min={0}
+                step={0.01}
+                max={2 * Math.PI}
+                valueLabelFormat={(value) =>
+                  `${((value * 180) / Math.PI).toFixed(0)}°`
+                }
+                onChange={(_event, newValue) => {
+                  updateState("rotationRange", newValue as [number, number]);
+                }}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {shapeTab === "colors" && (
@@ -183,4 +224,4 @@ const SceneControls: React.FC<ControlsProps> = ({
   );
 };
 
-export default SceneControls;
+export default ShapeControls;

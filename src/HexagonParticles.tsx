@@ -32,6 +32,8 @@ interface HexagonParticlesProps {
   rippleCenter: [number, number, number];
   animationMagnitude: number;
   rotation: number;
+  rotationMode: "constant" | "fieldLinear" | "fieldRadial";
+  rotationRange: [number, number];
   color1: string;
   color2: string;
   particleTexture: THREE.Texture | null;
@@ -58,6 +60,8 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   rippleCenter,
   animationMagnitude,
   rotation,
+  rotationMode,
+  rotationRange,
   color1,
   color2,
   particleTexture,
@@ -84,6 +88,15 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uRippleCenter: { value: new THREE.Vector3(...rippleCenter) },
     uAnimationMagnitude: { value: animationMagnitude },
     uRotation: { value: rotation },
+    uRotationMode: {
+      value:
+        rotationMode === "constant"
+          ? 0
+          : rotationMode === "fieldLinear"
+          ? 1
+          : 2,
+    },
+    uRotationRange: { value: new THREE.Vector2(...rotationRange) },
     uColor1: { value: new THREE.Color(color1) },
     uColor2: { value: new THREE.Color(color2) },
     uTexture: { value: particleTexture },
@@ -132,6 +145,9 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           uniform vec3 uCenter;
           uniform vec3 uRippleCenter;
           uniform float uAnimationMagnitude;
+          uniform float uRotation;
+          uniform int uRotationMode;
+          uniform vec2 uRotationRange;
           uniform float uInnerRadius;
           uniform float uInnerScaling;
           uniform float uOuterRadius;
@@ -145,6 +161,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
           varying vec2 vUv;
           varying vec3 vPosition;
           varying float dist;
+          varying float vRotation;
 
           ${getAnimationShaderChunk(animationMode, positions.length / 3)}
 
@@ -163,25 +180,35 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
             float scaleFactor = mix(uInnerScaling, uOuterScaling, t);
 
             gl_PointSize = uSize * scale * scaleFactor * (10. / -mvPosition.z);
+
+            if (uRotationMode == 0) {
+              vRotation = uRotation;
+            } else if (uRotationMode == 1) {
+              float x = (pos.x + 4.0) / 8.0; // Map x from -4 to 4 to 0 to 1
+              vRotation = mix(uRotationRange.x, uRotationRange.y, x);
+            } else {
+              float normalizedDist = dist / uOuterRadius;
+              vRotation = mix(uRotationRange.x, uRotationRange.y, normalizedDist);
+            }
           }
         `,
         fragmentShader: `
           uniform vec3 uColor1;
           uniform vec3 uColor2;
-          uniform float uRotation;
           uniform sampler2D uTexture;
           uniform float uInnerRadius;
           uniform float uOuterRadius;
           varying vec2 vUv;
           varying vec3 vPosition;
           varying float dist;
+          varying float vRotation;
 
           ${getColorShaderChunk(colorMode)}
 
           void main() {
             vec2 uv = gl_PointCoord * 2.0 - 1.0;
-            float s = sin(uRotation);
-            float c = cos(uRotation);
+            float s = sin(vRotation);
+            float c = cos(vRotation);
             uv = mat2(c, -s, s, c) * uv;
             uv = uv * 0.5 + 0.5;
             vec4 texColor = texture2D(uTexture, uv);
@@ -224,6 +251,12 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uniformsRef.current.uRippleCenter.value.set(...rippleCenter);
     uniformsRef.current.uAnimationMagnitude.value = animationMagnitude;
     uniformsRef.current.uRotation.value = rotation;
+    uniformsRef.current.uRotationMode.value =
+      rotationMode === "constant" ? 0 : rotationMode === "fieldLinear" ? 1 : 2;
+    uniformsRef.current.uRotationRange.value.set(
+      rotationRange[0],
+      rotationRange[1]
+    );
     uniformsRef.current.uColor1.value.set(color1);
     uniformsRef.current.uColor2.value.set(color2);
     uniformsRef.current.uInnerRadius.value = innerRadius;

@@ -25,6 +25,8 @@ export interface VisualizationState {
   rippleCenter: [number, number, number];
   animationMagnitude: number;
   rotation: number;
+  rotationMode: "constant" | "fieldLinear" | "fieldRadial";
+  rotationRange: [number, number];
   colorMode: "solid" | "gradient" | "fieldLinear" | "fieldRadial" | "zPosition";
   color1: string;
   color2: string;
@@ -59,6 +61,8 @@ export const preset1: VisualizationState = {
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 0,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "gradient",
   color1: "#ffffff",
   color2: "#ff00ff",
@@ -88,6 +92,8 @@ export const preset2: VisualizationState = {
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 0,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "gradient",
   color1: "#ff3333",
   color2: "#ff00ff",
@@ -122,6 +128,8 @@ export const preset3: VisualizationState = {
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 0,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "gradient",
   color1: "#f3d3a2",
   color2: "#fff7a3",
@@ -154,6 +162,8 @@ export const preset4: VisualizationState = {
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 5.55,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "gradient",
   color1: "#aef7ff",
   color2: "#8cffc1",
@@ -188,6 +198,8 @@ export const preset5: VisualizationState = {
   rippleCenter: [0, 0, 0],
   animationMagnitude: 1.3,
   rotation: 2.8,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "gradient",
   color1: "#fff900",
   color2: "#ff00ff",
@@ -222,6 +234,8 @@ export const preset6: VisualizationState = {
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
   rotation: 0,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "fieldLinear",
   color1: "#7d00ff",
   color2: "#abff50",
@@ -256,6 +270,8 @@ export const preset7: VisualizationState = {
   rippleCenter: [3.6, 5.2, 0],
   animationMagnitude: 1.5,
   rotation: 0,
+  rotationMode: "constant",
+  rotationRange: [0, 0],
   colorMode: "fieldRadial",
   color1: "#ffff00",
   color2: "#ffc8ff",
