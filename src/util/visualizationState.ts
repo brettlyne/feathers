@@ -287,6 +287,41 @@ export const preset7: VisualizationState = {
   ],
 };
 
+const preset8: VisualizationState = {
+  density: 6,
+  arrangement: "staggeredGrid",
+  zAxisArrangement: "valley",
+  image: "drop",
+  animationMode: "snake",
+  particleSize: 51,
+  center: [-2.7, 2.4, 0],
+  rippleCenter: [0, 0, 0],
+  animationMagnitude: 0.5,
+  rotationMode: "fieldLinear",
+  rotationRange: [4.27, 10.04],
+  colorMode: "fieldLinear",
+  color1: "#ff6666",
+  color2: "#ff00ff",
+  bgColor: "#f1ffe5",
+  fov: 80,
+  animationSpeed: -3.7,
+  xMagnitude: 1.4,
+  yMagnitude: 1.2,
+  orbitInnerRadius: 0,
+  orbitScale: 1,
+  innerRadius: 0,
+  innerScaling: 4.1,
+  outerRadius: 5.8,
+  outerScaling: 0.8,
+  depthTestOn: false,
+  cameraMatrix: [
+    0.9965214347044477, 0.07398162990109414, 0.03836337591714531, 0,
+    0.04534133074310554, -0.8675600189821328, 0.49526132212213675, 0,
+    0.06992277097646406, -0.49179907675889406, -0.8678965803585559, 0,
+    1.646953837251463, -5.028587674049912, -6.128943141714856, 1,
+  ],
+};
+
 export const presets = [
   preset1,
   preset2,
@@ -295,4 +330,5 @@ export const presets = [
   preset5,
   preset6,
   preset7,
+  preset8,
 ];

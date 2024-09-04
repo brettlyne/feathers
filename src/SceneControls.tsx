@@ -17,6 +17,7 @@ import preset4img from "/presets/preset-4.png";
 import preset5img from "/presets/preset-5.png";
 import preset6img from "/presets/preset-6.png";
 import preset7img from "/presets/preset-7.png";
+import preset8img from "/presets/preset-8.png";
 
 const presetImages = [
   preset1img,
@@ -26,6 +27,7 @@ const presetImages = [
   preset5img,
   preset6img,
   preset7img,
+  preset8img,
 ];
 
 import {
