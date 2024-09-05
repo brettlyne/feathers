@@ -13,7 +13,7 @@ var URLS = [
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
 
-  `${GHPATH}/assets/index-Co2z5do4.js`,
+  `${GHPATH}/assets/index-D3zjINR7.js`,
   `${GHPATH}/assets/index-rL9jIaf1.css`,
   `${GHPATH}/mushroom.png`,
   `${GHPATH}/cloud.png`,
