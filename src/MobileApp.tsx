@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ArcballControls, Stats } from "@react-three/drei";
+// import { ArcballControls, Stats } from "@react-three/drei";
+import { ArcballControls } from "@react-three/drei";
 import * as THREE from "three";
 import HexagonParticles from "./HexagonParticles";
 import MobileControls from "./MobileControls";
@@ -120,7 +121,7 @@ const App: React.FC = () => {
         updateState={updateVState}
         setVState={setVState}
       />
-      <Stats />
+      {/* <Stats /> */}
     </div>
   );
 };
