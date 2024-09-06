@@ -8,14 +8,6 @@ import Slider from "@mui/material/Slider";
 
 import { HexColorPicker } from "react-colorful";
 
-import drop from "/drop.png";
-import feather from "/feather.png";
-import mushroom from "/mushroom.png";
-import cloud from "/cloud.png";
-import glow from "/glow.png";
-import moon from "/moon.png";
-import coin from "/coin.png";
-
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -37,24 +29,14 @@ const ShapeControls: React.FC<ControlsProps> = ({
   const [rotationTab, setRotationTab] = React.useState("constant");
   const [customImageUrl, setCustomImageUrl] = useState<string | null>(null);
 
-  const shapes = {
-    drop: drop,
-    feather: feather,
-    mushroom: mushroom,
-    cloud: cloud,
-    glow: glow,
-    moon: moon,
-    coin: coin,
-  };
-
   const imagePresets = [
-    "drop",
-    "feather",
-    "mushroom",
-    "cloud",
-    "glow",
-    "moon",
-    "coin",
+    "drop.png",
+    "feather.png",
+    "mushroom.png",
+    "cloud.png",
+    "glow.png",
+    "moon.png",
+    "coin.png",
   ];
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,17 +69,17 @@ const ShapeControls: React.FC<ControlsProps> = ({
             </div>
           )}
           <div className="tile-control">
-            {Object.keys(shapes).map((shape) => (
+            {imagePresets.map((image) => (
               <IconButton
                 sx={{ padding: 0 }}
-                key={shape}
+                key={image}
                 onClick={() => {
-                  updateState("image", shape);
+                  updateState("image", image);
                 }}
               >
                 <img
-                  src={shapes[shape]}
-                  className={`tile ${shape === state.image ? "active" : ""}`}
+                  src={image}
+                  className={`tile ${image === state.image ? "active" : ""}`}
                 />
               </IconButton>
             ))}
@@ -106,7 +88,9 @@ const ShapeControls: React.FC<ControlsProps> = ({
               onClick={() => {
                 updateState("image", customImageUrl || "");
               }}
-              className="tile"
+              className={`tile ${
+                !imagePresets.includes(state.image) ? "active" : ""
+              }`}
             >
               {customImageUrl ? (
                 <img

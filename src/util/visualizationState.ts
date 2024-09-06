@@ -10,15 +10,7 @@ export interface VisualizationState {
     | "random"
     | "hexagon";
   zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone" | "random";
-  image:
-    | "drop"
-    | "mushroom"
-    | "feather"
-    | "cloud"
-    | "coin"
-    | "glow"
-    | "moon"
-    | string;
+  image: string;
   animationMode: AnimationMode;
   particleSize: number;
   center: [number, number, number];
@@ -53,7 +45,7 @@ export const preset1: VisualizationState = {
   density: 5,
   arrangement: "grid",
   zAxisArrangement: "flat",
-  image: "drop",
+  image: "drop.png",
   animationMode: "ripples",
   particleSize: 30,
   center: [0, 0, 0],
@@ -83,7 +75,7 @@ export const preset2: VisualizationState = {
   density: 6.9,
   arrangement: "random",
   zAxisArrangement: "wavy",
-  image: "moon",
+  image: "moon.png",
   animationMode: "orbits",
   particleSize: 50,
   center: [-1.3, 0, 0],
@@ -118,7 +110,7 @@ export const preset3: VisualizationState = {
   density: 5.9,
   arrangement: "random",
   zAxisArrangement: "dome",
-  image: "mushroom",
+  image: "mushroom.png",
   animationMode: "jello",
   particleSize: 31,
   center: [0, 0, 0],
@@ -151,7 +143,7 @@ export const preset4: VisualizationState = {
   density: 6.5,
   arrangement: "circular",
   zAxisArrangement: "flat",
-  image: "feather",
+  image: "feather.png",
   animationMode: "waves",
   particleSize: 13,
   center: [0, 0, 0],
@@ -186,7 +178,7 @@ export const preset5: VisualizationState = {
   density: 6.1,
   arrangement: "circular",
   zAxisArrangement: "dome",
-  image: "mushroom",
+  image: "mushroom.png",
   animationMode: "ripples",
   particleSize: 30,
   center: [0, 0, 0],
@@ -221,7 +213,7 @@ export const preset6: VisualizationState = {
   density: 5,
   arrangement: "circular",
   zAxisArrangement: "cone",
-  image: "moon",
+  image: "moon.png",
   animationMode: "jello",
   particleSize: 30,
   center: [4.2, 0, 0],
@@ -256,7 +248,7 @@ export const preset7: VisualizationState = {
   density: 5,
   arrangement: "hexagon",
   zAxisArrangement: "wavy",
-  image: "mushroom",
+  image: "mushroom.png",
   animationMode: "ripples",
   particleSize: 30,
   center: [2.2, 3.4, 0],
@@ -291,7 +283,7 @@ const preset8: VisualizationState = {
   density: 6,
   arrangement: "staggeredGrid",
   zAxisArrangement: "valley",
-  image: "drop",
+  image: "drop.png",
   animationMode: "snake",
   particleSize: 51,
   center: [-2.7, 2.4, 0],

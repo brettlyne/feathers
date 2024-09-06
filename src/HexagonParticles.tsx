@@ -284,6 +284,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
 
   useEffect(() => {
     const loadTexture = (src: string) => {
+      if (!src) return;
       const loader = new THREE.TextureLoader();
       loader.load(
         src,
@@ -298,14 +299,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         }
       );
     };
-
-    if (image.startsWith("data:")) {
-      // It's a custom image (data URL)
-      loadTexture(image);
-    } else {
-      // It's a predefined image
-      loadTexture(`${image}.png`);
-    }
+    loadTexture(image);
   }, [image]);
 
   return (
