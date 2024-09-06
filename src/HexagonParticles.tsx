@@ -35,7 +35,6 @@ interface HexagonParticlesProps {
   rotationRange: [number, number];
   color1: string;
   color2: string;
-  particleTexture: THREE.Texture | null;
   animationMode: AnimationMode;
   colorMode: ColorMode;
   innerRadius: number;
@@ -48,6 +47,7 @@ interface HexagonParticlesProps {
   orbitInnerRadius: number;
   orbitScale: number;
   depthTestOn: boolean;
+  image: string;
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
@@ -62,7 +62,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   rotationRange,
   color1,
   color2,
-  particleTexture,
   animationMode,
   colorMode,
   innerRadius,
@@ -75,9 +74,13 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   orbitInnerRadius,
   orbitScale,
   depthTestOn,
+  image,
 }) => {
   const points = useRef<THREE.Points>(null);
   const [resetFlag, setResetFlag] = useState(0);
+  const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
+    null
+  );
 
   const uniformsRef = useRef({
     uTime: { value: 0 },
@@ -93,7 +96,6 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uRotationRange: { value: new THREE.Vector2(...rotationRange) },
     uColor1: { value: new THREE.Color(color1) },
     uColor2: { value: new THREE.Color(color2) },
-    uTexture: { value: particleTexture },
     uInnerRadius: { value: innerRadius },
     uInnerScaling: { value: innerScaling },
     uOuterRadius: { value: outerRadius },
@@ -103,6 +105,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
     uOrbitInnerRadius: { value: orbitInnerRadius },
     uOrbitScale: { value: orbitScale },
     uResetFlag: { value: 0 },
+    uTexture: { value: null as THREE.Texture | null },
   });
 
   const { positions, scales, count } = useMemo(() => {
@@ -278,6 +281,32 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
       shaderMaterial.uniforms.uTexture.value = particleTexture;
     }
   }, [particleTexture, shaderMaterial]);
+
+  useEffect(() => {
+    const loadTexture = (src: string) => {
+      const loader = new THREE.TextureLoader();
+      loader.load(
+        src,
+        (texture) => {
+          texture.flipY = false;
+          setParticleTexture(texture);
+          uniformsRef.current.uTexture.value = texture;
+        },
+        undefined,
+        (error) => {
+          console.error("Error loading texture:", error);
+        }
+      );
+    };
+
+    if (image.startsWith("data:")) {
+      // It's a custom image (data URL)
+      loadTexture(image);
+    } else {
+      // It's a predefined image
+      loadTexture(`${image}.png`);
+    }
+  }, [image]);
 
   return (
     <points ref={points}>

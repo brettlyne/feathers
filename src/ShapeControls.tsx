@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -35,6 +35,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
   const [shapeTab, setShapeTab] = React.useState("shape");
   const [colorTab, setColorTab] = React.useState("gradient");
   const [rotationTab, setRotationTab] = React.useState("constant");
+  const [customImageUrl, setCustomImageUrl] = useState<string | null>(null);
 
   const shapes = {
     drop: drop,
@@ -46,25 +47,83 @@ const ShapeControls: React.FC<ControlsProps> = ({
     coin: coin,
   };
 
+  const imagePresets = [
+    "drop",
+    "feather",
+    "mushroom",
+    "cloud",
+    "glow",
+    "moon",
+    "coin",
+  ];
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result;
+        if (typeof result === "string") {
+          setCustomImageUrl(result);
+          updateState("image", result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <>
       {shapeTab === "shape" && (
-        <div className="tile-control">
-          {Object.keys(shapes).map((shape) => (
-            <IconButton
-              sx={{ padding: 0 }}
-              key={shape}
-              onClick={() => {
-                updateState("image", shape);
-              }}
-            >
-              <img
-                src={shapes[shape]}
-                className={`tile ${shape === state.image ? "active" : ""}`}
+        <>
+          {!imagePresets.includes(state.image) && (
+            <div className="file-input-container">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="file-input"
               />
+            </div>
+          )}
+          <div className="tile-control">
+            {Object.keys(shapes).map((shape) => (
+              <IconButton
+                sx={{ padding: 0 }}
+                key={shape}
+                onClick={() => {
+                  updateState("image", shape);
+                }}
+              >
+                <img
+                  src={shapes[shape]}
+                  className={`tile ${shape === state.image ? "active" : ""}`}
+                />
+              </IconButton>
+            ))}
+            <IconButton
+              sx={{ padding: 0, fontSize: "1.2rem", lineHeight: "1.6rem" }}
+              onClick={() => {
+                updateState("image", customImageUrl || "");
+              }}
+              className="tile"
+            >
+              {customImageUrl ? (
+                <img
+                  src={customImageUrl}
+                  alt="Custom"
+                  className="preview-image"
+                />
+              ) : (
+                <>
+                  upload
+                  <br />
+                  image
+                </>
+              )}
             </IconButton>
-          ))}
-        </div>
+          </div>
+        </>
       )}
 
       {shapeTab === "rotation" && (

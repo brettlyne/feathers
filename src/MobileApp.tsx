@@ -34,9 +34,6 @@ const CameraController = ({
 };
 
 const App: React.FC = () => {
-  const [particleTexture, setParticleTexture] = useState<THREE.Texture | null>(
-    null
-  );
   const [vState, setVState] = useState<VisualizationState>(preset1);
   // @ts-expect-error TS2749
   const controlsRef = useRef<ArcballControls>(null);
@@ -59,14 +56,6 @@ const App: React.FC = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [vState]);
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    loader.load(`./${vState.image}.png`, (texture) => {
-      texture.flipY = false;
-      setParticleTexture(texture);
-    });
-  }, [vState.image]);
 
   const handleControlsChange = () => {
     if (controlsRef.current && controlsRef.current.camera) {
@@ -108,7 +97,7 @@ const App: React.FC = () => {
               fov={vState.fov}
               cameraMatrix={vState.cameraMatrix}
             />
-            <HexagonParticles particleTexture={particleTexture} {...vState} />
+            <HexagonParticles {...vState} />
             <ArcballControls
               ref={controlsRef}
               onChange={handleControlsChange}
