@@ -59,13 +59,8 @@ const ShapeControls: React.FC<ControlsProps> = ({
       {shapeTab === "shape" && (
         <>
           {!imagePresets.includes(state.image) && (
-            <div className="file-input-container">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                className="file-input"
-              />
+            <div style={{ padding: "12px 16px 8px 16px" }}>
+              <input type="file" accept="image/*" onChange={handleFileUpload} />
             </div>
           )}
           <div className="tile-control">
