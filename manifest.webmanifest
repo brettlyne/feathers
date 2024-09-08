@@ -1,17 +1,1 @@
-{
-  "name": "Feathers",
-  "short_name": "Feathers",
-  "description": "Feathers Visualization as a Progressive Web App",
-  "scope": "/feathers/",
-  "start_url": "/feathers/",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "display": "standalone",
-  "icons": [
-    {
-      "src": "/feathers/featherIcon600.png",
-      "type": "image/png",
-      "sizes": "600x600"
-    }
-  ]
-}
+{"name":"Feathers","short_name":"Feathers","start_url":"/feathers/","display":"standalone","background_color":"#ffffff","lang":"en","scope":"/feathers/","description":"Feathers Visualization as a Progressive Web App","theme_color":"#ffffff","icons":[{"src":"/feathers/featherIcon600.png","type":"image/png","sizes":"600x600"}]}
