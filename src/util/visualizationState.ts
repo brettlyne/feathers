@@ -21,7 +21,12 @@ export interface VisualizationState {
   colorMode: "solid" | "gradient" | "fieldLinear" | "fieldRadial" | "zPosition";
   color1: string;
   color2: string;
-  bgColor: string;
+  background: {
+    type: "solid" | "gradient" | "preset" | "custom";
+    color?: string; // for solid
+    colors?: string[]; // for gradient
+    value?: number | string; // for preset or custom
+  };
   fov: number;
   animationSpeed: number;
   xMagnitude: number;
@@ -56,7 +61,7 @@ export const preset1: VisualizationState = {
   colorMode: "gradient",
   color1: "#ffffff",
   color2: "#ff00ff",
-  bgColor: "#f0f0f0",
+  background: { type: "solid", color: "#f0f0f0" },
   fov: 75,
   animationSpeed: 1,
   xMagnitude: 1,
@@ -86,7 +91,7 @@ export const preset2: VisualizationState = {
   colorMode: "gradient",
   color1: "#ff3333",
   color2: "#ff00ff",
-  bgColor: "#333f69",
+  background: { type: "solid", value: "#333f69" },
   fov: 55,
   animationSpeed: 1,
   xMagnitude: 0.8,
@@ -121,7 +126,7 @@ export const preset3: VisualizationState = {
   colorMode: "gradient",
   color1: "#f3d3a2",
   color2: "#fff7a3",
-  bgColor: "#f4e8c9",
+  background: { type: "solid", value: "#f4e8c9" },
   fov: 75,
   animationSpeed: 0.3,
   xMagnitude: 1.1,
@@ -154,7 +159,7 @@ export const preset4: VisualizationState = {
   colorMode: "gradient",
   color1: "#aef7ff",
   color2: "#8cffc1",
-  bgColor: "#240e34",
+  background: { type: "solid", value: "#240e34" },
   fov: 117,
   animationSpeed: 0.8,
   xMagnitude: 0.3,
@@ -189,7 +194,7 @@ export const preset5: VisualizationState = {
   colorMode: "gradient",
   color1: "#fff900",
   color2: "#ff00ff",
-  bgColor: "#f0f0f0",
+  background: { type: "solid", value: "#f0f0f0" },
   fov: 97,
   animationSpeed: 0.4,
   xMagnitude: 1,
@@ -224,7 +229,7 @@ export const preset6: VisualizationState = {
   colorMode: "fieldLinear",
   color1: "#7d00ff",
   color2: "#abff50",
-  bgColor: "#140620",
+  background: { type: "solid", value: "#140620" },
   fov: 127,
   animationSpeed: 0.4,
   xMagnitude: 1,
@@ -259,7 +264,7 @@ export const preset7: VisualizationState = {
   colorMode: "fieldRadial",
   color1: "#ffff00",
   color2: "#ffc8ff",
-  bgColor: "#cacee5",
+  background: { type: "solid", value: "#cacee5" },
   fov: 75,
   animationSpeed: 0.6,
   xMagnitude: 1,
@@ -294,7 +299,7 @@ const preset8: VisualizationState = {
   colorMode: "fieldLinear",
   color1: "#ff6666",
   color2: "#ff00ff",
-  bgColor: "#f1ffe5",
+  background: { type: "solid", value: "#f1ffe5" },
   fov: 80,
   animationSpeed: -3.7,
   xMagnitude: 1.4,

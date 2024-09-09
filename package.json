@@ -18,6 +18,7 @@
     "@mui/material": "^5.16.7",
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",
+    "chroma-js": "^3.1.1",
     "framer-motion": "^11.3.28",
     "gh-pages": "^6.1.1",
     "rc-input-number": "^9.2.0",
