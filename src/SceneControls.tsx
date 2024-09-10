@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import ScienceIcon from "@mui/icons-material/Science";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -11,6 +12,7 @@ import chroma from "chroma-js";
 
 import { HexColorPicker } from "react-colorful";
 
+import { bgPresets, getCssFromBgState } from "./util/backgroundHelper";
 import preset1img from "/presets/preset-1.png";
 import preset2img from "/presets/preset-2.png";
 import preset3img from "/presets/preset-3.png";
@@ -57,24 +59,12 @@ const SceneControls: React.FC<ControlsProps> = ({
 
   const [initialBgState, setInitialBgState] = React.useState(state.background); // for reset
 
-  const bgPresets = [
-    "radial-gradient(circle at 50% 110%, #f7ff0a, #ff9132, #e32968, #77107b)",
-    "linear-gradient(75deg, #ffe799, #ffa172, #ff61b5)",
-    "linear-gradient(225deg, #ffe5ce, #ffb4b1, #e589ca, #9c71f2)",
-    "radial-gradient(120% 150% at 100% 0%, #FFEDED 0%, #FFF1E4 25%, #E1F1E4 50%, #EADEF7 75%, #EFDBF2 100%)",
-    "linear-gradient(225deg, #f1ff56, #66d788, #009e96, #0a607b)",
-    "linear-gradient(195deg, #8b2482, #55246d, #271c4e, #050b2b)",
-    "linear-gradient(150deg, #9da6be, #707a94, #44516e, #142b4e)",
-    "radial-gradient(90% 100% at 50% 100%, #737373 0%, #A8ACBC 100%)",
-    "conic-gradient(from 180deg at 50% 120%, #e85907, #ec553f, #fd41ba, #65a6ff, #00dda7, #5cde53, #6ede42)",
-    "conic-gradient(from 45deg at 70% -10%, #fff700, #c4f74d, #158be2, #670825, #590000)",
-  ];
-
   const changeBackgroundMode = (
     mode: "solid" | "gradient" | "preset" | "custom" | string
   ) => {
     if (mode === "custom") {
-      // updateState("background", { type: "custom" });
+      const css = getCssFromBgState(state.background);
+      updateState("background", { type: "custom", value: css });
       return;
     }
     if (mode === initialBgState.type) {
@@ -197,6 +187,35 @@ const SceneControls: React.FC<ControlsProps> = ({
                   key={i}
                 />
               ))}
+            </div>
+          )}
+
+          {backgroundTab === "custom" && (
+            <div
+              className="double-color-control"
+              style={{ background: "#363636" }}
+            >
+              <TextField
+                multiline
+                value={state.background.value}
+                onChange={(e) => {
+                  updateState("background", {
+                    type: "custom",
+                    value: e.target.value,
+                  });
+                }}
+                sx={{
+                  width: "100%",
+                }}
+                size="small"
+                inputProps={{
+                  style: {
+                    fontFamily: `'Roboto Mono', 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace`,
+                    fontSize: ".8rem",
+                    lineHeight: "1.2rem",
+                  },
+                }}
+              />
             </div>
           )}
 

@@ -3,8 +3,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 // import { ArcballControls, Stats } from "@react-three/drei";
 import { ArcballControls } from "@react-three/drei";
 import * as THREE from "three";
-import chroma from "chroma-js";
 
+import { getCssFromBgState } from "./util/backgroundHelper";
 import HexagonParticles from "./HexagonParticles";
 import MobileControls from "./MobileControls";
 import "./mobile.css";
@@ -69,22 +69,9 @@ const App: React.FC = () => {
 
   // update background on state change
   useEffect(() => {
-    let steps, colors;
-    switch (vState.background.type) {
-      case "solid":
-        setBgCSS(vState.background.color || "#f0f0f0");
-        break;
-      case "gradient":
-        colors = vState.background.colors;
-        steps = chroma.scale([colors[0], colors[1]]).mode("hsl").colors(4);
-        setBgCSS(`linear-gradient(0deg, ${steps.join(", ")})`);
-        break;
-      case "preset":
-      case "custom":
-        setBgCSS(String(vState.background.value) || "#f0f0f0");
-        break;
-    }
+    setBgCSS(getCssFromBgState(vState.background));
   }, [
+    vState.background,
     vState.background.type,
     vState.background.color,
     vState.background.colors,
