@@ -67,22 +67,6 @@ const App: React.FC = () => {
     }
   };
 
-  // const generateBackground = () => {
-  //   let steps, colors;
-  //   switch (vState.background.type) {
-  //     case "solid":
-  //       return vState.background.color || "#f0f0f0";
-  //     case "custom":
-  //       return vState.background.value || "#f0f0f0";
-  //     case "gradient":
-  //       colors = vState.background.colors;
-  //       steps = chroma.scale([colors[0], colors[1]]).mode("hsl").colors(4);
-  //       return `linear-gradient(0deg, ${steps.join(", ")})`;
-  //     case "preset":
-  //       return bgPresets[vState.background.value || 0];
-  //   }
-  // };
-
   // update background on state change
   useEffect(() => {
     const bgPresets = [
@@ -109,11 +93,9 @@ const App: React.FC = () => {
       case "gradient":
         colors = vState.background.colors;
         steps = chroma.scale([colors[0], colors[1]]).mode("hsl").colors(4);
-        // return `linear-gradient(0deg, ${steps.join(", ")})`;
         setBgCSS(`linear-gradient(0deg, ${steps.join(", ")})`);
         break;
       case "preset":
-        // return bgPresets[vState.background.value || 0];
         setBgCSS(bgPresets[vState.background.value || 0]);
         break;
     }
