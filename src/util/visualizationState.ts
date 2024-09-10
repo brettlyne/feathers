@@ -25,7 +25,7 @@ export interface VisualizationState {
     type: "solid" | "gradient" | "preset" | "custom";
     color?: string; // for solid
     colors?: string[]; // for gradient
-    value?: number | string; // for preset or custom
+    value?: string; // for preset or custom
   };
   fov: number;
   animationSpeed: number;

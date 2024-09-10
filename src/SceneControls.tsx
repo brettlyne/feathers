@@ -83,7 +83,6 @@ const SceneControls: React.FC<ControlsProps> = ({
     }
     const gradientStart =
       state.background.color || initialBgState.color || "#615438";
-    console.log("gs", gradientStart);
     const gradientEnd =
       chroma(gradientStart).luminance() > 0.8
         ? chroma(gradientStart).darken(2).hex()
@@ -95,7 +94,7 @@ const SceneControls: React.FC<ControlsProps> = ({
       },
       custom: { type: "custom", value: "#888888" },
       gradient: { type: "gradient", colors: [gradientStart, gradientEnd] },
-      preset: { type: "preset", value: 0 },
+      preset: { type: "preset", value: bgPresets[0] },
     };
 
     updateState("background", bgDefaults[mode]);
@@ -185,10 +184,15 @@ const SceneControls: React.FC<ControlsProps> = ({
                     height: 80,
                     borderRadius: 0.2,
                     outline:
-                      state.background.value === i ? "2px solid white" : "",
+                      state.background.value === preset
+                        ? "2px solid white"
+                        : "",
                   }}
                   onClick={() => {
-                    updateState("background", { type: "preset", value: i });
+                    updateState("background", {
+                      type: "preset",
+                      value: preset,
+                    });
                   }}
                   key={i}
                 />
