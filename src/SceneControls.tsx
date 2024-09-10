@@ -3,10 +3,11 @@ import React from "react";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ScienceIcon from "@mui/icons-material/Science";
-
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Slider from "@mui/material/Slider";
+
+import chroma from "chroma-js";
 
 import { HexColorPicker } from "react-colorful";
 
@@ -50,6 +51,56 @@ const SceneControls: React.FC<ControlsProps> = ({
   setVState,
 }) => {
   const [sceneTab, setSceneTab] = React.useState("presets");
+  const [backgroundTab, setBackgroundTab] = React.useState(
+    state.background.type
+  );
+
+  const initialBgState = React.useRef(state.background); // for reset
+
+  const bgPresets = [
+    "radial-gradient(circle at 50% 110%, #f7ff0a, #ff9132, #e32968, #77107b)",
+    "linear-gradient(75deg, #ffe799, #ffa172, #ff61b5)",
+    "linear-gradient(225deg, #ffe5ce, #ffb4b1, #e589ca, #9c71f2)",
+    "radial-gradient(120% 150% at 100% 0%, #FFEDED 0%, #FFF1E4 25%, #E1F1E4 50%, #EADEF7 75%, #EFDBF2 100%)",
+    "linear-gradient(225deg, #f1ff56, #66d788, #009e96, #0a607b)",
+    "linear-gradient(195deg, #8b2482, #55246d, #271c4e, #050b2b)",
+    "linear-gradient(150deg, #9da6be, #707a94, #44516e, #142b4e)",
+    "radial-gradient(90% 100% at 50% 100%, #737373 0%, #A8ACBC 100%)",
+    "conic-gradient(from 180deg at 50% 120%, #e85907, #ec553f, #fd41ba, #65a6ff, #00dda7, #5cde53, #6ede42)",
+    "conic-gradient(from 45deg at 70% -10%, #fff700, #c4f74d, #158be2, #670825, #590000)",
+  ];
+
+  const changeBackgroundMode = (
+    mode: "solid" | "gradient" | "preset" | "custom" | string
+  ) => {
+    if (mode === "custom") {
+      // updateState("background", { type: "custom" });
+      return;
+    }
+    if (mode === initialBgState.current.type) {
+      updateState("background", initialBgState.current);
+      return;
+    }
+    const gradientStart =
+      state.background.color || initialBgState.current.color || "#615438";
+    console.log("gs", gradientStart);
+    const gradientEnd =
+      chroma(gradientStart).luminance() > 0.8
+        ? chroma(gradientStart).darken(2).hex()
+        : chroma(gradientStart).brighten(2).hex();
+    const bgDefaults = {
+      solid: {
+        type: "solid",
+        color:
+          state.background.color || initialBgState.current.color || "#333f69",
+      },
+      custom: { type: "custom", value: "#888888" },
+      gradient: { type: "gradient", colors: [gradientStart, gradientEnd] },
+      preset: { type: "preset", value: 0 },
+    };
+
+    updateState("background", bgDefaults[mode]);
+  };
 
   return (
     <>
@@ -67,14 +118,96 @@ const SceneControls: React.FC<ControlsProps> = ({
         </div>
       )}
       {sceneTab === "background" && (
-        <div className="color-control">
-          <HexColorPicker
-            color={state.bgColor}
-            onChange={(newColor) => {
-              updateState("bgColor", newColor);
+        <>
+          {backgroundTab === "solid" && (
+            <div
+              className="double-color-control"
+              style={{ background: "#363636" }}
+            >
+              <HexColorPicker
+                color={state.background.color}
+                onChange={(newColor) => {
+                  updateState("background", {
+                    type: "solid",
+                    color: newColor,
+                  });
+                }}
+              />
+            </div>
+          )}
+
+          {backgroundTab === "gradient" && (
+            <div
+              className="double-color-control"
+              style={{ background: "#363636" }}
+            >
+              <HexColorPicker
+                color={state.background.colors?.[0] ?? ""}
+                onChange={(newColor) => {
+                  updateState("background", {
+                    type: "gradient",
+                    colors: [newColor, state.background.colors?.[1] ?? ""],
+                  });
+                }}
+              />
+              <HexColorPicker
+                color={state.background.colors?.[1] ?? ""}
+                onChange={(newColor) => {
+                  updateState("background", {
+                    type: "gradient",
+                    colors: [state.background.colors?.[0] ?? "", newColor],
+                  });
+                }}
+              />
+            </div>
+          )}
+
+          {backgroundTab === "preset" && (
+            <div
+              style={{
+                background: "#363636",
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gridTemplateRows: "repeat(2, 1fr)",
+                gridColumnGap: "12px",
+                gridRowGap: "12px",
+                padding: "12px",
+              }}
+            >
+              {bgPresets.map((preset, i) => (
+                <IconButton
+                  sx={{
+                    padding: 0,
+                    background: preset,
+                    height: 80,
+                    borderRadius: 0.2,
+                    outline:
+                      state.background.value === i ? "2px solid white" : "",
+                  }}
+                  onClick={() => {
+                    updateState("background", { type: "preset", value: i });
+                  }}
+                  key={i}
+                />
+              ))}
+            </div>
+          )}
+
+          <Tabs
+            value={backgroundTab}
+            onChange={(_event, newValue) => {
+              changeBackgroundMode(newValue);
+              setBackgroundTab(newValue);
             }}
-          />
-        </div>
+            variant="scrollable"
+            sx={{ bgcolor: "#363636" }}
+          >
+            <Tab label="Solid" value="solid" />
+            <Tab label="Gradient" value="gradient" />
+            <Tab label="Presets" value="preset" />
+            <Tab label="Custom" value="custom" />
+          </Tabs>
+        </>
       )}
       {sceneTab === "fov" && (
         <div className="slider-control">
