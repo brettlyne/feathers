@@ -55,7 +55,7 @@ const SceneControls: React.FC<ControlsProps> = ({
     state.background.type
   );
 
-  const initialBgState = React.useRef(state.background); // for reset
+  const [initialBgState, setInitialBgState] = React.useState(state.background); // for reset
 
   const bgPresets = [
     "radial-gradient(circle at 50% 110%, #f7ff0a, #ff9132, #e32968, #77107b)",
@@ -77,12 +77,12 @@ const SceneControls: React.FC<ControlsProps> = ({
       // updateState("background", { type: "custom" });
       return;
     }
-    if (mode === initialBgState.current.type) {
-      updateState("background", initialBgState.current);
+    if (mode === initialBgState.type) {
+      updateState("background", initialBgState);
       return;
     }
     const gradientStart =
-      state.background.color || initialBgState.current.color || "#615438";
+      state.background.color || initialBgState.color || "#615438";
     console.log("gs", gradientStart);
     const gradientEnd =
       chroma(gradientStart).luminance() > 0.8
@@ -91,8 +91,7 @@ const SceneControls: React.FC<ControlsProps> = ({
     const bgDefaults = {
       solid: {
         type: "solid",
-        color:
-          state.background.color || initialBgState.current.color || "#333f69",
+        color: state.background.color || initialBgState.color || "#333f69",
       },
       custom: { type: "custom", value: "#888888" },
       gradient: { type: "gradient", colors: [gradientStart, gradientEnd] },
@@ -109,7 +108,11 @@ const SceneControls: React.FC<ControlsProps> = ({
           {presets.map((preset, i) => (
             <IconButton
               sx={{ padding: 0 }}
-              onClick={() => setVState(preset)}
+              onClick={() => {
+                setVState(preset);
+                setBackgroundTab(preset.background.type);
+                setInitialBgState(preset.background);
+              }}
               key={i}
             >
               <img src={presetImages[i]} className="tile" />
