@@ -16,7 +16,7 @@ export const bgPresets = [
 
 export const getCssFromBgState = (
   bgState: VisualizationState["background"]
-): string => {
+) => {
   let colors, steps;
   switch (bgState.type) {
     case "solid":
