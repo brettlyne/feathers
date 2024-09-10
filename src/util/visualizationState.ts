@@ -16,7 +16,7 @@ export interface VisualizationState {
   center: [number, number, number];
   rippleCenter: [number, number, number];
   animationMagnitude: number;
-  rotationMode: "constant" | "fieldLinear" | "fieldRadial";
+  rotationMode: "constant" | "fieldLinear" | "fieldRadial" | "zPosition";
   rotationRange: [number, number];
   colorMode: "solid" | "gradient" | "fieldLinear" | "fieldRadial" | "zPosition";
   color1: string;
@@ -47,33 +47,41 @@ export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
 ) => void;
 
 export const preset1: VisualizationState = {
-  density: 5,
-  arrangement: "grid",
-  zAxisArrangement: "flat",
+  density: 5.1,
+  arrangement: "spiral",
+  zAxisArrangement: "dome",
   image: "drop.png",
   animationMode: "ripples",
   particleSize: 30,
   center: [0, 0, 0],
   rippleCenter: [0, 0, 0],
-  animationMagnitude: 0.5,
+  animationMagnitude: 0.9,
   rotationMode: "constant",
   rotationRange: [0, 0],
-  colorMode: "gradient",
-  color1: "#ffffff",
-  color2: "#ff00ff",
-  background: { type: "solid", color: "#f0f0f0" },
-  fov: 75,
-  animationSpeed: 1,
+  colorMode: "fieldRadial",
+  color1: "#ff1cc0",
+  color2: "#ca7dff",
+  background: {
+    type: "gradient",
+    colors: ["#e5a4eb", "#e6dfee"],
+  },
+  fov: 84,
+  animationSpeed: 0.6,
   xMagnitude: 1,
   yMagnitude: 1,
   orbitInnerRadius: 0,
   orbitScale: 1,
   innerRadius: 0,
-  innerScaling: 1,
-  outerRadius: 4,
-  outerScaling: 1,
+  innerScaling: 0.9,
+  outerRadius: 6.1,
+  outerScaling: 1.8,
   depthTestOn: true,
-  cameraMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 18, 1],
+  cameraMatrix: [
+    0.9699296371008498, -0.11878182646655928, 0.21243205213591745, 0,
+    -0.12069903413308679, 0.5231822557192686, 0.8436302925214556, 0,
+    -0.21134862723175887, -0.8439023669843343, 0.49311312370031674, 0,
+    -3.0534246560189118, -11.982744001058986, 7.094776220115797, 1,
+  ],
 };
 
 export const preset2: VisualizationState = {
@@ -319,13 +327,51 @@ const preset8: VisualizationState = {
   ],
 };
 
+const preset9: VisualizationState = {
+  density: 7.3,
+  arrangement: "hexagon",
+  zAxisArrangement: "random",
+  image: "feather.png",
+  animationMode: "snake",
+  particleSize: 30,
+  center: [-7.7, 1.6, 0],
+  rippleCenter: [0, 0, 0],
+  animationMagnitude: 0.5,
+  rotationMode: "zPosition",
+  rotationRange: [0.23, 10.1],
+  colorMode: "solid",
+  color1: "#000000",
+  color2: "#000000",
+  background: {
+    type: "gradient",
+    colors: ["#000000", "#4f6178"],
+  },
+  fov: 122,
+  animationSpeed: -3.6,
+  xMagnitude: 4.6,
+  yMagnitude: 3.3,
+  orbitInnerRadius: 0,
+  orbitScale: 1,
+  innerRadius: 1.4,
+  innerScaling: 2.8,
+  outerRadius: 10,
+  outerScaling: 1,
+  depthTestOn: false,
+  cameraMatrix: [
+    0.1100246386542695, 0.7608254084310463, -0.6395617849549217, 0,
+    0.9915560727870716, -0.1284557622857387, 0.0177671510005506, 0,
+    -0.0686376966985623, -0.6361161961633438, -0.768534352889056, 0,
+    -1.1622267780155604, -4.79632048553994, -3.5616598616195048, 1,
+  ],
+};
+
 export const presets = [
   preset1,
   preset2,
   preset3,
   preset4,
   preset5,
-  preset6,
   preset7,
   preset8,
+  preset9,
 ];
