@@ -200,10 +200,10 @@ const ShapeControls: React.FC<ControlsProps> = ({
               sx={{ bgcolor: "#363636" }}
             >
               <Tab label="Solid" value="solid" />
-              <Tab label="Gradient" value="gradient" />
-              <Tab label="Field linear" value="fieldLinear" />
-              <Tab label="Field radial" value="fieldRadial" />
-              <Tab label="Z position" value="zPosition" />
+              <Tab label="Two-color" value="gradient" />
+              <Tab label="Gradient" value="fieldLinear" />
+              <Tab label="Radial Gradient" value="fieldRadial" />
+              <Tab label="Z Position" value="zPosition" />
             </Tabs>
           </div>
         </>
