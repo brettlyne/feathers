@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-// import { ArcballControls, Stats } from "@react-three/drei";
-import { ArcballControls } from "@react-three/drei";
+import { ArcballControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
 
 import { getCssFromBgState } from "./util/backgroundHelper";
@@ -116,6 +115,7 @@ const App: React.FC = () => {
               ref={controlsRef}
               onChange={handleControlsChange}
             />
+            {vState.statsOn && <Stats />}
           </Canvas>
         </div>
       </div>
@@ -124,7 +124,6 @@ const App: React.FC = () => {
         updateState={updateVState}
         setVState={setVState}
       />
-      {/* <Stats /> */}
     </div>
   );
 };

@@ -3,7 +3,6 @@ import React from "react";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
-import ScienceIcon from "@mui/icons-material/Science";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Slider from "@mui/material/Slider";
@@ -100,7 +99,7 @@ const SceneControls: React.FC<ControlsProps> = ({
             <IconButton
               sx={{ padding: 0 }}
               onClick={() => {
-                setVState(preset);
+                setVState({ ...preset, statsOn: state.statsOn });
                 setBackgroundTab(preset.background.type);
                 setInitialBgState(preset.background);
               }}
@@ -281,6 +280,32 @@ const SceneControls: React.FC<ControlsProps> = ({
           </div>
         </>
       )}
+
+      {sceneTab === "stats" && (
+        <>
+          <div className="tile-control">
+            <IconButton
+              className={`text-tile ${state.statsOn ? "active" : ""}`}
+              sx={{ padding: 0 }}
+              onClick={() => {
+                updateState("statsOn", true);
+              }}
+            >
+              on
+            </IconButton>
+            <IconButton
+              className={`text-tile ${state.statsOn ? "" : "active"}`}
+              sx={{ padding: 0 }}
+              onClick={() => {
+                updateState("statsOn", false);
+              }}
+            >
+              off
+            </IconButton>
+          </div>
+        </>
+      )}
+
       <div className="tabs">
         <Tabs
           value={sceneTab}
@@ -292,13 +317,9 @@ const SceneControls: React.FC<ControlsProps> = ({
           <Tab label="Presets" value="presets" />
           <Tab label="Background" value="background" />
           <Tab label="Field of View" value="fov" />
-          <Tab
-            icon={<ScienceIcon />}
-            iconPosition="start"
-            label="Depth Test"
-            value="depthTest"
-            sx={{ minHeight: "unset" }}
-          />
+          <Tab label="Depth Test" value="depthTest" />
+          <Tab label="Interactive Camera" value="interactiveCamera" />
+          <Tab label="Stats" value="stats" />
         </Tabs>
       </div>
       <div className="solo-button">

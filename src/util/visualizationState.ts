@@ -39,6 +39,7 @@ export interface VisualizationState {
   outerScaling: number;
   depthTestOn: boolean;
   cameraMatrix: number[];
+  statsOn: boolean;
 }
 
 export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
@@ -82,6 +83,7 @@ export const preset1: VisualizationState = {
     -0.21134862723175887, -0.8439023669843343, 0.49311312370031674, 0,
     -3.0534246560189118, -11.982744001058986, 7.094776220115797, 1,
   ],
+  statsOn: false,
 };
 
 export const preset2: VisualizationState = {
@@ -117,6 +119,7 @@ export const preset2: VisualizationState = {
     -0.14606874726785565, -0.749672622266586, 0.645488094774441, 0,
     -3.008596162733603, -13.40079125814129, 10.526752683366672, 1,
   ],
+  statsOn: false,
 };
 
 export const preset3: VisualizationState = {
@@ -150,6 +153,7 @@ export const preset3: VisualizationState = {
     1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.0751308981393026,
     -0.07395166079615599, 15.143740007205523, 1,
   ],
+  statsOn: false,
 };
 
 export const preset4: VisualizationState = {
@@ -185,6 +189,7 @@ export const preset4: VisualizationState = {
     0.04141717046002543, 0.794959114249879, -0.6052475730328313, 0,
     0.43920447807773527, 9.186013296316714, -5.033052190348866, 1,
   ],
+  statsOn: false,
 };
 
 export const preset5: VisualizationState = {
@@ -220,6 +225,7 @@ export const preset5: VisualizationState = {
     0.1437276377169637, -0.9858670904528866, 0.08607233073562108, 0,
     1.0613684416767624, -7.280215789498701, 0.6356081335188752, 1,
   ],
+  statsOn: false,
 };
 
 export const preset6: VisualizationState = {
@@ -259,6 +265,7 @@ export const preset6: VisualizationState = {
     -0.2163416237749235, -0.3730450796827431, 0.9022381450298583, 0,
     0.23273567839592912, -0.5146926844922997, 2.4582219753133114, 1,
   ],
+  statsOn: false,
 };
 
 export const preset7: VisualizationState = {
@@ -294,6 +301,7 @@ export const preset7: VisualizationState = {
     -0.6136590684388055, -0.17866456327732516, -0.7690913609914877, 0,
     -8.459757401024083, -2.6913328139768025, -10.74807756765347, 1,
   ],
+  statsOn: false,
 };
 
 const preset8: VisualizationState = {
@@ -329,6 +337,7 @@ const preset8: VisualizationState = {
     0.06992277097646406, -0.49179907675889406, -0.8678965803585559, 0,
     1.646953837251463, -5.028587674049912, -6.128943141714856, 1,
   ],
+  statsOn: false,
 };
 
 const preset9: VisualizationState = {
@@ -367,6 +376,7 @@ const preset9: VisualizationState = {
     -0.0686376966985623, -0.6361161961633438, -0.768534352889056, 0,
     -1.1622267780155604, -4.79632048553994, -3.5616598616195048, 1,
   ],
+  statsOn: false,
 };
 
 export const presets = [
