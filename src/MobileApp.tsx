@@ -111,10 +111,12 @@ const App: React.FC = () => {
               cameraMatrix={vState.cameraMatrix}
             />
             <HexagonParticles {...vState} />
-            <ArcballControls
-              ref={controlsRef}
-              onChange={handleControlsChange}
-            />
+            {vState.interactiveCamera && (
+              <ArcballControls
+                ref={controlsRef}
+                onChange={handleControlsChange}
+              />
+            )}
             {vState.statsOn && <Stats />}
           </Canvas>
         </div>

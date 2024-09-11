@@ -40,6 +40,7 @@ export interface VisualizationState {
   depthTestOn: boolean;
   cameraMatrix: number[];
   statsOn: boolean;
+  interactiveCamera: boolean;
 }
 
 export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
@@ -84,6 +85,7 @@ export const preset1: VisualizationState = {
     -3.0534246560189118, -11.982744001058986, 7.094776220115797, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const preset2: VisualizationState = {
@@ -120,6 +122,7 @@ export const preset2: VisualizationState = {
     -3.008596162733603, -13.40079125814129, 10.526752683366672, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const preset3: VisualizationState = {
@@ -154,6 +157,7 @@ export const preset3: VisualizationState = {
     -0.07395166079615599, 15.143740007205523, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const preset4: VisualizationState = {
@@ -190,6 +194,7 @@ export const preset4: VisualizationState = {
     0.43920447807773527, 9.186013296316714, -5.033052190348866, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const preset5: VisualizationState = {
@@ -226,6 +231,7 @@ export const preset5: VisualizationState = {
     1.0613684416767624, -7.280215789498701, 0.6356081335188752, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const preset6: VisualizationState = {
@@ -266,6 +272,7 @@ export const preset6: VisualizationState = {
     0.23273567839592912, -0.5146926844922997, 2.4582219753133114, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const preset7: VisualizationState = {
@@ -302,6 +309,7 @@ export const preset7: VisualizationState = {
     -8.459757401024083, -2.6913328139768025, -10.74807756765347, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 const preset8: VisualizationState = {
@@ -338,6 +346,7 @@ const preset8: VisualizationState = {
     1.646953837251463, -5.028587674049912, -6.128943141714856, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 const preset9: VisualizationState = {
@@ -377,6 +386,7 @@ const preset9: VisualizationState = {
     -1.1622267780155604, -4.79632048553994, -3.5616598616195048, 1,
   ],
   statsOn: false,
+  interactiveCamera: true,
 };
 
 export const presets = [

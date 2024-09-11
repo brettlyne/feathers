@@ -268,6 +268,19 @@ const SceneControls: React.FC<ControlsProps> = ({
         </>
       )}
 
+      {sceneTab === "interactiveCamera" && (
+        <>
+          <div className="tile-control">
+            <OnOffToggle
+              value={state.interactiveCamera}
+              onChange={(newValue) =>
+                updateState("interactiveCamera", newValue)
+              }
+            />
+          </div>
+        </>
+      )}
+
       {sceneTab === "stats" && (
         <>
           <div className="tile-control">
