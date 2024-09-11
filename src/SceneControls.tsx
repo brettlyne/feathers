@@ -111,6 +111,31 @@ const SceneControls: React.FC<ControlsProps> = ({
           ))}
         </div>
       )}
+
+      {sceneTab === "dimensions" && (
+        <>
+          <div className="info">
+            <p style={{ maxWidth: "42em" }}>
+              Use CSS values for width and height. Here are a few examples:
+            </p>
+            <div style={{ display: "flex", gap: "10px", padding: "10px 0" }}>
+              <Button variant="outlined" sx={{ textTransform: "none" }}>
+                100vh × 100vw (fullscreen)
+              </Button>
+              <Button variant="outlined" sx={{ textTransform: "none" }}>
+                800px × 450px
+              </Button>
+              <Button variant="outlined" sx={{ textTransform: "none" }}>
+                600px × 600px
+              </Button>
+              <Button variant="outlined" sx={{ textTransform: "none" }}>
+                100% × 20rem
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
+
       {sceneTab === "background" && (
         <>
           {backgroundTab === "solid" && (
@@ -237,6 +262,7 @@ const SceneControls: React.FC<ControlsProps> = ({
           </Tabs>
         </>
       )}
+
       {sceneTab === "fov" && (
         <div className="slider-control">
           <Slider
@@ -250,6 +276,7 @@ const SceneControls: React.FC<ControlsProps> = ({
           />
         </div>
       )}
+
       {sceneTab === "depthTest" && (
         <>
           <div className="info">
@@ -301,6 +328,7 @@ const SceneControls: React.FC<ControlsProps> = ({
           variant="scrollable"
         >
           <Tab label="Presets" value="presets" />
+          <Tab label="Dimensions" value="dimensions" />
           <Tab label="Background" value="background" />
           <Tab label="Field of View" value="fov" />
           <Tab label="Depth Test" value="depthTest" />
