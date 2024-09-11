@@ -6,10 +6,11 @@ import TextField from "@mui/material/TextField";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Slider from "@mui/material/Slider";
+import { HexColorPicker } from "react-colorful";
 
 import chroma from "chroma-js";
 
-import { HexColorPicker } from "react-colorful";
+import OnOffToggle from "./components/OnOffToggle";
 
 import { bgPresets, getCssFromBgState } from "./util/backgroundHelper";
 import preset1img from "/presets/preset-1.png";
@@ -259,24 +260,10 @@ const SceneControls: React.FC<ControlsProps> = ({
             </p>
           </div>
           <div className="tile-control">
-            <IconButton
-              className={`text-tile ${state.depthTestOn ? "active" : ""}`}
-              sx={{ padding: 0 }}
-              onClick={() => {
-                updateState("depthTestOn", true);
-              }}
-            >
-              on
-            </IconButton>
-            <IconButton
-              className={`text-tile ${state.depthTestOn ? "" : "active"}`}
-              sx={{ padding: 0 }}
-              onClick={() => {
-                updateState("depthTestOn", false);
-              }}
-            >
-              off
-            </IconButton>
+            <OnOffToggle
+              value={state.depthTestOn}
+              onChange={(newValue) => updateState("depthTestOn", newValue)}
+            />
           </div>
         </>
       )}
@@ -284,24 +271,10 @@ const SceneControls: React.FC<ControlsProps> = ({
       {sceneTab === "stats" && (
         <>
           <div className="tile-control">
-            <IconButton
-              className={`text-tile ${state.statsOn ? "active" : ""}`}
-              sx={{ padding: 0 }}
-              onClick={() => {
-                updateState("statsOn", true);
-              }}
-            >
-              on
-            </IconButton>
-            <IconButton
-              className={`text-tile ${state.statsOn ? "" : "active"}`}
-              sx={{ padding: 0 }}
-              onClick={() => {
-                updateState("statsOn", false);
-              }}
-            >
-              off
-            </IconButton>
+            <OnOffToggle
+              value={state.statsOn}
+              onChange={(newValue) => updateState("statsOn", newValue)}
+            />
           </div>
         </>
       )}
