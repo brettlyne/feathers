@@ -1,6 +1,7 @@
 import { AnimationMode } from "./shaderAnimations";
 
 export interface VisualizationState {
+  dimensions: [string, string];
   density: number;
   arrangement:
     | "grid"
@@ -49,6 +50,7 @@ export type VisualizationStateUpdater = <K extends keyof VisualizationState>(
 ) => void;
 
 export const preset1: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 5.1,
   arrangement: "spiral",
   zAxisArrangement: "dome",
@@ -89,43 +91,48 @@ export const preset1: VisualizationState = {
 };
 
 export const preset2: VisualizationState = {
-  density: 6.9,
-  arrangement: "random",
-  zAxisArrangement: "wavy",
-  image: "moon.png",
-  animationMode: "orbits",
-  particleSize: 50,
-  center: [-1.3, 0, 0],
+  dimensions: ["600px", "600px"],
+  density: 3.8,
+  arrangement: "spiral",
+  zAxisArrangement: "dome",
+  image: "bobtail-squid.png",
+  animationMode: "snake",
+  particleSize: 30,
+  center: [-6.7, -2.9, 0],
   rippleCenter: [0, 0, 0],
   animationMagnitude: 0.5,
-  rotationMode: "constant",
-  rotationRange: [0, Math.PI / 2],
-  colorMode: "gradient",
-  color1: "#ff3333",
-  color2: "#ff00ff",
-  background: { type: "solid", color: "#333f69" },
-  fov: 55,
-  animationSpeed: 1,
-  xMagnitude: 0.8,
-  yMagnitude: 1,
-  orbitInnerRadius: 1.4,
-  orbitScale: 0.7,
-  innerRadius: 0.7,
-  innerScaling: 2.7,
-  outerRadius: 4.4,
-  outerScaling: 0,
-  depthTestOn: true,
+  rotationMode: "fieldRadial",
+  rotationRange: [6.13, 7.83],
+  colorMode: "fieldRadial",
+  color1: "#1ffffa",
+  color2: "#fffb99",
+  background: {
+    type: "preset",
+    value: "linear-gradient(225deg, #f1ff56, #66d788, #009e96, #0a607b)",
+  },
+  fov: 80,
+  animationSpeed: -1.8,
+  xMagnitude: 4.6,
+  yMagnitude: 3.3,
+  orbitInnerRadius: 0,
+  orbitScale: 1,
+  innerRadius: 0.3,
+  innerScaling: 4.3,
+  outerRadius: 10,
+  outerScaling: 0.6,
+  depthTestOn: false,
   cameraMatrix: [
-    0.9835927286821329, -0.040225039313114636, 0.17586156571547457, 0,
-    -0.10587381713737798, 0.6605852750676465, 0.7432481612547478, 0,
-    -0.14606874726785565, -0.749672622266586, 0.645488094774441, 0,
-    -3.008596162733603, -13.40079125814129, 10.526752683366672, 1,
+    0.5839796484236555, 0.7053629555842138, -0.40178460786406917, 0,
+    0.7807451040729632, -0.6235633281737308, 0.040073160881052984, 0,
+    -0.22227202409003613, -0.3370932758842909, -0.9148569673235941, 0,
+    -5.310581363038798, -3.491555531101742, -6.282225477414206, 1,
   ],
   statsOn: false,
   interactiveCamera: true,
 };
 
 export const preset3: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 5.9,
   arrangement: "random",
   zAxisArrangement: "dome",
@@ -161,6 +168,7 @@ export const preset3: VisualizationState = {
 };
 
 export const preset4: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 6.5,
   arrangement: "circular",
   zAxisArrangement: "flat",
@@ -198,6 +206,7 @@ export const preset4: VisualizationState = {
 };
 
 export const preset5: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 6.1,
   arrangement: "circular",
   zAxisArrangement: "dome",
@@ -235,6 +244,7 @@ export const preset5: VisualizationState = {
 };
 
 export const preset6: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 7.2,
   arrangement: "random",
   zAxisArrangement: "random",
@@ -276,6 +286,7 @@ export const preset6: VisualizationState = {
 };
 
 export const preset7: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 5,
   arrangement: "hexagon",
   zAxisArrangement: "wavy",
@@ -313,6 +324,7 @@ export const preset7: VisualizationState = {
 };
 
 const preset8: VisualizationState = {
+  dimensions: ["min(100vw, 100vh)", "100vh"],
   density: 6,
   arrangement: "staggeredGrid",
   zAxisArrangement: "valley",
@@ -350,6 +362,7 @@ const preset8: VisualizationState = {
 };
 
 const preset9: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
   density: 7.3,
   arrangement: "hexagon",
   zAxisArrangement: "random",

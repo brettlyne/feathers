@@ -78,15 +78,23 @@ const App: React.FC = () => {
   ]);
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100vw",
+        minHeight: "90vh",
+      }}
+    >
       <div
         className="container"
         style={{
           background: bgCSS,
           overflow: "hidden",
           position: "relative",
-          width: "100vw",
-          height: "100vh",
+          width: vState.dimensions[0],
+          height: vState.dimensions[1],
         }}
       >
         <div

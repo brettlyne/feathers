@@ -35,6 +35,13 @@ const presetImages = [
   preset9img,
 ];
 
+const dimensionPresets = [
+  { label: "100vw × 100vh (fullscreen)", value: ["100vw", "100vh"] },
+  { label: "800px × 450px", value: ["800px", "450px"] },
+  { label: "600px × 600px", value: ["600px", "600px"] },
+  { label: "100% × 20rem", value: ["100%", "20rem"] },
+];
+
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -116,22 +123,54 @@ const SceneControls: React.FC<ControlsProps> = ({
         <>
           <div className="info">
             <p style={{ maxWidth: "42em" }}>
-              Use CSS values for width and height. Here are a few examples:
+              Use CSS values for width and height. Here are a few presets:
             </p>
             <div style={{ display: "flex", gap: "10px", padding: "10px 0" }}>
-              <Button variant="outlined" sx={{ textTransform: "none" }}>
-                100vh × 100vw (fullscreen)
-              </Button>
-              <Button variant="outlined" sx={{ textTransform: "none" }}>
-                800px × 450px
-              </Button>
-              <Button variant="outlined" sx={{ textTransform: "none" }}>
-                600px × 600px
-              </Button>
-              <Button variant="outlined" sx={{ textTransform: "none" }}>
-                100% × 20rem
-              </Button>
+              {dimensionPresets.map((preset) => (
+                <Button
+                  key={preset.label}
+                  variant="outlined"
+                  sx={{ textTransform: "none" }}
+                  onClick={() => {
+                    updateState("dimensions", preset.value);
+                  }}
+                >
+                  {preset.label}
+                </Button>
+              ))}
             </div>
+          </div>
+          <div
+            className="double-color-control"
+            style={{
+              justifyContent: "flex-start",
+              gap: "16px",
+            }}
+          >
+            <TextField
+              fullWidth
+              label="Width"
+              value={state.dimensions[0]}
+              onChange={(e) => {
+                updateState("dimensions", [
+                  e.target.value,
+                  state.dimensions[1],
+                ]);
+              }}
+              size="small"
+            />
+            <TextField
+              fullWidth
+              label="Height"
+              value={state.dimensions[1]}
+              onChange={(e) => {
+                updateState("dimensions", [
+                  state.dimensions[0],
+                  e.target.value,
+                ]);
+              }}
+              size="small"
+            />
           </div>
         </>
       )}
