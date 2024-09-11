@@ -78,7 +78,7 @@ const App: React.FC = () => {
   ]);
 
   return (
-    <div className="">
+    <div>
       <div
         className="container"
         style={{
