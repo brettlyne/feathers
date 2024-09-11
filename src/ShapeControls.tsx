@@ -25,8 +25,8 @@ const ShapeControls: React.FC<ControlsProps> = ({
   setActiveTab,
 }) => {
   const [shapeTab, setShapeTab] = React.useState("shape");
-  const [colorTab, setColorTab] = React.useState("gradient");
-  const [rotationTab, setRotationTab] = React.useState("constant");
+  const [colorTab, setColorTab] = React.useState(state.colorMode);
+  const [rotationTab, setRotationTab] = React.useState(state.rotationMode);
   const [customImageUrl, setCustomImageUrl] = useState<string | null>(null);
 
   const imagePresets = [
