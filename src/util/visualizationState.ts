@@ -402,6 +402,47 @@ const preset9: VisualizationState = {
   interactiveCamera: true,
 };
 
+const preset10: VisualizationState = {
+  dimensions: ["100vw", "100vh"],
+  density: 6.6,
+  arrangement: "circular",
+  zAxisArrangement: "dome",
+  image: "glow.png",
+  animationMode: "orbits",
+  particleSize: 31,
+  center: [0, 0, 0],
+  rippleCenter: [0, 0, 0],
+  animationMagnitude: 1.3,
+  rotationMode: "fieldRadial",
+  rotationRange: [0.7, 12.566370614359172],
+  colorMode: "gradient",
+  color1: "#d7844f",
+  color2: "#fffc60",
+  background: {
+    type: "gradient",
+    colors: ["#060111", "#430874"],
+  },
+  fov: 150,
+  animationSpeed: 0.4,
+  xMagnitude: 2.2,
+  yMagnitude: 1.3,
+  orbitInnerRadius: 1.5,
+  orbitScale: 0.6,
+  innerRadius: 0.8,
+  innerScaling: 5.6,
+  outerRadius: 10,
+  outerScaling: 0.1,
+  depthTestOn: false,
+  cameraMatrix: [
+    -0.9782944307685436, 0.19550487618878884, -0.06868660796448059, 0,
+    -0.2072183989514031, -0.9241598006339671, 0.32091930142672315, 0,
+    -0.0007361136306537001, 0.328186694243694, 0.9446125935314015, 0,
+    -0.5199676332731906, 4.369371142309664, 3.8941869235292215, 1,
+  ],
+  statsOn: false,
+  interactiveCamera: true,
+};
+
 export const presets = [
   preset1,
   preset2,
@@ -412,4 +453,5 @@ export const presets = [
   preset7,
   preset8,
   preset9,
+  preset10,
 ];

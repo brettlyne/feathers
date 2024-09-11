@@ -22,6 +22,7 @@ import preset6img from "/presets/preset-6.png";
 import preset7img from "/presets/preset-7.png";
 import preset8img from "/presets/preset-8.png";
 import preset9img from "/presets/preset-9.png";
+import preset10img from "/presets/preset-10.png";
 
 const presetImages = [
   preset1img,
@@ -33,6 +34,7 @@ const presetImages = [
   preset7img,
   preset8img,
   preset9img,
+  preset10img,
 ];
 
 const dimensionPresets = [
