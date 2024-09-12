@@ -9,7 +9,7 @@ import MobileControls from "./MobileControls";
 import "./mobile.css";
 import {
   VisualizationState,
-  VisualizationStateUpdater,
+  updateVisualizationState,
   preset1,
 } from "./util/visualizationState";
 
@@ -39,13 +39,13 @@ const App: React.FC = () => {
   // @ts-expect-error TS2749
   const controlsRef = useRef<ArcballControls>(null);
   const [bgCSS, setBgCSS] = useState("#f0f0f0");
+  const { particleConfig, editorConfig } = vState;
 
-  const updateVState: VisualizationStateUpdater = (key, value) => {
-    setVState((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateVState = (key: string, value: any) => {
+    setVState(updateVisualizationState(vState, key, value));
   };
+
   // if i press the p key, log vState to console
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -68,13 +68,13 @@ const App: React.FC = () => {
 
   // update background on state change
   useEffect(() => {
-    setBgCSS(getCssFromBgState(vState.background));
+    setBgCSS(getCssFromBgState(editorConfig.background));
   }, [
-    vState.background,
-    vState.background.type,
-    vState.background.color,
-    vState.background.colors,
-    vState.background.value,
+    editorConfig.background,
+    editorConfig.background.type,
+    editorConfig.background.color,
+    editorConfig.background.colors,
+    editorConfig.background.value,
   ]);
 
   return (
@@ -93,8 +93,8 @@ const App: React.FC = () => {
           background: bgCSS,
           overflow: "hidden",
           position: "relative",
-          width: vState.dimensions[0],
-          height: vState.dimensions[1],
+          width: editorConfig.dimensions[0],
+          height: editorConfig.dimensions[1],
         }}
       >
         <div
@@ -109,23 +109,23 @@ const App: React.FC = () => {
         >
           <Canvas
             camera={{
-              fov: vState.fov,
+              fov: editorConfig.fov,
               near: 0.1,
               far: 1000,
             }}
           >
             <CameraController
-              fov={vState.fov}
-              cameraMatrix={vState.cameraMatrix}
+              fov={editorConfig.fov}
+              cameraMatrix={editorConfig.cameraMatrix}
             />
-            <HexagonParticles {...vState} />
-            {vState.interactiveCamera && (
+            <HexagonParticles {...particleConfig} />
+            {editorConfig.interactiveCamera && (
               <ArcballControls
                 ref={controlsRef}
                 onChange={handleControlsChange}
               />
             )}
-            {vState.statsOn && <Stats />}
+            {editorConfig.statsOn && <Stats />}
           </Canvas>
         </div>
       </div>
