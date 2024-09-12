@@ -25,6 +25,8 @@ const FieldControls: React.FC<ControlsProps> = ({
   const [fieldTab, setFieldTab] = React.useState("arrangement");
   const [scalingTab, setScalingTab] = React.useState("innerScaling");
 
+  const { particleConfig } = state;
+
   const arrangements = [
     "grid",
     "staggeredGrid",
@@ -49,7 +51,7 @@ const FieldControls: React.FC<ControlsProps> = ({
       min: 0,
       max: 10,
       step: 0.1,
-      getState: () => state.innerScaling,
+      getState: () => particleConfig.innerScaling,
       updateState: (newValue: number) => {
         updateState("innerScaling", newValue);
       },
@@ -59,7 +61,7 @@ const FieldControls: React.FC<ControlsProps> = ({
       min: 0,
       max: 10,
       step: 0.1,
-      getState: () => state.outerScaling,
+      getState: () => particleConfig.outerScaling,
       updateState: (newValue: number) => {
         updateState("outerScaling", newValue);
       },
@@ -69,7 +71,7 @@ const FieldControls: React.FC<ControlsProps> = ({
       min: 0,
       max: 10,
       step: 0.1,
-      getState: () => state.innerRadius,
+      getState: () => particleConfig.innerRadius,
       updateState: (newValue: number) => {
         updateState("innerRadius", newValue);
       },
@@ -79,7 +81,7 @@ const FieldControls: React.FC<ControlsProps> = ({
       min: 0,
       max: 10,
       step: 0.1,
-      getState: () => state.outerRadius,
+      getState: () => particleConfig.outerRadius,
       updateState: (newValue: number) => {
         updateState("outerRadius", newValue);
       },
@@ -89,9 +91,13 @@ const FieldControls: React.FC<ControlsProps> = ({
       min: -20,
       max: 20,
       step: 0.1,
-      getState: () => state.center[0],
+      getState: () => particleConfig.center[0],
       updateState: (newValue: number) => {
-        updateState("center", [newValue, state.center[1], state.center[2]]);
+        updateState("center", [
+          newValue,
+          particleConfig.center[1],
+          particleConfig.center[2],
+        ]);
       },
     },
     centerY: {
@@ -99,9 +105,13 @@ const FieldControls: React.FC<ControlsProps> = ({
       min: -20,
       max: 20,
       step: 0.1,
-      getState: () => state.center[1],
+      getState: () => particleConfig.center[1],
       updateState: (newValue: number) => {
-        updateState("center", [state.center[0], newValue, state.center[2]]);
+        updateState("center", [
+          particleConfig.center[0],
+          newValue,
+          particleConfig.center[2],
+        ]);
       },
     },
   };
@@ -113,14 +123,14 @@ const FieldControls: React.FC<ControlsProps> = ({
           {arrangements.map((arrangement) => (
             <IconButton
               className={`text-tile ${
-                state.arrangement === arrangement ? "active" : ""
+                particleConfig.arrangement === arrangement ? "active" : ""
               }`}
               sx={{ padding: 0 }}
               key={arrangement}
               onClick={() => {
                 updateState(
                   "arrangement",
-                  arrangement as VisualizationState["arrangement"]
+                  arrangement as VisualizationState["particleConfig"]["arrangement"]
                 );
               }}
             >
@@ -135,14 +145,16 @@ const FieldControls: React.FC<ControlsProps> = ({
           {zAxisArrangements.map((zAxisArrangement) => (
             <IconButton
               className={`text-tile ${
-                state.zAxisArrangement === zAxisArrangement ? "active" : ""
+                particleConfig.zAxisArrangement === zAxisArrangement
+                  ? "active"
+                  : ""
               }`}
               sx={{ padding: 0 }}
               key={zAxisArrangement}
               onClick={() => {
                 updateState(
                   "zAxisArrangement",
-                  zAxisArrangement as VisualizationState["zAxisArrangement"]
+                  zAxisArrangement as VisualizationState["particleConfig"]["zAxisArrangement"]
                 );
               }}
             >
@@ -155,7 +167,7 @@ const FieldControls: React.FC<ControlsProps> = ({
       {fieldTab === "density" && (
         <div className="slider-control">
           <Slider
-            value={state.density}
+            value={particleConfig.density}
             valueLabelDisplay="auto"
             min={1}
             max={10}

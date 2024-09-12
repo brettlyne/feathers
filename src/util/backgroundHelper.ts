@@ -15,7 +15,7 @@ export const bgPresets = [
 ];
 
 export const getCssFromBgState = (
-  bgState: VisualizationState["background"]
+  bgState: VisualizationState["editorConfig"]["background"]
 ) => {
   let colors, steps;
   switch (bgState.type) {

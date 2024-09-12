@@ -24,6 +24,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
   setActiveTab,
 }) => {
   const [animTab, setAnimTab] = React.useState("animation");
+  const { particleConfig } = state;
 
   const animations = ["ripples", "waves", "jello", "banner", "orbits", "snake"];
 
@@ -31,13 +32,13 @@ const AnimationControls: React.FC<ControlsProps> = ({
     { label: "Animation", value: "animation" },
     { label: "Speed", value: "speed" },
   ];
-  if (state.animationMode === "orbits") {
+  if (particleConfig.animationMode === "orbits") {
     tabs.push(
       { label: "Orbit Inner Radius", value: "orbitInnerRadius" },
       { label: "Orbit Scale", value: "orbitScale" }
     );
   }
-  if (state.animationMode !== "ripples") {
+  if (particleConfig.animationMode !== "ripples") {
     tabs.push(
       { label: "X Magnitude", value: "xMagnitude" },
       { label: "Y Magnitude", value: "yMagnitude" }
@@ -57,7 +58,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
           {animations.map((anim) => (
             <IconButton
               className={`text-tile ${
-                state.animationMode === anim ? "active" : ""
+                particleConfig.animationMode === anim ? "active" : ""
               }`}
               sx={{ padding: 0 }}
               key={anim}
@@ -74,7 +75,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "speed" && (
         <div className="slider-control">
           <Slider
-            value={state.animationSpeed}
+            value={particleConfig.animationSpeed}
             valueLabelDisplay="auto"
             min={-10}
             max={10}
@@ -89,7 +90,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "orbitInnerRadius" && (
         <div className="slider-control">
           <Slider
-            value={state.orbitInnerRadius}
+            value={particleConfig.orbitInnerRadius}
             valueLabelDisplay="auto"
             min={-5}
             max={5}
@@ -104,7 +105,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "orbitScale" && (
         <div className="slider-control">
           <Slider
-            value={state.orbitScale}
+            value={particleConfig.orbitScale}
             valueLabelDisplay="auto"
             min={-4}
             max={4}
@@ -119,7 +120,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "magnitude" && (
         <div className="slider-control">
           <Slider
-            value={state.animationMagnitude}
+            value={particleConfig.animationMagnitude}
             valueLabelDisplay="auto"
             min={0}
             max={2}
@@ -134,7 +135,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "xMagnitude" && (
         <div className="slider-control">
           <Slider
-            value={state.xMagnitude}
+            value={particleConfig.xMagnitude}
             valueLabelDisplay="auto"
             min={0}
             max={10}
@@ -149,7 +150,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "yMagnitude" && (
         <div className="slider-control">
           <Slider
-            value={state.yMagnitude}
+            value={particleConfig.yMagnitude}
             valueLabelDisplay="auto"
             min={0}
             max={10}
@@ -164,7 +165,7 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "xCenter" && (
         <div className="slider-control">
           <Slider
-            value={state.rippleCenter[0]}
+            value={particleConfig.rippleCenter[0]}
             valueLabelDisplay="auto"
             min={-20}
             max={20}
@@ -172,8 +173,8 @@ const AnimationControls: React.FC<ControlsProps> = ({
             onChange={(_event, newValue) => {
               updateState("rippleCenter", [
                 newValue as number,
-                state.rippleCenter[1],
-                state.rippleCenter[2],
+                particleConfig.rippleCenter[1],
+                particleConfig.rippleCenter[2],
               ]);
             }}
           />
@@ -183,16 +184,16 @@ const AnimationControls: React.FC<ControlsProps> = ({
       {animTab === "yCenter" && (
         <div className="slider-control">
           <Slider
-            value={state.rippleCenter[1]}
+            value={particleConfig.rippleCenter[1]}
             valueLabelDisplay="auto"
             min={-20}
             max={20}
             step={0.1}
             onChange={(_event, newValue) => {
               updateState("rippleCenter", [
-                state.rippleCenter[0],
+                particleConfig.rippleCenter[0],
                 newValue as number,
-                state.rippleCenter[2],
+                particleConfig.rippleCenter[2],
               ]);
             }}
           />

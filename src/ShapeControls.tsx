@@ -24,9 +24,13 @@ const ShapeControls: React.FC<ControlsProps> = ({
   updateState,
   setActiveTab,
 }) => {
+  const { particleConfig } = state;
+
   const [shapeTab, setShapeTab] = React.useState("shape");
-  const [colorTab, setColorTab] = React.useState(state.colorMode);
-  const [rotationTab, setRotationTab] = React.useState(state.rotationMode);
+  const [colorTab, setColorTab] = React.useState(particleConfig.colorMode);
+  const [rotationTab, setRotationTab] = React.useState(
+    particleConfig.rotationMode
+  );
   const [customImageUrl, setCustomImageUrl] = useState<string | null>(null);
 
   const imagePresets = [
@@ -58,7 +62,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
     <>
       {shapeTab === "shape" && (
         <>
-          {!imagePresets.includes(state.image) && (
+          {!imagePresets.includes(particleConfig.image) && (
             <div style={{ padding: "12px 16px 8px 16px" }}>
               <input type="file" accept="image/*" onChange={handleFileUpload} />
             </div>
@@ -74,7 +78,9 @@ const ShapeControls: React.FC<ControlsProps> = ({
               >
                 <img
                   src={image}
-                  className={`tile ${image === state.image ? "active" : ""}`}
+                  className={`tile ${
+                    image === particleConfig.image ? "active" : ""
+                  }`}
                 />
               </IconButton>
             ))}
@@ -84,7 +90,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
                 updateState("image", customImageUrl || "");
               }}
               className={`tile ${
-                !imagePresets.includes(state.image) ? "active" : ""
+                !imagePresets.includes(particleConfig.image) ? "active" : ""
               }`}
             >
               {customImageUrl ? (
@@ -111,8 +117,8 @@ const ShapeControls: React.FC<ControlsProps> = ({
             <Slider
               value={
                 rotationTab === "constant"
-                  ? state.rotationRange[0]
-                  : state.rotationRange
+                  ? particleConfig.rotationRange[0]
+                  : particleConfig.rotationRange
               }
               valueLabelDisplay="auto"
               min={0}
@@ -125,7 +131,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
                 if (rotationTab === "constant")
                   updateState("rotationRange", [
                     newValue as number,
-                    state.rotationRange[1],
+                    particleConfig.rotationRange[1],
                   ]);
                 else updateState("rotationRange", newValue as [number, number]);
               }}
@@ -137,7 +143,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
               onChange={(_event, newValue) => {
                 updateState(
                   "rotationMode",
-                  newValue as VisualizationState["rotationMode"]
+                  newValue as VisualizationState["particleConfig"]["rotationMode"]
                 );
                 setRotationTab(newValue);
               }}
@@ -161,7 +167,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
               style={{ background: "#363636" }}
             >
               <HexColorPicker
-                color={state.color1}
+                color={particleConfig.color1}
                 onChange={(newColor) => {
                   updateState("color1", newColor);
                 }}
@@ -175,13 +181,13 @@ const ShapeControls: React.FC<ControlsProps> = ({
               style={{ background: "#363636" }}
             >
               <HexColorPicker
-                color={state.color1}
+                color={particleConfig.color1}
                 onChange={(newColor) => {
                   updateState("color1", newColor);
                 }}
               />
               <HexColorPicker
-                color={state.color2}
+                color={particleConfig.color2}
                 onChange={(newColor) => {
                   updateState("color2", newColor);
                 }}
@@ -212,7 +218,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
       {shapeTab === "size" && (
         <div className="slider-control">
           <Slider
-            value={state.particleSize}
+            value={particleConfig.particleSize}
             valueLabelDisplay="auto"
             min={0}
             max={60}
