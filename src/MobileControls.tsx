@@ -7,6 +7,7 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import AppsIcon from "@mui/icons-material/Apps";
 import HexagonIcon from "@mui/icons-material/Hexagon";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import IosShareIcon from "@mui/icons-material/IosShare";
 
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,6 +15,7 @@ import SceneControls from "./SceneControls";
 import FieldControls from "./FieldControls";
 import ShapeControls from "./ShapeControls";
 import AnimationControls from "./AnimationControls";
+import ShareControls from "./ShareControls";
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -57,6 +59,7 @@ const Controls: React.FC<ControlsProps> = ({
                 label="Animation"
                 icon={<AutoAwesomeIcon />}
               />
+              <BottomNavigationAction icon={<IosShareIcon />} />
             </BottomNavigation>
           </motion.div>
         )}
@@ -121,6 +124,22 @@ const Controls: React.FC<ControlsProps> = ({
             exit={{ opacity: 0, y: 20 }}
           >
             <AnimationControls
+              state={state}
+              updateState={updateState}
+              setActiveTab={setActiveTab}
+            />
+          </motion.div>
+        )}
+
+        {activeTab === 4 && (
+          <motion.div
+            className="scene-controls"
+            key="share"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+          >
+            <ShareControls
               state={state}
               updateState={updateState}
               setActiveTab={setActiveTab}
