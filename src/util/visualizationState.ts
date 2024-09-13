@@ -10,7 +10,7 @@ export interface ParticleConfig {
     | "random"
     | "hexagon";
   zAxisArrangement: "flat" | "dome" | "wavy" | "valley" | "cone" | "random";
-  image: string;
+  imagePath: string;
   animationMode: AnimationMode;
   particleSize: number;
   center: [number, number, number];
@@ -87,7 +87,7 @@ export const preset1: VisualizationState = {
     density: 5.1,
     arrangement: "spiral",
     zAxisArrangement: "dome",
-    image: "drop.png",
+    imagePath: "drop.png",
     animationMode: "ripples",
     particleSize: 30,
     center: [0, 0, 0],
@@ -132,7 +132,7 @@ export const preset2: VisualizationState = {
     density: 3.8,
     arrangement: "spiral",
     zAxisArrangement: "dome",
-    image: "bobtail-squid.png",
+    imagePath: "bobtail-squid.png",
     animationMode: "snake",
     particleSize: 30,
     center: [-6.7, -2.9, 0],
@@ -180,7 +180,7 @@ export const preset3: VisualizationState = {
     density: 5.9,
     arrangement: "random",
     zAxisArrangement: "dome",
-    image: "mushroom.png",
+    imagePath: "mushroom.png",
     animationMode: "jello",
     particleSize: 31,
     center: [0, 0, 0],
@@ -220,7 +220,7 @@ export const preset4: VisualizationState = {
     density: 6.5,
     arrangement: "circular",
     zAxisArrangement: "flat",
-    image: "feather.png",
+    imagePath: "feather.png",
     animationMode: "waves",
     particleSize: 13,
     center: [0, 0, 0],
@@ -262,7 +262,7 @@ export const preset5: VisualizationState = {
     density: 6.1,
     arrangement: "circular",
     zAxisArrangement: "dome",
-    image: "mushroom.png",
+    imagePath: "mushroom.png",
     animationMode: "ripples",
     particleSize: 30,
     center: [0, 0, 0],
@@ -304,7 +304,7 @@ export const preset6: VisualizationState = {
     density: 7.2,
     arrangement: "random",
     zAxisArrangement: "random",
-    image: "coin.png",
+    imagePath: "coin.png",
     animationMode: "waves",
     particleSize: 30,
     center: [0, 0, 0],
@@ -351,7 +351,7 @@ export const preset7: VisualizationState = {
     density: 5,
     arrangement: "hexagon",
     zAxisArrangement: "wavy",
-    image: "mushroom.png",
+    imagePath: "mushroom.png",
     animationMode: "ripples",
     particleSize: 30,
     center: [2.2, 3.4, 0],
@@ -395,7 +395,7 @@ const preset8: VisualizationState = {
     density: 6,
     arrangement: "staggeredGrid",
     zAxisArrangement: "valley",
-    image: "drop.png",
+    imagePath: "drop.png",
     animationMode: "snake",
     particleSize: 51,
     center: [-2.7, 2.4, 0],
@@ -438,7 +438,7 @@ const preset9: VisualizationState = {
     density: 7.3,
     arrangement: "hexagon",
     zAxisArrangement: "random",
-    image: "feather.png",
+    imagePath: "feather.png",
     animationMode: "snake",
     particleSize: 30,
     center: [-7.7, 1.6, 0],
@@ -484,7 +484,7 @@ const preset10: VisualizationState = {
     density: 6.6,
     arrangement: "spiral",
     zAxisArrangement: "dome",
-    image: "glow.png",
+    imagePath: "glow.png",
     animationMode: "orbits",
     particleSize: 31,
     center: [0, 0, 0],

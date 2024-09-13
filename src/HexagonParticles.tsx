@@ -47,7 +47,7 @@ interface HexagonParticlesProps {
   orbitInnerRadius: number;
   orbitScale: number;
   depthTestOn: boolean;
-  image: string;
+  imagePath: string;
 }
 
 const HexagonParticles: React.FC<HexagonParticlesProps> = ({
@@ -61,7 +61,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   rotationMode,
   rotationRange,
   color1,
-  color2,
+  color2, 
   animationMode,
   colorMode,
   innerRadius,
@@ -74,7 +74,7 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
   orbitInnerRadius,
   orbitScale,
   depthTestOn,
-  image,
+  imagePath,
 }) => {
   const points = useRef<THREE.Points>(null);
   const [resetFlag, setResetFlag] = useState(0);
@@ -299,8 +299,8 @@ const HexagonParticles: React.FC<HexagonParticlesProps> = ({
         }
       );
     };
-    loadTexture(image);
-  }, [image]);
+    loadTexture(imagePath);
+  }, [imagePath]);
 
   return (
     <points ref={points}>

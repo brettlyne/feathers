@@ -51,7 +51,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
         const result = e.target?.result;
         if (typeof result === "string") {
           setCustomImageUrl(result);
-          updateState("image", result);
+          updateState("imagePath", result);
         }
       };
       reader.readAsDataURL(file);
@@ -62,7 +62,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
     <>
       {shapeTab === "shape" && (
         <>
-          {!imagePresets.includes(particleConfig.image) && (
+          {!imagePresets.includes(particleConfig.imagePath) && (
             <div style={{ padding: "12px 16px 8px 16px" }}>
               <input type="file" accept="image/*" onChange={handleFileUpload} />
             </div>
@@ -73,13 +73,13 @@ const ShapeControls: React.FC<ControlsProps> = ({
                 sx={{ padding: 0 }}
                 key={image}
                 onClick={() => {
-                  updateState("image", image);
+                  updateState("imagePath", image);
                 }}
               >
                 <img
                   src={image}
                   className={`tile ${
-                    image === particleConfig.image ? "active" : ""
+                    image === particleConfig.imagePath ? "active" : ""
                   }`}
                 />
               </IconButton>
@@ -87,10 +87,10 @@ const ShapeControls: React.FC<ControlsProps> = ({
             <IconButton
               sx={{ padding: 0, fontSize: "1.2rem", lineHeight: "1.6rem" }}
               onClick={() => {
-                updateState("image", customImageUrl || "");
+                updateState("imagePath", customImageUrl || "");
               }}
               className={`tile ${
-                !imagePresets.includes(particleConfig.image) ? "active" : ""
+                !imagePresets.includes(particleConfig.imagePath) ? "active" : ""
               }`}
             >
               {customImageUrl ? (
