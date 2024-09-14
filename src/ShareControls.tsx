@@ -1,7 +1,7 @@
-import React from "react";
-
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import LinkIcon from "@mui/icons-material/Link";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
@@ -21,14 +21,50 @@ const AnimationControls: React.FC<ControlsProps> = ({
   updateState,
   setActiveTab,
 }) => {
-  const [tab, setTab] = React.useState("share");
-  const { particleConfig } = state;
+  const [tab, setTab] = useState("share");
+  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+  // const { particleConfig } = state;
+  const timeoutRef = useRef<typeof globalThis.Timeout | null>(null);
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText("mouse");
+      setShowCopiedMessage(true);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setShowCopiedMessage(false);
+        timeoutRef.current = null;
+      }, 3000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
 
   return (
     <>
       {tab === "share" && (
-        <div className="tile-control">
-          <p>share</p>
+        <div className="tile-control" style={{ alignItems: "center" }}>
+          <Button
+            variant="outlined"
+            onClick={handleShare}
+            startIcon={<LinkIcon />}
+          >
+            Share
+          </Button>
+          <AnimatePresence>
+            {showCopiedMessage && (
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.2 }}
+              >
+                Link copied to clipboard.
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
       )}
 
@@ -40,9 +76,9 @@ const AnimationControls: React.FC<ControlsProps> = ({
           }}
           variant="scrollable"
         >
-          <Tab label={"Share"} value={"share"} />
-          <Tab label={"Code Export"} value={"export"} />
-          <Tab label={"About"} value={"about"} />
+          <Tab label="Share" value="share" />
+          <Tab label="Code Export" value="export" />
+          <Tab label="About" value="about" />
         </Tabs>
       </div>
       <div className="solo-button">
