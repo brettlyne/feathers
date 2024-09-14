@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import queryString from "query-string";
+
 import Button from "@mui/material/Button";
 import LinkIcon from "@mui/icons-material/Link";
 import Tabs from "@mui/material/Tabs";
@@ -23,10 +25,18 @@ const AnimationControls: React.FC<ControlsProps> = ({
 }) => {
   const [tab, setTab] = useState("share");
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
-  // const { particleConfig } = state;
+  const { particleConfig, editorConfig } = state;
   const timeoutRef = useRef<typeof globalThis.Timeout | null>(null);
 
   const handleShare = async () => {
+    const str = queryString.stringify({
+      ...particleConfig,
+      ...editorConfig,
+    });
+    console.log(str);
+    const obj = queryString.parse(str);
+    console.log(obj);
+    console.log(state);
     try {
       await navigator.clipboard.writeText("mouse");
       setShowCopiedMessage(true);
