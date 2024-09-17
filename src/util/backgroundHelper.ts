@@ -15,19 +15,20 @@ export const bgPresets = [
 ];
 
 export const getCssFromBgState = (
-  bgState: VisualizationState["editorConfig"]["background"]
+  editorConfig: VisualizationState["editorConfig"]
 ) => {
-  let colors, steps;
-  switch (bgState.type) {
+  const { bgType, bgColors, bgColor, bgValue } = editorConfig;
+  let steps;
+  switch (bgType) {
     case "solid":
-      return bgState.color || "#f0f0f0";
+      return bgColor || "#f0f0f0";
     case "gradient":
-      colors = bgState.colors;
-      steps = chroma.scale([colors[0], colors[1]]).mode("hsl").colors(4);
+      if (!bgColors) throw new Error("bgColors is undefined for gradient");
+      steps = chroma.scale([bgColors[0], bgColors[1]]).mode("hsl").colors(4);
       return `linear-gradient(0deg, ${steps.join(", ")})`;
     case "preset":
     case "custom":
-      return bgState.value || "#f0f0f0";
+      return bgValue || "#f0f0f0";
     default:
       return "#f0f0f0";
   }

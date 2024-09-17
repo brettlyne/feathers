@@ -65,44 +65,92 @@ const SceneControls: React.FC<ControlsProps> = ({
 }) => {
   const { particleConfig, editorConfig } = state;
   const [sceneTab, setSceneTab] = React.useState("presets");
-  const [backgroundTab, setBackgroundTab] = React.useState(
-    editorConfig.background.type
-  );
+  const [backgroundTab, setBackgroundTab] = React.useState(editorConfig.bgType);
 
-  const [initialBgState, setInitialBgState] = React.useState(
-    editorConfig.background
-  ); // for reset
+  const initialEditorState = React.useRef(editorConfig); // for reset
+
+  const updateBgState = (
+    type: "solid" | "gradient" | "preset" | "custom",
+    key: string,
+    value: string | string[]
+  ) => {
+    setVState((prev) => {
+      return {
+        ...prev,
+        editorConfig: {
+          ...prev.editorConfig,
+          bgType: type,
+          [key]: value,
+        },
+      };
+    });
+  };
 
   const changeBackgroundMode = (
-    mode: "solid" | "gradient" | "preset" | "custom" | string
+    mode: "solid" | "gradient" | "preset" | "custom"
   ) => {
     if (mode === "custom") {
-      const css = getCssFromBgState(editorConfig.background);
-      updateState("background", { type: "custom", value: css });
+      const css = getCssFromBgState(editorConfig);
+      updateBgState(mode, "bgValue", css);
       return;
     }
-    if (mode === initialBgState.type) {
-      updateState("background", initialBgState);
-      return;
-    }
-    const gradientStart =
-      editorConfig.background.color || initialBgState.color || "#615438";
-    const gradientEnd =
-      chroma(gradientStart).luminance() > 0.8
-        ? chroma(gradientStart).darken(2).hex()
-        : chroma(gradientStart).brighten(2).hex();
-    const bgDefaults = {
-      solid: {
-        type: "solid",
-        color:
-          editorConfig.background.color || initialBgState.color || "#333f69",
-      },
-      custom: { type: "custom", value: "#888888" },
-      gradient: { type: "gradient", colors: [gradientStart, gradientEnd] },
-      preset: { type: "preset", value: bgPresets[0] },
-    };
 
-    updateState("background", bgDefaults[mode]);
+    if (mode === initialEditorState.current.bgType) {
+      switch (mode) {
+        case "solid":
+          updateBgState(
+            mode,
+            "bgColor",
+            initialEditorState.current.bgColor || "#333f69"
+          );
+          return;
+        case "gradient":
+          updateBgState(
+            mode,
+            "bgColors",
+            initialEditorState.current.bgColors || ["#333f69", "#615438"]
+          );
+          return;
+        default:
+          updateBgState(
+            mode,
+            "bgValue",
+            initialEditorState.current.bgValue || "#333f69"
+          );
+          return;
+      }
+    }
+
+    if (mode === "solid") {
+      updateBgState(
+        mode,
+        "bgColor",
+        editorConfig.bgColor || initialEditorState.current.bgColor || "#333f69"
+      );
+    }
+
+    if (mode === "preset") {
+      updateBgState(mode, "bgValue", bgPresets[0]);
+    }
+
+    if (mode === "gradient") {
+      let gradientStart, gradientEnd;
+      if (Array.isArray(editorConfig.bgColors)) {
+        gradientStart = editorConfig.bgColors[0];
+        gradientEnd = editorConfig.bgColors[1];
+      } else {
+        gradientStart =
+          editorConfig.bgColor ||
+          initialEditorState.current.bgColor ||
+          "#615438";
+        gradientEnd =
+          chroma(gradientStart).luminance() > 0.8
+            ? chroma(gradientStart).darken(2).hex()
+            : chroma(gradientStart).brighten(2).hex();
+      }
+
+      updateBgState(mode, "bgColors", [gradientStart, gradientEnd]);
+    }
   };
 
   return (
@@ -113,6 +161,7 @@ const SceneControls: React.FC<ControlsProps> = ({
             <IconButton
               sx={{ padding: 0 }}
               onClick={() => {
+                initialEditorState.current = preset.editorConfig;
                 setVState({
                   ...preset,
                   editorConfig: {
@@ -120,8 +169,7 @@ const SceneControls: React.FC<ControlsProps> = ({
                     statsOn: editorConfig.statsOn,
                   },
                 });
-                setBackgroundTab(preset.editorConfig.background.type);
-                setInitialBgState(preset.editorConfig.background);
+                setBackgroundTab(preset.editorConfig.bgType);
               }}
               key={i}
             >
@@ -195,12 +243,9 @@ const SceneControls: React.FC<ControlsProps> = ({
               style={{ background: "#363636" }}
             >
               <HexColorPicker
-                color={editorConfig.background.color}
+                color={editorConfig.bgColor}
                 onChange={(newColor) => {
-                  updateState("background", {
-                    type: "solid",
-                    color: newColor,
-                  });
+                  updateState("bgColor", newColor);
                 }}
               />
             </div>
@@ -212,27 +257,21 @@ const SceneControls: React.FC<ControlsProps> = ({
               style={{ background: "#363636" }}
             >
               <HexColorPicker
-                color={editorConfig.background.colors?.[0] ?? ""}
+                color={editorConfig.bgColors?.[0] ?? ""}
                 onChange={(newColor) => {
-                  updateState("background", {
-                    type: "gradient",
-                    colors: [
-                      newColor,
-                      editorConfig.background.colors?.[1] ?? "",
-                    ],
-                  });
+                  updateState("bgColors", [
+                    newColor,
+                    editorConfig.bgColors?.[1] ?? "",
+                  ]);
                 }}
               />
               <HexColorPicker
-                color={editorConfig.background.colors?.[1] ?? ""}
+                color={editorConfig.bgColors?.[1] ?? ""}
                 onChange={(newColor) => {
-                  updateState("background", {
-                    type: "gradient",
-                    colors: [
-                      editorConfig.background.colors?.[0] ?? "",
-                      newColor,
-                    ],
-                  });
+                  updateState("bgColors", [
+                    editorConfig.bgColors?.[0] ?? "",
+                    newColor,
+                  ]);
                 }}
               />
             </div>
@@ -258,15 +297,10 @@ const SceneControls: React.FC<ControlsProps> = ({
                     height: 80,
                     borderRadius: 0.2,
                     outline:
-                      editorConfig.background.value === preset
-                        ? "2px solid white"
-                        : "",
+                      editorConfig.bgValue === preset ? "2px solid white" : "",
                   }}
                   onClick={() => {
-                    updateState("background", {
-                      type: "preset",
-                      value: preset,
-                    });
+                    updateState("bgValue", preset);
                   }}
                   key={i}
                 />
@@ -281,12 +315,9 @@ const SceneControls: React.FC<ControlsProps> = ({
             >
               <TextField
                 multiline
-                value={editorConfig.background.value}
+                value={editorConfig.bgValue}
                 onChange={(e) => {
-                  updateState("background", {
-                    type: "custom",
-                    value: e.target.value,
-                  });
+                  updateState("bgValue", e.target.value);
                 }}
                 sx={{
                   width: "100%",

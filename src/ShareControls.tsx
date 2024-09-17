@@ -20,7 +20,7 @@ interface ControlsProps {
 
 const AnimationControls: React.FC<ControlsProps> = ({
   state,
-  updateState,
+  // updateState,
   setActiveTab,
 }) => {
   const [tab, setTab] = useState("share");

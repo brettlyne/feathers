@@ -35,12 +35,10 @@ export interface ParticleConfig {
 
 export interface EditorConfig {
   dimensions: [string, string];
-  background: {
-    type: "solid" | "gradient" | "preset" | "custom";
-    color?: string;
-    colors?: string[];
-    value?: string;
-  };
+  bgType: "solid" | "gradient" | "preset" | "custom";
+  bgValue?: string;
+  bgColors?: [string, string];
+  bgColor?: string;
   statsOn: boolean;
   interactiveCamera: boolean;
   fov: number;
@@ -67,15 +65,25 @@ export type VisualizationStateUpdater = <
 export const updateVisualizationState = (
   state: VisualizationState,
   key: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any
+  value: string | string[] | number | boolean | [number, number, number]
 ): VisualizationState => {
+  const editorConfigKeys = [
+    "dimensions",
+    "bgType",
+    "bgValue",
+    "bgColors",
+    "bgColor",
+    "statsOn",
+    "interactiveCamera",
+    "fov",
+    "cameraMatrix",
+  ];
   if (key in state.particleConfig) {
     return {
       ...state,
       particleConfig: { ...state.particleConfig, [key]: value },
     };
-  } else if (key in state.editorConfig) {
+  } else if (editorConfigKeys.includes(key)) {
     return { ...state, editorConfig: { ...state.editorConfig, [key]: value } };
   } else {
     throw new Error(`Invalid key: ${key}`);
@@ -111,10 +119,8 @@ export const preset1: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: {
-      type: "gradient",
-      colors: ["#e5a4eb", "#e6dfee"],
-    },
+    bgType: "gradient",
+    bgColors: ["#e5a4eb", "#e6dfee"],
     fov: 84,
     statsOn: false,
     interactiveCamera: true,
@@ -157,12 +163,9 @@ export const preset2: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["600px", "600px"],
-
     fov: 80,
-    background: {
-      type: "preset",
-      value: "linear-gradient(225deg, #f1ff56, #66d788, #009e96, #0a607b)",
-    },
+    bgType: "preset",
+    bgValue: "linear-gradient(225deg, #f1ff56, #66d788, #009e96, #0a607b)",
     cameraMatrix: [
       0.5839796484236555, 0.7053629555842138, -0.40178460786406917, 0,
       0.7807451040729632, -0.6235633281737308, 0.040073160881052984, 0,
@@ -204,7 +207,8 @@ export const preset3: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: { type: "solid", color: "#f4e8c9" },
+    bgType: "solid",
+    bgColor: "#f4e8c9",
     fov: 75,
     cameraMatrix: [
       1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.0751308981393026,
@@ -244,7 +248,8 @@ export const preset4: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: { type: "solid", color: "#240e34" },
+    bgType: "solid",
+    bgColor: "#240e34",
     fov: 117,
     cameraMatrix: [
       0.9969121740464922, 0.007568075754644811, 0.07815907795813744, 0,
@@ -286,7 +291,8 @@ export const preset5: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: { type: "solid", color: "#f0f0f0" },
+    bgType: "solid",
+    bgColor: "#f0f0f0",
     fov: 97,
     cameraMatrix: [
       0.969367321443659, 0.12274832772864377, -0.21274361131880146, 0,
@@ -329,11 +335,9 @@ export const preset6: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: {
-      type: "custom",
-      value:
-        "linear-gradient( 16deg, hsl(223deg 68% 6%) 0%, hsl(227deg 70% 10%) 23%, hsl(232deg 72% 15%) 28%, hsl(236deg 74% 19%) 31%, hsl(240deg 76% 23%) 32%, hsl(245deg 78% 26%) 33%, hsl(249deg 80% 30%) 34%, hsl(254deg 83% 34%) 36%, hsl(258deg 85% 37%) 37%, hsl(262deg 88% 41%) 39%, hsl(267deg 90% 44%) 42%, hsl(269deg 84% 48%) 44%, hsl(269deg 76% 52%) 48%, hsl(269deg 76% 57%) 52%, hsl(269deg 75% 61%) 56%, hsl(269deg 74% 66%) 61%, hsl(270deg 72% 70%) 66%, hsl(270deg 70% 75%) 72%, hsl(270deg 67% 80%) 78%, hsl(270deg 63% 84%) 85%, hsl(270deg 53% 89%) 92%, hsl(270deg 27% 94%) 100%)",
-    },
+    bgType: "custom",
+    bgValue:
+      "linear-gradient( 16deg, hsl(223deg 68% 6%) 0%, hsl(227deg 70% 10%) 23%, hsl(232deg 72% 15%) 28%, hsl(236deg 74% 19%) 31%, hsl(240deg 76% 23%) 32%, hsl(245deg 78% 26%) 33%, hsl(249deg 80% 30%) 34%, hsl(254deg 83% 34%) 36%, hsl(258deg 85% 37%) 37%, hsl(262deg 88% 41%) 39%, hsl(267deg 90% 44%) 42%, hsl(269deg 84% 48%) 44%, hsl(269deg 76% 52%) 48%, hsl(269deg 76% 57%) 52%, hsl(269deg 75% 61%) 56%, hsl(269deg 74% 66%) 61%, hsl(270deg 72% 70%) 66%, hsl(270deg 70% 75%) 72%, hsl(270deg 67% 80%) 78%, hsl(270deg 63% 84%) 85%, hsl(270deg 53% 89%) 92%, hsl(270deg 27% 94%) 100%)",
     fov: 160,
     cameraMatrix: [
       -0.4529880870488296, 0.856986260360773, 0.24571597942483767, 0,
@@ -375,10 +379,9 @@ export const preset7: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: { type: "solid", color: "#cacee5" },
-
+    bgType: "solid",
+    bgColor: "#cacee5",
     fov: 75,
-
     cameraMatrix: [
       0.5428570320276913, -0.8027876848935722, -0.24665395954921207, 0,
       -0.5733487511985205, -0.5688680926296896, 0.5896272574151877, 0,
@@ -419,9 +422,9 @@ const preset8: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["min(100vw, 100vh)", "100vh"],
-    background: { type: "solid", color: "#f1ffe5" },
+    bgType: "solid",
+    bgColor: "#f1ffe5",
     fov: 80,
-
     cameraMatrix: [
       0.9965214347044477, 0.07398162990109414, 0.03836337591714531, 0,
       0.04534133074310554, -0.8675600189821328, 0.49526132212213675, 0,
@@ -463,10 +466,8 @@ const preset9: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: {
-      type: "gradient",
-      colors: ["#000000", "#4f6178"],
-    },
+    bgType: "gradient",
+    bgColors: ["#000000", "#4f6178"],
     fov: 122,
     cameraMatrix: [
       0.1100246386542695, 0.7608254084310463, -0.6395617849549217, 0,
@@ -509,10 +510,8 @@ const preset10: VisualizationState = {
   },
   editorConfig: {
     dimensions: ["100vw", "100vh"],
-    background: {
-      type: "gradient",
-      colors: ["#060111", "#430874"],
-    },
+    bgType: "gradient",
+    bgColors: ["#060111", "#430874"],
     fov: 144,
     cameraMatrix: [
       -0.9944964596057377, -0.0947111714353202, -0.04479493092986833, 0,

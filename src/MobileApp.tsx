@@ -68,13 +68,13 @@ const App: React.FC = () => {
 
   // update background on state change
   useEffect(() => {
-    setBgCSS(getCssFromBgState(editorConfig.background));
+    setBgCSS(getCssFromBgState(editorConfig));
   }, [
-    editorConfig.background,
-    editorConfig.background.type,
-    editorConfig.background.color,
-    editorConfig.background.colors,
-    editorConfig.background.value,
+    editorConfig,
+    editorConfig.bgType,
+    editorConfig.bgColors,
+    editorConfig.bgColor,
+    editorConfig.bgValue,
   ]);
 
   return (
