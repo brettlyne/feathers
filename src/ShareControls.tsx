@@ -29,16 +29,15 @@ const AnimationControls: React.FC<ControlsProps> = ({
   const timeoutRef = useRef<typeof globalThis.Timeout | null>(null);
 
   const handleShare = async () => {
-    const str = queryString.stringify({
+    const qString = queryString.stringify({
       ...particleConfig,
       ...editorConfig,
     });
-    console.log(str);
-    const obj = queryString.parse(str);
-    console.log(obj);
-    console.log(state);
+    const url = new URL(window.location.href);
+    url.search = qString;
+
     try {
-      await navigator.clipboard.writeText("mouse");
+      await navigator.clipboard.writeText(url.href);
       setShowCopiedMessage(true);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);

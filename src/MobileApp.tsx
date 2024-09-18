@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ArcballControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
+import queryString from "query-string";
 
 import { getCssFromBgState } from "./util/backgroundHelper";
 import HexagonParticles from "./HexagonParticles";
@@ -10,6 +11,7 @@ import "./mobile.css";
 import {
   VisualizationState,
   updateVisualizationState,
+  unflattenState,
   preset1,
 } from "./util/visualizationState";
 
@@ -41,10 +43,18 @@ const App: React.FC = () => {
   const [bgCSS, setBgCSS] = useState("#f0f0f0");
   const { particleConfig, editorConfig } = vState;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updateVState = (key: string, value: any) => {
+  const updateVState = (key: string, value) => {
     setVState(updateVisualizationState(vState, key, value));
   };
+
+  // load state from url on load
+  useEffect(() => {
+    const parsed = queryString.parse(location.search, { parseBooleans: true });
+    if (Object.keys(parsed).length > 0) {
+      const newState = unflattenState(parsed);
+      setVState(newState);
+    }
+  }, []);
 
   // if i press the p key, log vState to console
   useEffect(() => {

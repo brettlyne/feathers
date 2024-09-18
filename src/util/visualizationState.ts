@@ -33,6 +33,18 @@ export interface ParticleConfig {
   depthTestOn: boolean;
 }
 
+const editorConfigKeys = [
+  "dimensions",
+  "bgType",
+  "bgValue",
+  "bgColors",
+  "bgColor",
+  "statsOn",
+  "interactiveCamera",
+  "fov",
+  "cameraMatrix",
+];
+
 export interface EditorConfig {
   dimensions: [string, string];
   bgType: "solid" | "gradient" | "preset" | "custom";
@@ -61,23 +73,24 @@ export type VisualizationStateUpdater = <
     : never
 ) => void;
 
-// visualizationState.ts
+// used when we load from url
+export const unflattenState = (obj): VisualizationState => {
+  const state: VisualizationState = preset1;
+  Object.keys(obj).forEach((key) => {
+    if (key in state.editorConfig) {
+      state.editorConfig[key] = obj[key];
+    } else {
+      state.particleConfig[key] = obj[key];
+    }
+  });
+  return state;
+};
+
 export const updateVisualizationState = (
   state: VisualizationState,
   key: string,
   value: string | string[] | number | boolean | [number, number, number]
 ): VisualizationState => {
-  const editorConfigKeys = [
-    "dimensions",
-    "bgType",
-    "bgValue",
-    "bgColors",
-    "bgColor",
-    "statsOn",
-    "interactiveCamera",
-    "fov",
-    "cameraMatrix",
-  ];
   if (key in state.particleConfig) {
     return {
       ...state,
