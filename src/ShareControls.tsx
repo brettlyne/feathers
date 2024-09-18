@@ -25,6 +25,10 @@ const AnimationControls: React.FC<ControlsProps> = ({
 }) => {
   const [tab, setTab] = useState("share");
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+  const [copiedMessage, setCopiedMessage] = useState(
+    "Link copied to clipboard."
+  );
+  const [showImagePathMessage, setShowImagePathMessage] = useState(false);
   const { particleConfig, editorConfig } = state;
   const timeoutRef = useRef<typeof globalThis.Timeout | null>(null);
 
@@ -32,18 +36,30 @@ const AnimationControls: React.FC<ControlsProps> = ({
     const qString = queryString.stringify({
       ...particleConfig,
       ...editorConfig,
+      imagePath:
+        particleConfig.imagePath.length > 14000
+          ? "drop.png"
+          : particleConfig.imagePath,
     });
+    if (particleConfig.imagePath.length > 14000) {
+      setShowImagePathMessage(true);
+      setCopiedMessage(
+        "⚠️ Copied with default image. Image too large to embed in URL. Limit is ~10kb."
+      );
+    }
     const url = new URL(window.location.href);
     url.search = qString;
 
     try {
       await navigator.clipboard.writeText(url.href);
+      window.history.replaceState(null, "", url.href);
       setShowCopiedMessage(true);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
         setShowCopiedMessage(false);
+        setCopiedMessage("Link copied to clipboard.");
         timeoutRef.current = null;
       }, 3000);
     } catch (err) {
@@ -54,27 +70,48 @@ const AnimationControls: React.FC<ControlsProps> = ({
   return (
     <>
       {tab === "share" && (
-        <div className="tile-control" style={{ alignItems: "center" }}>
-          <Button
-            variant="outlined"
-            onClick={handleShare}
-            startIcon={<LinkIcon />}
-          >
-            Share
-          </Button>
+        <>
           <AnimatePresence>
-            {showCopiedMessage && (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
+            {showImagePathMessage && (
+              <motion.div
+                className="info"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.2 }}
               >
-                Link copied to clipboard.
-              </motion.p>
+                <p style={{ maxWidth: "42em" }}>
+                  You can replace the imagePath in the share URL with your own
+                  image URL.
+                </p>
+              </motion.div>
             )}
           </AnimatePresence>
-        </div>
+
+          <div
+            className="tile-control"
+            style={{ alignItems: "center", minHeight: "4em" }}
+          >
+            <Button
+              variant="outlined"
+              onClick={handleShare}
+              startIcon={<LinkIcon />}
+            >
+              Share
+            </Button>
+            <AnimatePresence>
+              {showCopiedMessage && (
+                <motion.p
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ lineHeight: "1.4em" }}
+                >
+                  {copiedMessage}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+        </>
       )}
 
       <div className="tabs">
