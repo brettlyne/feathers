@@ -7,6 +7,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
+import getCodeString from "./util/getCodeString";
 import {
   VisualizationState,
   VisualizationStateUpdater,
@@ -112,6 +113,18 @@ const AnimationControls: React.FC<ControlsProps> = ({
             </AnimatePresence>
           </div>
         </>
+      )}
+
+      {tab === "export" && (
+        <div
+          className="info"
+          style={{
+            maxHeight: "80vh",
+            overflow: "scroll",
+          }}
+        >
+          <pre style={{ fontFamily: "monospace" }}>{getCodeString(state)}</pre>
+        </div>
       )}
 
       <div className="tabs">
