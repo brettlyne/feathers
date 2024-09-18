@@ -41,6 +41,7 @@ const ShapeControls: React.FC<ControlsProps> = ({
     "glow.png",
     "moon.png",
     "coin.png",
+    "bobtail-squid.png",
   ];
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
