@@ -22,7 +22,7 @@ import HexagonParticles from "./HexagonParticles";
     codeString += `import { ArcballControls } from '@react-three/drei';\n`;
 
   codeString += `\nconst particleConfig = `;
-  codeString += JSON.stringify(particleConfig, null, 2);
+  codeString += JSON.stringify(particleConfig, null, 4);
 
   codeString += `\n
 const cameraConfig = {
@@ -67,6 +67,7 @@ const MyParticleCanvas: React.FC = () => {
 };
 
 export default MyParticleCanvas;
+
 `;
 
   return codeString;

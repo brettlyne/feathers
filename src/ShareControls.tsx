@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import queryString from "query-string";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import Button from "@mui/material/Button";
 import LinkIcon from "@mui/icons-material/Link";
@@ -18,6 +20,8 @@ interface ControlsProps {
   updateState: VisualizationStateUpdater;
   setActiveTab: React.Dispatch<React.SetStateAction<number>>;
 }
+
+oneDark.comment.color = "hsl(220, 10%, 60%)"; // improve contrast for comments
 
 const AnimationControls: React.FC<ControlsProps> = ({
   state,
@@ -116,15 +120,18 @@ const AnimationControls: React.FC<ControlsProps> = ({
       )}
 
       {tab === "export" && (
-        <div
-          className="info"
-          style={{
-            maxHeight: "80vh",
+        <SyntaxHighlighter
+          language="tsx"
+          style={oneDark}
+          customStyle={{
+            fontWeight: "500",
             overflow: "scroll",
+            maxHeight: "80vh",
           }}
+          className="info"
         >
-          <pre style={{ fontFamily: "monospace" }}>{getCodeString(state)}</pre>
-        </div>
+          {getCodeString(state)}
+        </SyntaxHighlighter>
       )}
 
       <div className="tabs">
