@@ -6,6 +6,9 @@ const getCodeString = (state: VisualizationState) => {
   const css = getCssFromBgState(editorConfig);
 
   let codeString = `
+// THIS IS JUST A PLACEHOLDER
+// STILL NEED TO PUBLISH PACKAGE TO NPM UNDER A DIFFERENT NAME
+
 import React from "react";
 import { Canvas } from "@react-three/fiber";
 import HexagonParticles from "./HexagonParticles";
